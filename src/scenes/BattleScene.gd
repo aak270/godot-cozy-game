@@ -3,10 +3,11 @@ extends Control
 onready var anim_player: = $AnimationPlayer
 onready var background: = $Background
 onready var fight_button: = $Background/Panel/FightButton
+onready var player: = $"../../Player"
 
 func _ready() -> void:
 	visible = false
-	$Background.visible = false
+	background.visible = false
 	EventHandler.connect("battle_started", self, "init")
 	
 func init() -> void:
@@ -24,3 +25,6 @@ func _on_RunButton_pressed() -> void:
 	get_tree().paused = false
 	visible = false
 	background.visible = false
+
+func _on_FightButton_pressed() -> void:
+	player.effort -= 10

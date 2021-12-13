@@ -8,15 +8,29 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "Area2D",
+"class": "Interactable",
+"language": "GDScript",
+"path": "res://src/objects/Interactable.gd"
+} ]
+_global_script_class_icons={
+"Interactable": ""
+}
+
 [application]
 
 config/name="Cozy Game"
-run/main_scene="res://src/scenes/World.tscn"
+run/main_scene="res://src/scenes/StartScreen.tscn"
 config/icon="res://icon.png"
 
 [autoload]
 
 EventHandler="*res://src/singletons/EventHandler.tscn"
+
+[display]
+
+window/size/always_on_top=true
 
 [input]
 

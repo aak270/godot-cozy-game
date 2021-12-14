@@ -1,6 +1,6 @@
 extends Node
 
-signal battle_started()
+signal combat_started(enemy)
 signal battle_finished()
 
 signal effort_changed(value)

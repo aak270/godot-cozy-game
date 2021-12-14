@@ -987,9 +987,9 @@ script = ExtResource( 2 )
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -46.0
-margin_top = -109.0
+margin_top = -128.0
 margin_right = 50.0
-margin_bottom = -85.0
+margin_bottom = -104.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -1010,18 +1010,17 @@ __meta__ = {
 }
 
 [node name="Torso" type="Sprite" parent="."]
-position = Vector2( 1, -37 )
+position = Vector2( 1, -28 )
 scale = Vector2( 0.3, 0.3 )
+z_index = 1
 texture = ExtResource( 1 )
-flip_h = true
 region_enabled = true
 region_rect = Rect2( -3.19579, 13, 208.196, 319 )
 
 [node name="Fin" type="Sprite" parent="Torso"]
-position = Vector2( -30, 83.3333 )
+position = Vector2( 30, 85 )
 z_index = -2
 texture = ExtResource( 1 )
-flip_h = true
 region_enabled = true
 region_rect = Rect2( 219, 248, 58, 83 )
 
@@ -1047,7 +1046,6 @@ position = Vector2( -73.3333, 186.667 )
 z_index = -1
 texture = ExtResource( 1 )
 offset = Vector2( 33, 36 )
-flip_h = true
 region_enabled = true
 region_rect = Rect2( 227.632, -1.63089, 142.105, 166.316 )
 
@@ -1055,25 +1053,25 @@ region_rect = Rect2( 227.632, -1.63089, 142.105, 166.316 )
 position = Vector2( -3.33333, -9.99999 )
 z_index = 1
 texture = ExtResource( 1 )
-flip_h = true
 region_enabled = true
 region_rect = Rect2( 488, 242, 161, 138 )
 
 [node name="Antenna" type="Sprite" parent="Torso"]
 modulate = Color( 0.752941, 0.443137, 0.988235, 1 )
-position = Vector2( -123.333, -33.3333 )
+position = Vector2( 66, -45 )
 texture = ExtResource( 1 )
 offset = Vector2( 27, -68 )
-flip_h = true
 region_enabled = true
 region_rect = Rect2( 379, 258, 89, 163 )
 
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+[node name="CollisionHead" type="CollisionShape2D" parent="."]
 position = Vector2( 2, -42 )
+z_index = 1
 shape = SubResource( 21 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionBody" type="CollisionShape2D" parent="."]
 position = Vector2( 1, 0 )
+z_index = 1
 shape = SubResource( 20 )
 __meta__ = {
 "_edit_group_": true

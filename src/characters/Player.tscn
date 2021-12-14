@@ -1015,7 +1015,7 @@ scale = Vector2( 0.3, 0.3 )
 texture = ExtResource( 1 )
 flip_h = true
 region_enabled = true
-region_rect = Rect2( 4, 13, 201, 319 )
+region_rect = Rect2( -3.19579, 13, 208.196, 319 )
 
 [node name="Fin" type="Sprite" parent="Torso"]
 position = Vector2( -30, 83.3333 )

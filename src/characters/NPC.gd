@@ -13,6 +13,6 @@ func _on_body_entered(body: Node) -> void:
 	_player = body
 	_player.update_interactable(self)
 
-func _on_body_exited(body: Node) -> void:
+func _on_body_exited(_body: Node) -> void:
 	_player.update_interactable(null)
 	EventHandler.emit_signal("dialogue_ended")

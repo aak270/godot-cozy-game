@@ -1,45 +1,13 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://src/characters/Player.gd" type="Script" id=1]
 [ext_resource path="res://icon.png" type="Texture" id=2]
 [ext_resource path="res://src/characters/Enemy.gd" type="Script" id=3]
-[ext_resource path="res://src/scenes/BattleScene.gd" type="Script" id=4]
+[ext_resource path="res://src/ui/CombatUI.gd" type="Script" id=4]
 [ext_resource path="res://src/ui/UI.gd" type="Script" id=5]
 [ext_resource path="res://src/ui/Dialogue.gd" type="Script" id=6]
 [ext_resource path="res://src/objects/Interactable.gd" type="Script" id=7]
 [ext_resource path="res://src/characters/NPC.gd" type="Script" id=8]
-
-[sub_resource type="Animation" id=3]
-resource_name = "fade_in"
-length = 0.4
-tracks/0/type = "value"
-tracks/0/path = NodePath("../ColorRect:color")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.4 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ Color( 0, 0, 0, 0 ), Color( 0, 0, 0, 1 ) ]
-}
-
-[sub_resource type="Animation" id=4]
-resource_name = "fade_out"
-length = 0.4
-tracks/0/type = "value"
-tracks/0/path = NodePath("../ColorRect:color")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.4 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ Color( 0, 0, 0, 1 ), Color( 0, 0, 0, 0 ) ]
-}
 
 [sub_resource type="ConvexPolygonShape2D" id=5]
 points = PoolVector2Array( 0, 0, 64, 0, 64, 64, 0, 64 )
@@ -87,97 +55,13 @@ current = true
 process_mode = 0
 smoothing_enabled = true
 
+[node name="PlayerPosition" type="Position2D" parent="Camera2D"]
+position = Vector2( -300, -24 )
+
+[node name="EnemyPosition" type="Position2D" parent="Camera2D"]
+position = Vector2( 300, -24 )
+
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
-
-[node name="BattleScene" type="Control" parent="CanvasLayer"]
-pause_mode = 2
-visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-script = ExtResource( 4 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Background" type="TextureRect" parent="CanvasLayer/BattleScene"]
-self_modulate = Color( 0.698039, 1, 0.45098, 1 )
-anchor_right = 1.0
-anchor_bottom = 1.0
-texture = ExtResource( 2 )
-stretch_mode = 2
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="PlayerSprite" type="Sprite" parent="CanvasLayer/BattleScene/Background"]
-position = Vector2( 256, 320 )
-scale = Vector2( 1.5, 1.5 )
-texture = ExtResource( 2 )
-
-[node name="EnemySprite" type="Sprite" parent="CanvasLayer/BattleScene/Background"]
-modulate = Color( 0.901961, 0.294118, 0.294118, 1 )
-position = Vector2( 768, 320 )
-scale = Vector2( 1.5, 1.5 )
-texture = ExtResource( 2 )
-
-[node name="Panel" type="Panel" parent="CanvasLayer/BattleScene/Background"]
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_top = -152.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="FightButton" type="Button" parent="CanvasLayer/BattleScene/Background/Panel"]
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-margin_left = -136.0
-margin_top = -52.0
-margin_right = -37.0
-margin_bottom = -8.0
-text = "Fight"
-
-[node name="RunButton" type="Button" parent="CanvasLayer/BattleScene/Background/Panel"]
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-margin_left = -136.0
-margin_top = 4.0
-margin_right = -37.0
-margin_bottom = 48.0
-text = "Run"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Label" type="Label" parent="CanvasLayer/BattleScene/Background/Panel"]
-anchor_top = 0.5
-anchor_bottom = 0.5
-margin_left = 16.0
-margin_top = -52.0
-margin_right = 872.0
-margin_bottom = 52.0
-text = "Battle has just started!"
-align = 1
-valign = 1
-
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer/BattleScene"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-color = Color( 0, 0, 0, 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer/BattleScene"]
-root_node = NodePath("../Background")
-anims/fade_in = SubResource( 3 )
-anims/fade_out = SubResource( 4 )
 
 [node name="UI" type="Control" parent="CanvasLayer"]
 margin_right = 40.0
@@ -252,6 +136,46 @@ margin_right = 736.0
 margin_bottom = 72.0
 text = "Message"
 
+[node name="CombatUI" type="Control" parent="CanvasLayer"]
+pause_mode = 2
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/CombatUI"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 64.0
+margin_top = -88.0
+margin_right = 472.0
+margin_bottom = -48.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Attack1Button" type="Button" parent="CanvasLayer/CombatUI/HBoxContainer"]
+margin_right = 133.0
+margin_bottom = 40.0
+size_flags_horizontal = 3
+text = "Attack1"
+
+[node name="Attack2Button" type="Button" parent="CanvasLayer/CombatUI/HBoxContainer"]
+margin_left = 137.0
+margin_right = 270.0
+margin_bottom = 40.0
+size_flags_horizontal = 3
+text = "Attack2"
+
+[node name="Attack3Button" type="Button" parent="CanvasLayer/CombatUI/HBoxContainer"]
+margin_left = 274.0
+margin_right = 408.0
+margin_bottom = 40.0
+size_flags_horizontal = 3
+text = "Attack3"
+
 [node name="TileMap" type="TileMap" parent="."]
 modulate = Color( 0, 0, 0, 1 )
 tile_set = SubResource( 6 )
@@ -263,6 +187,7 @@ position = Vector2( 528, 280 )
 z_index = 1
 collision_layer = 2
 script = ExtResource( 1 )
+combat_position_path = NodePath("../Camera2D/PlayerPosition")
 
 [node name="InteractionUI" type="Control" parent="Player"]
 anchor_left = 0.5
@@ -302,6 +227,7 @@ position = Vector2( 816, 280 )
 collision_layer = 0
 collision_mask = 2
 script = ExtResource( 3 )
+combat_position_path = NodePath("../Camera2D/EnemyPosition")
 
 [node name="Sprite" type="Sprite" parent="Enemy"]
 texture = ExtResource( 2 )
@@ -337,9 +263,9 @@ texture = ExtResource( 2 )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="NPC"]
 shape = SubResource( 8 )
 
-[connection signal="pressed" from="CanvasLayer/BattleScene/Background/Panel/FightButton" to="CanvasLayer/BattleScene" method="_on_FightButton_pressed"]
-[connection signal="pressed" from="CanvasLayer/BattleScene/Background/Panel/RunButton" to="CanvasLayer/BattleScene" method="_on_RunButton_pressed"]
-[connection signal="animation_finished" from="CanvasLayer/BattleScene/AnimationPlayer" to="CanvasLayer/BattleScene" method="_on_animation_finished"]
+[connection signal="pressed" from="CanvasLayer/CombatUI/HBoxContainer/Attack1Button" to="CanvasLayer/CombatUI" method="_on_Attack1Button_pressed"]
+[connection signal="pressed" from="CanvasLayer/CombatUI/HBoxContainer/Attack2Button" to="CanvasLayer/CombatUI" method="_on_Attack2Button_pressed"]
+[connection signal="pressed" from="CanvasLayer/CombatUI/HBoxContainer/Attack3Button" to="CanvasLayer/CombatUI" method="_on_Attack3Button_pressed"]
 [connection signal="body_entered" from="Enemy" to="Enemy" method="_on_body_entered"]
 [connection signal="body_entered" from="Object" to="Object" method="_on_body_entered"]
 [connection signal="body_exited" from="Object" to="Object" method="_on_body_exited"]

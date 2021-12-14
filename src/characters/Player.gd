@@ -6,8 +6,8 @@ enum PlayerState{
 }
 
 export var speed: = 200
-export var accel: = 500
-export var friction: = 800
+export var accel: = 1500
+export var friction: = 1800
 export var max_effort: = 100
 
 export var combat_position_path: NodePath

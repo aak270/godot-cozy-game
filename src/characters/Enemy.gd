@@ -1,4 +1,5 @@
 extends Area2D
+
 class_name Enemy
 
 export var combat_position_path: NodePath

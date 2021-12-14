@@ -72,3 +72,6 @@ func start_combat(enemy) -> void:
 	_state = PlayerState.COMBAT
 	_remote_transform.update_position = false
 	global_position = _combat_position.global_position
+	
+func can_move() -> bool:
+	return _state == PlayerState.MOVE

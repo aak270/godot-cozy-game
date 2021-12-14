@@ -24,6 +24,7 @@ var _state = PlayerState.MOVE
 onready var effort: = max_effort setget set_effort
 onready var _interaction_ui: = $InteractionUI
 onready var _remote_transform: = $RemoteTransform2D
+onready var _anime_manager: = $PlayerAnimMenager
 
 func set_effort(value: int) -> void:
 	effort = value
@@ -72,6 +73,7 @@ func start_combat(enemy) -> void:
 	_state = PlayerState.COMBAT
 	_remote_transform.update_position = false
 	global_position = _combat_position.global_position
+	_anime_manager.combat()
 	
 func can_move() -> bool:
 	return _state == PlayerState.MOVE

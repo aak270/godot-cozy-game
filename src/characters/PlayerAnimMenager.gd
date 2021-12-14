@@ -9,8 +9,11 @@ func _ready() -> void:
 	playback = get("parameters/StateMachine/playback")
 	playback.start("idleR")
 
-func _process(delta):
+func _process(_delta):
 	if player.can_move() and Input.is_action_just_pressed("ui_left"):
 		playback.travel("idle")
 	if player.can_move() and Input.is_action_just_pressed("ui_right"):
 		playback.travel("idleR")
+
+func combat() -> void:
+	playback.travel("idleR")

@@ -633,7 +633,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 1.5, 3 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
-"values": [ Vector2( -3.33333, -9.99999 ), Vector2( -3.33333, -9.99999 ), Vector2( -3.33333, -9.99999 ) ]
+"values": [ Vector2( 3, -12 ), Vector2( 3, -12 ), Vector2( 3, -12 ) ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("Torso/Face:rotation_degrees")
@@ -657,7 +657,7 @@ tracks/2/keys = {
 "times": PoolRealArray( 0, 1.5, 3 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
-"values": [ Vector2( -20, 70 ), Vector2( -20, 70 ), Vector2( -20, 70 ) ]
+"values": [ Vector2( -17, 67 ), Vector2( -17, 67 ), Vector2( -17, 67 ) ]
 }
 tracks/3/type = "value"
 tracks/3/path = NodePath("Torso/ArmR:rotation_degrees")
@@ -705,7 +705,7 @@ tracks/6/keys = {
 "times": PoolRealArray( 0, 1.5, 3 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 1,
-"values": [ Vector2( -70, 153.333 ), Vector2( -73.3333, 186.667 ), Vector2( -70, 153.333 ) ]
+"values": [ Vector2( -66.6667, 153.333 ), Vector2( -70, 186.667 ), Vector2( -66.6667, 153.333 ) ]
 }
 tracks/7/type = "value"
 tracks/7/path = NodePath("Torso/Tail2:rotation_degrees")
@@ -729,7 +729,7 @@ tracks/8/keys = {
 "times": PoolRealArray( 0, 1.5, 3 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
-"values": [ Vector2( 13.3333, 63.3333 ), Vector2( 13.3333, 63.3333 ), Vector2( 13.3333, 63.3333 ) ]
+"values": [ Vector2( 17, 67 ), Vector2( 17, 67 ), Vector2( 17, 67 ) ]
 }
 tracks/9/type = "value"
 tracks/9/path = NodePath("Torso/ArmL:rotation_degrees")
@@ -1042,7 +1042,7 @@ region_enabled = true
 region_rect = Rect2( 293, 250, 52, 98 )
 
 [node name="Tail2" type="Sprite" parent="Torso"]
-position = Vector2( -73.3333, 186.667 )
+position = Vector2( 6.66667, 186.667 )
 z_index = -1
 texture = ExtResource( 1 )
 offset = Vector2( 33, 36 )

@@ -18,10 +18,16 @@ _global_script_classes=[ {
 "class": "Interactable",
 "language": "GDScript",
 "path": "res://src/objects/Interactable.gd"
+}, {
+"base": "Node2D",
+"class": "PlayerInteract",
+"language": "GDScript",
+"path": "res://src/characters/PlayerInteract.gd"
 } ]
 _global_script_class_icons={
 "Enemy": "",
-"Interactable": ""
+"Interactable": "",
+"PlayerInteract": ""
 }
 
 [application]

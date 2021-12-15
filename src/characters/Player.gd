@@ -8,8 +8,8 @@ enum PlayerState{
 export var speed: = 200
 export var accel: = 1500
 export var friction: = 1800
-export var max_effort: = 100
 
+export var max_effort: = 100
 export var combat_position_path: NodePath
 
 var _direction: = Vector2.ZERO

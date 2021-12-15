@@ -11,12 +11,6 @@ func _ready() -> void:
 	
 func play() -> void:
 	print("Enemy attack")
-	var t = Timer.new()
-	t.set_wait_time(1)
-	t.set_one_shot(true)
-	self.add_child(t)
-	t.start()
-	yield(t, "timeout")
 
 func _on_body_entered(_body: Node) -> void:
 	EventHandler.emit_signal("combat_started", self)

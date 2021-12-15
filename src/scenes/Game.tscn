@@ -1,0 +1,484 @@
+[gd_scene load_steps=20 format=2]
+
+[ext_resource path="res://src/textures/BG_Waves.png" type="Texture" id=1]
+[ext_resource path="res://src/textures/BG_Gradient.png" type="Texture" id=2]
+[ext_resource path="res://src/textures/BG_Buildings1.png" type="Texture" id=3]
+[ext_resource path="res://src/characters/Player.tscn" type="PackedScene" id=4]
+[ext_resource path="res://icon.png" type="Texture" id=5]
+[ext_resource path="res://src/objects/Interactable.gd" type="Script" id=6]
+[ext_resource path="res://src/dialogues/DialoguePlayer.gd" type="Script" id=7]
+[ext_resource path="res://src/characters/NPC.gd" type="Script" id=8]
+
+[sub_resource type="Shader" id=14]
+code = "/* 
+Earthbound battle backgrounds shader with scrolling effect and palette cycling like in the original game.
+@retr0_dev
+	
+Apply the shader to a TextureRect or a Sprite. Use a texture with some shapes in a transparent background for best results.
+You can then use a ColorRect or another method to paint the background.
+You can use the shader on multiple TextureRects and obtain a double-buffer effect tweaking the values for each one, remember to Make Unique the shader material.
+*/
+shader_type canvas_item;
+
+uniform float screen_height = 640.0;
+uniform float amplitude = 0.045;
+uniform float frequency = 16.0;
+uniform float speed = 0.20;
+uniform float amplitude_vertical = 0.0;
+uniform float frequency_vertical = 0.0;
+uniform float speed_vertical = 0.0;
+uniform vec2 scroll_direction = vec2(0.0, 0.0);
+uniform float scrolling_speed = 0.08;
+uniform bool enable_palette_cycling = false;
+uniform sampler2D palette;
+uniform float palette_speed = 0.1;
+
+void fragment()
+{
+	float diff_x = amplitude * sin((frequency * UV.y) + (speed * TIME));
+	float diff_y = amplitude_vertical * sin((frequency_vertical * UV.y)  + (speed_vertical * TIME));
+	vec2 scroll = scroll_direction * TIME * scrolling_speed;
+	vec4 tex = texture(TEXTURE, vec2(UV.x + diff_x, UV.y + diff_y) + scroll);
+	float palette_swap = mod(tex.r - TIME * palette_speed, 1.0);
+	
+	if (enable_palette_cycling)
+	{
+		COLOR = vec4(texture(palette, vec2(palette_swap, 0)).rgb, tex.a);
+	}
+	else COLOR = tex;
+	//COLOR = mix(vec4(0.0), COLOR, float(int(UV.y * screen_height) % 2));
+}"
+
+[sub_resource type="ShaderMaterial" id=15]
+shader = SubResource( 14 )
+shader_param/screen_height = 640.0
+shader_param/amplitude = 0.045
+shader_param/frequency = 16.0
+shader_param/speed = 0.2
+shader_param/amplitude_vertical = 0.0
+shader_param/frequency_vertical = 0.0
+shader_param/speed_vertical = 0.0
+shader_param/scroll_direction = Vector2( 0, 0 )
+shader_param/scrolling_speed = 0.08
+shader_param/enable_palette_cycling = false
+shader_param/palette_speed = 0.1
+
+[sub_resource type="Shader" id=11]
+code = "/*
+Shader from Godot Shaders - the free shader library.
+godotshaders.com/shader/god-rays
+
+Feel free to use, improve and change this shader according to your needs
+and consider sharing the modified result on godotshaders.com.
+*/
+
+shader_type canvas_item;
+
+uniform float angle = 0.8;
+uniform float position = 0.2;
+uniform float spread : hint_range(0.0, 1.0) = 0.5;
+uniform float cutoff : hint_range(-1.0, 1.0) = 0.1;
+uniform float falloff : hint_range(0.0, 1.0) = 0.2;
+uniform float edge_fade : hint_range(0.0, 1.0) = 0.15;
+
+uniform float speed = 1.0;
+uniform float ray1_density = 80.0;
+uniform float ray2_density = 250.0;
+uniform float ray2_intensity : hint_range(0.0, 1.0) = 0.3;
+
+uniform vec4 color : hint_color = vec4(0.6, 0.9, 0.65, 0.8);
+
+uniform bool hdr = false;
+uniform float seed = 5.0;
+
+// Random and noise functions from Book of Shader's chapter on Noise.
+float random(vec2 _uv) {
+    return fract(sin(dot(_uv.xy,
+                         vec2(12.9898, 78.233))) *
+        43758.5453123);
+}
+
+float noise (in vec2 uv) {
+    vec2 i = floor(uv);
+    vec2 f = fract(uv);
+
+    // Four corners in 2D of a tile
+    float a = random(i);
+    float b = random(i + vec2(1.0, 0.0));
+    float c = random(i + vec2(0.0, 1.0));
+    float d = random(i + vec2(1.0, 1.0));
+
+
+    // Smooth Interpolation
+
+    // Cubic Hermine Curve. Same as SmoothStep()
+    vec2 u = f * f * (3.0-2.0 * f);
+
+    // Mix 4 coorners percentages
+    return mix(a, b, u.x) +
+            (c - a)* u.y * (1.0 - u.x) +
+            (d - b) * u.x * u.y;
+}
+
+mat2 rotate(float _angle){
+    return mat2(vec2(cos(_angle), -sin(_angle)),
+                vec2(sin(_angle), cos(_angle)));
+}
+
+vec4 screen(vec4 base, vec4 blend){
+	return 1.0 - (1.0 - base) * (1.0 - blend);
+}
+
+void fragment()
+{
+	
+	// Rotate, skew and move the UVs
+	vec2 transformed_uv = ( rotate(angle) * (UV - position) )  / ( (UV.y + spread) - (UV.y * spread) );
+	
+	// Animate the ray according the the new transformed UVs
+	vec2 ray1 = vec2(transformed_uv.x * ray1_density + sin(TIME * 0.1 * speed) * (ray1_density * 0.2) + seed, 1.0);
+	vec2 ray2 = vec2(transformed_uv.x * ray2_density + sin(TIME * 0.2 * speed) * (ray1_density * 0.2) + seed, 1.0);
+	
+	// Cut off the ray's edges
+	float cut = step(cutoff, transformed_uv.x) * step(cutoff, 1.0 - transformed_uv.x);
+	ray1 *= cut;
+	ray2 *= cut;
+	
+	// Apply the noise pattern (i.e. create the rays)
+	float rays;
+	
+	if (hdr){
+		// This is not really HDR, but check this to not clamp the two merged rays making 
+		// their values go over 1.0. Can make for some nice effect
+		rays = noise(ray1) + (noise(ray2) * ray2_intensity);
+	}
+	else{
+		 rays = clamp(noise(ray1) + (noise(ray2) * ray2_intensity), 0., 1.);
+	}
+	
+	// Fade out edges
+	rays *= smoothstep(0.0, falloff, (1.0 - UV.y)); // Bottom
+	rays *= smoothstep(0.0 + cutoff, edge_fade + cutoff, transformed_uv.x); // Left
+	rays *= smoothstep(0.0 + cutoff, edge_fade + cutoff, 1.0 - transformed_uv.x); // Right
+	
+	// Color to the rays
+	vec3 shine = vec3(rays) * color.rgb;
+
+	// Try different blending modes for a nicer effect. \"Screen\" is included in the code,
+	// but take a look at https://godotshaders.com/snippet/blending-modes/ for more.
+	// With \"Screen\" blend mode:
+	shine = screen(texture(SCREEN_TEXTURE, SCREEN_UV), vec4(color)).rgb;
+	
+	COLOR = vec4(shine, rays * color.a);
+}"
+
+[sub_resource type="ShaderMaterial" id=16]
+shader = SubResource( 11 )
+shader_param/angle = 0.8
+shader_param/position = 0.2
+shader_param/spread = 0.5
+shader_param/cutoff = 0.1
+shader_param/falloff = 0.2
+shader_param/edge_fade = 0.15
+shader_param/speed = 1.0
+shader_param/ray1_density = 80.0
+shader_param/ray2_density = 250.0
+shader_param/ray2_intensity = 0.3
+shader_param/color = Color( 0.6, 0.9, 0.65, 0.8 )
+shader_param/hdr = false
+shader_param/seed = 5.0
+
+[sub_resource type="Shader" id=13]
+code = "/*
+Shader from Godot Shaders - the free shader library.
+godotshaders.com/shader/god-rays
+
+Feel free to use, improve and change this shader according to your needs
+and consider sharing the modified result on godotshaders.com.
+*/
+
+shader_type canvas_item;
+
+uniform float angle = -0.3;
+uniform float position = -0.2;
+uniform float spread : hint_range(0.0, 1.0) = 0.5;
+uniform float cutoff : hint_range(-1.0, 1.0) = 0.1;
+uniform float falloff : hint_range(0.0, 1.0) = 0.2;
+uniform float edge_fade : hint_range(0.0, 1.0) = 0.15;
+
+uniform float speed = 1.0;
+uniform float ray1_density = 8.0;
+uniform float ray2_density = 30.0;
+uniform float ray2_intensity : hint_range(0.0, 1.0) = 0.3;
+
+uniform vec4 color : hint_color = vec4(0.6, 0.9, 0.9, 0.8);
+
+uniform bool hdr = false;
+uniform float seed = 5.0;
+
+// Random and noise functions from Book of Shader's chapter on Noise.
+float random(vec2 _uv) {
+    return fract(sin(dot(_uv.xy,
+                         vec2(12.9898, 78.233))) *
+        43758.5453123);
+}
+
+float noise (in vec2 uv) {
+    vec2 i = floor(uv);
+    vec2 f = fract(uv);
+
+    // Four corners in 2D of a tile
+    float a = random(i);
+    float b = random(i + vec2(1.0, 0.0));
+    float c = random(i + vec2(0.0, 1.0));
+    float d = random(i + vec2(1.0, 1.0));
+
+
+    // Smooth Interpolation
+
+    // Cubic Hermine Curve. Same as SmoothStep()
+    vec2 u = f * f * (3.0-2.0 * f);
+
+    // Mix 4 coorners percentages
+    return mix(a, b, u.x) +
+            (c - a)* u.y * (1.0 - u.x) +
+            (d - b) * u.x * u.y;
+}
+
+mat2 rotate(float _angle){
+    return mat2(vec2(cos(_angle), -sin(_angle)),
+                vec2(sin(_angle), cos(_angle)));
+}
+
+vec4 screen(vec4 base, vec4 blend){
+	return 1.0 - (1.0 - base) * (1.0 - blend);
+}
+
+void fragment()
+{
+	
+	// Rotate, skew and move the UVs
+	vec2 transformed_uv = ( rotate(angle) * (UV - position) )  / ( (UV.y + spread) - (UV.y * spread) );
+	
+	// Animate the ray according the the new transformed UVs
+	vec2 ray1 = vec2(transformed_uv.x * ray1_density + sin(TIME * 0.1 * speed) * (ray1_density * 0.2) + seed, 1.0);
+	vec2 ray2 = vec2(transformed_uv.x * ray2_density + sin(TIME * 0.2 * speed) * (ray1_density * 0.2) + seed, 1.0);
+	
+	// Cut off the ray's edges
+	float cut = step(cutoff, transformed_uv.x) * step(cutoff, 1.0 - transformed_uv.x);
+	ray1 *= cut;
+	ray2 *= cut;
+	
+	// Apply the noise pattern (i.e. create the rays)
+	float rays;
+	
+	if (hdr){
+		// This is not really HDR, but check this to not clamp the two merged rays making 
+		// their values go over 1.0. Can make for some nice effect
+		rays = noise(ray1) + (noise(ray2) * ray2_intensity);
+	}
+	else{
+		 rays = clamp(noise(ray1) + (noise(ray2) * ray2_intensity), 0., 1.);
+	}
+	
+	// Fade out edges
+	rays *= smoothstep(0.0, falloff, (1.0 - UV.y)); // Bottom
+	rays *= smoothstep(0.0 + cutoff, edge_fade + cutoff, transformed_uv.x); // Left
+	rays *= smoothstep(0.0 + cutoff, edge_fade + cutoff, 1.0 - transformed_uv.x); // Right
+	
+	// Color to the rays
+	vec3 shine = vec3(rays) * color.rgb;
+
+	// Try different blending modes for a nicer effect. \"Screen\" is included in the code,
+	// but take a look at https://godotshaders.com/snippet/blending-modes/ for more.
+	// With \"Screen\" blend mode:
+	shine = screen(texture(SCREEN_TEXTURE, SCREEN_UV), vec4(color)).rgb;
+	
+	COLOR = vec4(shine, rays * color.a);
+}"
+
+[sub_resource type="ShaderMaterial" id=17]
+shader = SubResource( 13 )
+shader_param/angle = -0.3
+shader_param/position = -0.2
+shader_param/spread = 0.5
+shader_param/cutoff = 0.1
+shader_param/falloff = 0.2
+shader_param/edge_fade = 0.15
+shader_param/speed = 1.0
+shader_param/ray1_density = 8.0
+shader_param/ray2_density = 30.0
+shader_param/ray2_intensity = 0.3
+shader_param/color = Color( 0.6, 0.9, 0.9, 0.8 )
+shader_param/hdr = false
+shader_param/seed = 5.0
+
+[sub_resource type="ConvexPolygonShape2D" id=5]
+points = PoolVector2Array( 0, 0, 64, 0, 64, 64, 0, 64 )
+
+[sub_resource type="TileSet" id=19]
+0/name = "icon.png 0"
+0/texture = ExtResource( 5 )
+0/tex_offset = Vector2( 0, 0 )
+0/modulate = Color( 1, 1, 1, 1 )
+0/region = Rect2( 0, 0, 64, 64 )
+0/tile_mode = 0
+0/occluder_offset = Vector2( 0, 0 )
+0/navigation_offset = Vector2( 0, 0 )
+0/shape_offset = Vector2( 0, 0 )
+0/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+0/shape = SubResource( 5 )
+0/shape_one_way = false
+0/shape_one_way_margin = 1.0
+0/shapes = [ {
+"autotile_coord": Vector2( 0, 0 ),
+"one_way": false,
+"one_way_margin": 1.0,
+"shape": SubResource( 5 ),
+"shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
+} ]
+0/z_index = 0
+
+[sub_resource type="AnimationNodeStateMachinePlayback" id=18]
+
+[sub_resource type="RectangleShape2D" id=20]
+extents = Vector2( 32, 32 )
+
+[sub_resource type="RectangleShape2D" id=21]
+extents = Vector2( 32, 32 )
+
+[node name="Game" type="Node2D"]
+
+[node name="BackgroundLayer" type="CanvasLayer" parent="."]
+layer = -10
+
+[node name="Background" type="Node2D" parent="BackgroundLayer"]
+position = Vector2( 29, 40 )
+scale = Vector2( 27.7343, 11.4687 )
+z_index = -10
+
+[node name="Gradient" type="Sprite" parent="BackgroundLayer/Background"]
+position = Vector2( 16.6941, 23.9783 )
+scale = Vector2( 0.0103668, 0.0242127 )
+texture = ExtResource( 2 )
+
+[node name="Waves" type="Sprite" parent="BackgroundLayer/Background"]
+material = SubResource( 15 )
+position = Vector2( 16.7302, 23.7166 )
+scale = Vector2( 0.0116321, 0.0233361 )
+texture = ExtResource( 1 )
+
+[node name="GodRays2" type="ColorRect" parent="BackgroundLayer/Background"]
+material = SubResource( 16 )
+margin_left = -2.19945
+margin_top = -3.48774
+margin_right = 37.8006
+margin_bottom = 36.5123
+rect_scale = Vector2( 1.01658, 1.35219 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Buildings1" type="Sprite" parent="BackgroundLayer/Background"]
+position = Vector2( 16.8744, 26.594 )
+scale = Vector2( 0.0100449, 0.0202109 )
+texture = ExtResource( 3 )
+
+[node name="GodRays" type="ColorRect" parent="BackgroundLayer/Background"]
+material = SubResource( 17 )
+margin_left = -4.1465
+margin_top = -4.27248
+margin_right = 35.8535
+margin_bottom = 35.7275
+rect_scale = Vector2( 1.53119, 1.41559 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DialoguePlayer" type="CanvasLayer" parent="."]
+script = ExtResource( 7 )
+playerInteract = NodePath("../Player/Interact")
+
+[node name="ColorRect" type="ColorRect" parent="DialoguePlayer"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -376.0
+margin_top = -136.0
+margin_right = 376.0
+margin_bottom = -48.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Name" type="RichTextLabel" parent="DialoguePlayer/ColorRect"]
+modulate = Color( 0, 0, 0, 1 )
+margin_left = 8.0
+margin_top = 5.0
+margin_right = 128.0
+margin_bottom = 21.0
+text = "Name"
+
+[node name="Message" type="RichTextLabel" parent="DialoguePlayer/ColorRect"]
+modulate = Color( 0, 0, 0, 1 )
+margin_left = 16.0
+margin_top = 24.0
+margin_right = 736.0
+margin_bottom = 72.0
+text = "Message"
+
+[node name="TileMap" type="TileMap" parent="."]
+modulate = Color( 0, 0, 0, 1 )
+tile_set = SubResource( 19 )
+format = 1
+tile_data = PoolIntArray( -2, 0, 0, -1, 0, 0, -65536, 0, 0, -65535, 0, 0, -65534, 0, 0, -65533, 0, 0, -65532, 0, 0, -65531, 0, 0, -65530, 0, 0, -65529, 0, 0, -65528, 0, 0, -65527, 0, 0, -65526, 0, 0, -65525, 0, 0, -65524, 0, 0, -65523, 0, 0, -65522, 0, 0, -65521, 0, 0, -65520, 0, 0, -65519, 0, 0, -65518, 0, 0, -65517, 0, 0, -65516, 0, 0, -65515, 0, 0, -65514, 0, 0, -65513, 0, 0, -65512, 0, 0, -65511, 0, 0, -65510, 0, 0, -65509, 0, 0, -65508, 0, 0, -65507, 0, 0, -65506, 0, 0, -65505, 0, 0, -65504, 0, 0, -65503, 0, 0, -65502, 0, 0, -65501, 0, 0, -65500, 0, 0, -65499, 0, 0, -65498, 0, 0, -65497, 0, 0, -65496, 0, 0, -65495, 0, 0, -65494, 0, 0, -65493, 0, 0, -65492, 0, 0, -65491, 0, 0, -65490, 0, 0, -65489, 0, 0, -65488, 0, 0, -65487, 0, 0, -65486, 0, 0, -65485, 0, 0, -65484, 0, 0, 65534, 0, 0, 20, 0, 0, 29, 0, 0, 52, 0, 0, 131070, 0, 0, 65556, 0, 0, 65565, 0, 0, 65588, 0, 0, 196606, 0, 0, 131092, 0, 0, 131101, 0, 0, 131124, 0, 0, 262142, 0, 0, 196628, 0, 0, 196660, 0, 0, 327678, 0, 0, 262164, 0, 0, 262196, 0, 0, 393214, 0, 0, 327700, 0, 0, 327719, 0, 0, 327732, 0, 0, 458750, 0, 0, 393255, 0, 0, 393268, 0, 0, 524286, 0, 0, 458761, 0, 0, 458781, 0, 0, 458791, 0, 0, 458804, 0, 0, 589822, 0, 0, 524297, 0, 0, 524317, 0, 0, 524327, 0, 0, 524340, 0, 0, 655358, 0, 0, 589833, 0, 0, 589853, 0, 0, 589863, 0, 0, 589876, 0, 0, 720894, 0, 0, 720895, 0, 0, 655360, 0, 0, 655361, 0, 0, 655362, 0, 0, 655363, 0, 0, 655364, 0, 0, 655365, 0, 0, 655366, 0, 0, 655367, 0, 0, 655368, 0, 0, 655369, 0, 0, 655370, 0, 0, 655371, 0, 0, 655372, 0, 0, 655373, 0, 0, 655374, 0, 0, 655375, 0, 0, 655376, 0, 0, 655377, 0, 0, 655378, 0, 0, 655379, 0, 0, 655380, 0, 0, 655381, 0, 0, 655382, 0, 0, 655383, 0, 0, 655384, 0, 0, 655385, 0, 0, 655386, 0, 0, 655387, 0, 0, 655388, 0, 0, 655389, 0, 0, 655390, 0, 0, 655391, 0, 0, 655392, 0, 0, 655393, 0, 0, 655394, 0, 0, 655395, 0, 0, 655396, 0, 0, 655397, 0, 0, 655398, 0, 0, 655399, 0, 0, 655400, 0, 0, 655401, 0, 0, 655402, 0, 0, 655403, 0, 0, 655404, 0, 0, 655405, 0, 0, 655406, 0, 0, 655407, 0, 0, 655408, 0, 0, 655409, 0, 0, 655410, 0, 0, 655411, 0, 0, 655412, 0, 0 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2( 384, 256 )
+current = true
+process_mode = 0
+smoothing_enabled = true
+
+[node name="PlayerPosition" type="Position2D" parent="Camera2D"]
+position = Vector2( -300, -24 )
+
+[node name="EnemyPosition" type="Position2D" parent="Camera2D"]
+position = Vector2( 300, -24 )
+
+[node name="Player" parent="." instance=ExtResource( 4 )]
+position = Vector2( 384, 256 )
+z_index = 10
+combat_position_path = NodePath("../Camera2D/PlayerPosition")
+
+[node name="PlayerAnimMenager" parent="Player" index="6"]
+parameters/StateMachine/playback = SubResource( 18 )
+
+[node name="Chest" type="Area2D" parent="."]
+position = Vector2( 96, 608 )
+collision_layer = 4
+collision_mask = 0
+script = ExtResource( 6 )
+
+[node name="Sprite" type="Sprite" parent="Chest"]
+modulate = Color( 0.447059, 1, 0.517647, 1 )
+texture = ExtResource( 5 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Chest"]
+shape = SubResource( 20 )
+
+[node name="NPC" type="Area2D" parent="."]
+position = Vector2( 1312, 608 )
+collision_layer = 4
+collision_mask = 0
+script = ExtResource( 8 )
+dialogue_file = "res://src/dialogues/npc_1_dialogue.json"
+
+[node name="Sprite" type="Sprite" parent="NPC"]
+modulate = Color( 0.945098, 0.968627, 0.223529, 1 )
+texture = ExtResource( 5 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NPC"]
+shape = SubResource( 21 )
+
+[editable path="Player"]

@@ -1,18 +1,19 @@
 extends Interactable
 
-export var npc_name: = ""
-export(Array, String) var npc_dialogues
+export(String, FILE, "*.json") var dialogue_file
 
-var _player: Node
+var _dialogues: = []
+
+onready var dialogue_player: = $"../DialoguePlayer"
+
+func _ready() -> void:
+	var file = File.new()
+	if file.file_exists(dialogue_file):
+		file.open(dialogue_file, file.READ)
+		_dialogues = parse_json(file.get_as_text())
 
 func interact() -> void:
-	_player.update_interactable(null)
-	EventHandler.emit_signal("dialogue_started", npc_name, npc_dialogues)
-	
-func _on_body_entered(body: Node) -> void:
-	_player = body
-	_player.update_interactable(self)
+	dialogue_player.play(_dialogues)
 
-func _on_body_exited(_body: Node) -> void:
-	_player.update_interactable(null)
-	EventHandler.emit_signal("dialogue_ended")
+func on_exit() -> void:
+	dialogue_player.stop()

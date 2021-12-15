@@ -1,4 +1,5 @@
 extends Node2D
+class_name PlayerInteract
 
 var _can_interact: = false
 var _interactable: Interactable = null
@@ -11,15 +12,22 @@ func _ready() -> void:
 func _input(_event: InputEvent) -> void:
 	if _can_interact and Input.is_action_just_pressed("ui_accept"):
 		_interactable.interact()
+		
+func set_interact(value: bool) -> void:
+	if value:
+		_can_interact = true
+		_interact_ui.show()
+	else:
+		_can_interact = false
+		_interact_ui.hide()
 
 func _on_area_entered(area: Area2D) -> void:
 	if area is Interactable:
-		_can_interact = true
 		_interactable = area
-		_interact_ui.show()
+		set_interact(true)
 
 func _on_area_exited(area: Area2D) -> void:
 	if area is Interactable:
-		_can_interact = false
+		area.on_exit()
 		_interactable = null
-		_interact_ui.hide()
+		set_interact(false)

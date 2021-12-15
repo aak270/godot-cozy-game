@@ -1,11 +1,10 @@
-[gd_scene load_steps=24 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://src/characters/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://icon.png" type="Texture" id=2]
 [ext_resource path="res://src/characters/Enemy.gd" type="Script" id=3]
 [ext_resource path="res://src/ui/CombatUI.gd" type="Script" id=4]
 [ext_resource path="res://src/ui/UI.gd" type="Script" id=5]
-[ext_resource path="res://src/ui/Dialogue.gd" type="Script" id=6]
 [ext_resource path="res://src/objects/Interactable.gd" type="Script" id=7]
 [ext_resource path="res://src/characters/NPC.gd" type="Script" id=8]
 [ext_resource path="res://src/textures/BG_Gradient.png" type="Texture" id=9]
@@ -458,7 +457,6 @@ anchor_bottom = 1.0
 margin_left = -20.0
 margin_top = -40.0
 margin_right = 20.0
-script = ExtResource( 6 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -587,8 +585,6 @@ position = Vector2( 704, 384 )
 collision_layer = 0
 collision_mask = 2
 script = ExtResource( 8 )
-npc_name = "Green Godot"
-npc_dialogues = [ "Hello stranger!", "What are you doing here?", "Ok, see you later" ]
 
 [node name="Sprite" type="Sprite" parent="NPC"]
 modulate = Color( 0.945098, 0.968627, 0.223529, 1 )

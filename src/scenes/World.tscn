@@ -12,7 +12,7 @@
 [ext_resource path="res://src/textures/BG_Buildings1.png" type="Texture" id=10]
 [ext_resource path="res://src/textures/BG_Waves.png" type="Texture" id=11]
 
-[sub_resource type="Shader" id=14]
+[sub_resource type="Shader" id=17]
 code = "/* 
 Earthbound battle backgrounds shader with scrolling effect and palette cycling like in the original game.
 @retr0_dev
@@ -53,7 +53,7 @@ void fragment()
 }"
 
 [sub_resource type="ShaderMaterial" id=15]
-shader = SubResource( 14 )
+shader = SubResource( 17 )
 shader_param/screen_height = 640.0
 shader_param/amplitude = 0.045
 shader_param/frequency = 16.0
@@ -66,7 +66,7 @@ shader_param/scrolling_speed = 0.08
 shader_param/enable_palette_cycling = false
 shader_param/palette_speed = 0.1
 
-[sub_resource type="Shader" id=11]
+[sub_resource type="Shader" id=18]
 code = "/*
 Shader from Godot Shaders - the free shader library.
 godotshaders.com/shader/god-rays
@@ -176,7 +176,7 @@ void fragment()
 }"
 
 [sub_resource type="ShaderMaterial" id=12]
-shader = SubResource( 11 )
+shader = SubResource( 18 )
 shader_param/angle = 0.8
 shader_param/position = 0.2
 shader_param/spread = 0.5
@@ -191,7 +191,7 @@ shader_param/color = Color( 0.6, 0.9, 0.65, 0.8 )
 shader_param/hdr = false
 shader_param/seed = 5.0
 
-[sub_resource type="Shader" id=13]
+[sub_resource type="Shader" id=19]
 code = "/*
 Shader from Godot Shaders - the free shader library.
 godotshaders.com/shader/god-rays
@@ -301,7 +301,7 @@ void fragment()
 }"
 
 [sub_resource type="ShaderMaterial" id=10]
-shader = SubResource( 13 )
+shader = SubResource( 19 )
 shader_param/angle = -0.3
 shader_param/position = -0.2
 shader_param/spread = 0.5
@@ -316,7 +316,7 @@ shader_param/color = Color( 0.6, 0.9, 0.9, 0.8 )
 shader_param/hdr = false
 shader_param/seed = 5.0
 
-[sub_resource type="ConvexPolygonShape2D" id=5]
+[sub_resource type="ConvexPolygonShape2D" id=20]
 points = PoolVector2Array( 0, 0, 64, 0, 64, 64, 0, 64 )
 
 [sub_resource type="TileSet" id=6]
@@ -330,14 +330,14 @@ points = PoolVector2Array( 0, 0, 64, 0, 64, 64, 0, 64 )
 0/navigation_offset = Vector2( 0, 0 )
 0/shape_offset = Vector2( 0, 0 )
 0/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-0/shape = SubResource( 5 )
+0/shape = SubResource( 20 )
 0/shape_one_way = false
 0/shape_one_way_margin = 1.0
 0/shapes = [ {
 "autotile_coord": Vector2( 0, 0 ),
 "one_way": false,
 "one_way_margin": 1.0,
-"shape": SubResource( 5 ),
+"shape": SubResource( 20 ),
 "shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
 } ]
 0/z_index = 0

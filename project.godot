@@ -27,7 +27,7 @@ _global_script_classes=[ {
 "base": "Node2D",
 "class": "PlayerInteract",
 "language": "GDScript",
-"path": "res://src/characters/PlayerInteract.gd"
+"path": "res://src/characters/Player/PlayerInteract.gd"
 } ]
 _global_script_class_icons={
 "Enemy": "",

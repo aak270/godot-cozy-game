@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Battle_Player_Sheet.png-6a989a970302dc94e40c9c36c2abc080.stex"
+path="res://.import/VN_Player_Sigh.png-785c89ba6993fd33ef4f3aedf7773a30.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://src/characters/playerSprites/Battle_Player_Sheet.png"
-dest_files=[ "res://.import/Battle_Player_Sheet.png-6a989a970302dc94e40c9c36c2abc080.stex" ]
+source_file="res://src/characters/Player/VN_Player_Sigh.png"
+dest_files=[ "res://.import/VN_Player_Sigh.png-785c89ba6993fd33ef4f3aedf7773a30.stex" ]
 
 [params]
 

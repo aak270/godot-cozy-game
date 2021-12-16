@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/VN_Player_Sigh.png-e31dffe40deb27197f39839086563e90.stex"
+path="res://.import/Overworld_Player_sheet_1.png-c6663d2e85f687b9cffb583784c6f84f.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://src/characters/playerSprites/VN_Player_Sigh.png"
-dest_files=[ "res://.import/VN_Player_Sigh.png-e31dffe40deb27197f39839086563e90.stex" ]
+source_file="res://src/characters/Player/Overworld_Player_sheet_1.png"
+dest_files=[ "res://.import/Overworld_Player_sheet_1.png-c6663d2e85f687b9cffb583784c6f84f.stex" ]
 
 [params]
 

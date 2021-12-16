@@ -1,12 +1,7 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=15 format=2]
 
-[ext_resource path="res://src/characters/Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://src/characters/Player/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://icon.png" type="Texture" id=2]
-[ext_resource path="res://src/characters/Enemy_Templ.tscn" type="PackedScene" id=3]
-[ext_resource path="res://src/ui/CombatUI.gd" type="Script" id=4]
-[ext_resource path="res://src/ui/UI.gd" type="Script" id=5]
-[ext_resource path="res://src/objects/Interactable.gd" type="Script" id=7]
-[ext_resource path="res://src/characters/NPC.gd" type="Script" id=8]
 [ext_resource path="res://src/textures/BG_Gradient.png" type="Texture" id=9]
 [ext_resource path="res://src/textures/BG_Buildings1.png" type="Texture" id=10]
 [ext_resource path="res://src/textures/BG_Waves.png" type="Texture" id=11]
@@ -343,12 +338,6 @@ points = PoolVector2Array( 0, 0, 64, 0, 64, 64, 0, 64 )
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=16]
 
-[sub_resource type="RectangleShape2D" id=7]
-extents = Vector2( 32, 32 )
-
-[sub_resource type="RectangleShape2D" id=8]
-extents = Vector2( 32, 32 )
-
 [node name="World" type="Node2D"]
 position = Vector2( 1, 0 )
 
@@ -420,45 +409,7 @@ tile_data = PoolIntArray( 0, 0, 0, 1, 0, 0, 2, 0, 0, 3, 0, 0, 4, 0, 0, 5, 0, 0, 
 position = Vector2( 492, 315 )
 combat_position_path = NodePath("../Camera2D/PlayerPosition")
 
-[node name="PlayerAnimMenager" parent="Player" index="6"]
+[node name="PlayerAnimMenager" parent="Player" index="7"]
 parameters/StateMachine/playback = SubResource( 16 )
-
-[node name="Enemy" parent="." instance=ExtResource( 3 )]
-position = Vector2( 818, 263 )
-
-[node name="Object" type="Area2D" parent="."]
-position = Vector2( 680, 144 )
-collision_layer = 0
-collision_mask = 2
-script = ExtResource( 7 )
-
-[node name="Sprite" type="Sprite" parent="Object"]
-modulate = Color( 0.447059, 1, 0.517647, 1 )
-texture = ExtResource( 2 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Object"]
-shape = SubResource( 7 )
-
-[node name="NPC" type="Area2D" parent="."]
-position = Vector2( 704, 384 )
-collision_layer = 0
-collision_mask = 2
-script = ExtResource( 8 )
-
-[node name="Sprite" type="Sprite" parent="NPC"]
-modulate = Color( 0.945098, 0.968627, 0.223529, 1 )
-texture = ExtResource( 2 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="NPC"]
-shape = SubResource( 8 )
-
-[connection signal="body_entered" from="Enemy" to="Enemy" method="_on_body_entered"]
-[connection signal="pressed" from="CanvasLayer/CombatUI/HBoxContainer/Attack1Button" to="CanvasLayer/CombatUI" method="_on_Attack1Button_pressed"]
-[connection signal="pressed" from="CanvasLayer/CombatUI/HBoxContainer/Attack2Button" to="CanvasLayer/CombatUI" method="_on_Attack2Button_pressed"]
-[connection signal="pressed" from="CanvasLayer/CombatUI/HBoxContainer/Attack3Button" to="CanvasLayer/CombatUI" method="_on_Attack3Button_pressed"]
-[connection signal="body_entered" from="Object" to="Object" method="_on_body_entered"]
-[connection signal="body_exited" from="Object" to="Object" method="_on_body_exited"]
-[connection signal="body_entered" from="NPC" to="NPC" method="_on_body_entered"]
-[connection signal="body_exited" from="NPC" to="NPC" method="_on_body_exited"]
 
 [editable path="Player"]

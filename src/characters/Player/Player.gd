@@ -21,6 +21,10 @@ var _state = PlayerState.MOVE
 onready var effort: = max_effort setget set_effort
 onready var _remote_transform: = $RemoteTransform2D
 onready var _anime_manager: = $PlayerAnimMenager
+onready var _torso: = $Torso
+onready var _battle: = $Battle
+onready var _anim: = $AnimationPlayer
+onready var _tween: = $Tween
 
 func set_effort(value: int) -> void:
 	effort = value
@@ -31,6 +35,7 @@ func set_effort(value: int) -> void:
 	#EventHandler.emit_signal("effort_changed", size)
 	
 func _ready() -> void:
+	_battle.visible = false
 	_combat_position = get_node(combat_position_path)
 	
 func _process(_delta: float) -> void:
@@ -49,8 +54,11 @@ func _physics_process(delta: float) -> void:
 	_velocity = move_and_slide(_velocity)
 
 func start_combat() -> void:
-	var tween: = Tween.new()
-	tween.interpolate_property(
+	_battle.visible = true
+	_torso.visible = false
+	_anim.play("Battle_Idle")
+	
+	_tween.interpolate_property(
 		self, 
 		"position", 
 		global_position, 
@@ -60,8 +68,7 @@ func start_combat() -> void:
 		Tween.EASE_OUT
 	)
 	
-	add_child(tween)
-	tween.start()
+	_tween.start()
 	_anime_manager.combat()
 	
 func can_move() -> bool:
@@ -72,10 +79,11 @@ func prepare_combat() -> void:
 	_direction = Vector2.ZERO
 	_state = PlayerState.COMBAT
 	_remote_transform.update_position = false
+	
+	_battle
 
 func attack() -> void:
-	var tween: = Tween.new()
-	tween.interpolate_property(
+	_tween.interpolate_property(
 		self, 
 		"position:x", 
 		global_position.x, 
@@ -85,11 +93,10 @@ func attack() -> void:
 		Tween.EASE_OUT
 	)
 	
-	add_child(tween)
-	tween.start()
-	yield(tween, "tween_completed")
+	_tween.start()
+	yield(_tween, "tween_completed")
 
-	tween.interpolate_property(
+	_tween.interpolate_property(
 		self, 
 		"position:x", 
 		global_position.x, 
@@ -99,5 +106,5 @@ func attack() -> void:
 		Tween.EASE_OUT
 	)
 	
-	tween.start()
-	yield(tween, "tween_completed")
+	_tween.start()
+	yield(_tween, "tween_completed")

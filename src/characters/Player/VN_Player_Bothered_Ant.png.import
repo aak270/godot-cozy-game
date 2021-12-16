@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/TailSheet.png-ad866803037801cdc7c5a11578467a72.stex"
+path="res://.import/VN_Player_Bothered_Ant.png-eec43c1dc16d10be1ddec3790fa1d876.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://src/characters/playerSprites/TailSheet.png"
-dest_files=[ "res://.import/TailSheet.png-ad866803037801cdc7c5a11578467a72.stex" ]
+source_file="res://src/characters/Player/VN_Player_Bothered_Ant.png"
+dest_files=[ "res://.import/VN_Player_Bothered_Ant.png-eec43c1dc16d10be1ddec3790fa1d876.stex" ]
 
 [params]
 

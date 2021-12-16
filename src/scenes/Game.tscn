@@ -1,17 +1,15 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://src/textures/BG_Waves.png" type="Texture" id=1]
 [ext_resource path="res://src/textures/BG_Gradient.png" type="Texture" id=2]
 [ext_resource path="res://src/textures/BG_Buildings1.png" type="Texture" id=3]
-[ext_resource path="res://src/characters/Player.tscn" type="PackedScene" id=4]
+[ext_resource path="res://src/characters/Player/Player.tscn" type="PackedScene" id=4]
 [ext_resource path="res://icon.png" type="Texture" id=5]
 [ext_resource path="res://src/objects/Rock.gd" type="Script" id=6]
 [ext_resource path="res://src/dialogues/DialoguePlayer.gd" type="Script" id=7]
 [ext_resource path="res://src/characters/NPC.gd" type="Script" id=8]
-[ext_resource path="res://src/characters/Enemy.gd" type="Script" id=9]
 [ext_resource path="res://src/ui/CombatSystem.gd" type="Script" id=10]
-[ext_resource path="res://src/characters/Enemy_Templ.tscn" type="PackedScene" id=11]
-[ext_resource path="res://src/characters/Enemy_7/Enemy_7.tscn" type="PackedScene" id=12]
+[ext_resource path="res://src/characters/Enemy_7/Enemy_7.tscn" type="PackedScene" id=11]
 
 [sub_resource type="Shader" id=14]
 code = "/* 
@@ -343,16 +341,13 @@ points = PoolVector2Array( 0, 0, 64, 0, 64, 64, 0, 64 )
 } ]
 0/z_index = 0
 
-[sub_resource type="AnimationNodeStateMachinePlayback" id=18]
-
 [sub_resource type="RectangleShape2D" id=20]
 extents = Vector2( 32, 32 )
 
 [sub_resource type="RectangleShape2D" id=21]
 extents = Vector2( 32, 32 )
 
-[sub_resource type="RectangleShape2D" id=22]
-extents = Vector2( 24, 24 )
+[sub_resource type="AnimationNodeStateMachinePlayback" id=23]
 
 [node name="Game" type="Node2D"]
 
@@ -426,9 +421,6 @@ margin_top = 5.0
 margin_right = 128.0
 margin_bottom = 21.0
 text = "Name"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Message" type="RichTextLabel" parent="DialoguePlayer/ColorRect"]
 modulate = Color( 0, 0, 0, 1 )
@@ -437,9 +429,6 @@ margin_top = 24.0
 margin_right = 736.0
 margin_bottom = 72.0
 text = "Message"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="CombatSystem" type="CanvasLayer" parent="."]
 script = ExtResource( 10 )
@@ -503,17 +492,6 @@ position = Vector2( -300, -24 )
 [node name="EnemyPosition" type="Position2D" parent="Camera2D"]
 position = Vector2( 300, -24 )
 
-[node name="Player" parent="." instance=ExtResource( 4 )]
-position = Vector2( 384, 256 )
-z_index = 10
-combat_position_path = NodePath("../Camera2D/PlayerPosition")
-
-[node name="PlayerAnimMenager" parent="Player" index="8"]
-parameters/StateMachine/playback = SubResource( 18 )
-
-[node name="Area2D" parent="Player/Interact" index="0"]
-collision_mask = 12
-
 [node name="Rock" type="Area2D" parent="."]
 position = Vector2( 96, 608 )
 collision_layer = 4
@@ -543,29 +521,24 @@ texture = ExtResource( 5 )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="NPC"]
 shape = SubResource( 21 )
 
-[node name="Enemy" type="Area2D" parent="."]
-modulate = Color( 0.901961, 0.294118, 0.294118, 1 )
-position = Vector2( 688, 232 )
-collision_layer = 8
-collision_mask = 0
-script = ExtResource( 9 )
-dialogue_file = "res://src/dialogues/enemy_1_dialogue.json"
+[node name="Enemy_7" parent="." instance=ExtResource( 11 )]
+position = Vector2( 2528, 288 )
 combat_position_path = NodePath("../Camera2D/EnemyPosition")
 
-[node name="Sprite" type="Sprite" parent="Enemy"]
-texture = ExtResource( 5 )
+[node name="Enemy_7_2" parent="." instance=ExtResource( 11 )]
+position = Vector2( 688, 232 )
+combat_position_path = NodePath("../Camera2D/EnemyPosition")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy"]
-shape = SubResource( 22 )
+[node name="Player" parent="." instance=ExtResource( 4 )]
+position = Vector2( 384, 256 )
+z_index = 5
+combat_position_path = NodePath("../Camera2D/PlayerPosition")
+
+[node name="PlayerAnimMenager" parent="Player" index="7"]
+parameters/StateMachine/playback = SubResource( 23 )
 
 [connection signal="pressed" from="CombatSystem/ButtonContainer/Button1" to="CombatSystem" method="_on_Button1_pressed"]
 [connection signal="pressed" from="CombatSystem/ButtonContainer/Button2" to="CombatSystem" method="_on_Button2_pressed"]
 [connection signal="pressed" from="CombatSystem/ButtonContainer/Button3" to="CombatSystem" method="_on_Button3_pressed"]
-
-[node name="Enemy" parent="." instance=ExtResource( 9 )]
-position = Vector2( 1166, 229 )
-
-[node name="Enemy_7" parent="." instance=ExtResource( 10 )]
-position = Vector2( 1164, 489 )
 
 [editable path="Player"]

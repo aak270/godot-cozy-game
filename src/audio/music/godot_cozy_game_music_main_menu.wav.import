@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/godot_cozy_game_music_main_menu.wav-4e9a89b11c39ae75d4a19f02858eb780.sample"
+
+[deps]
+
+source_file="res://src/audio/music/godot_cozy_game_music_main_menu.wav"
+dest_files=[ "res://.import/godot_cozy_game_music_main_menu.wav-4e9a89b11c39ae75d4a19f02858eb780.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=true
+compress/mode=0

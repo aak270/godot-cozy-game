@@ -18,10 +18,16 @@ _global_script_classes=[ {
 "class": "Interactable",
 "language": "GDScript",
 "path": "res://src/objects/Interactable.gd"
+}, {
+"base": "Node2D",
+"class": "PlayerInteract",
+"language": "GDScript",
+"path": "res://src/characters/PlayerInteract.gd"
 } ]
 _global_script_class_icons={
 "Enemy": "",
-"Interactable": ""
+"Interactable": "",
+"PlayerInteract": ""
 }
 
 [application]
@@ -33,6 +39,8 @@ config/icon="res://icon.png"
 [autoload]
 
 EventHandler="*res://src/singletons/EventHandler.tscn"
+AudioController="*res://autoloads/AudioController.tscn"
+MusicController="*res://autoloads/MusicController.tscn"
 
 [display]
 
@@ -73,6 +81,7 @@ ui_down={
 
 2d_physics/layer_1="World"
 2d_physics/layer_2="Player"
+2d_physics/layer_3="Interactable"
 
 [physics]
 

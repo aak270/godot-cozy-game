@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/godot_cozy_game_voice_blip_mc_default_3_v3.wav-12571f55eabac96367f9c4a64936a692.sample"
+
+[deps]
+
+source_file="res://src/audio/voices/godot_cozy_game_voice_blip_mc_default_3_v3.wav"
+dest_files=[ "res://.import/godot_cozy_game_voice_blip_mc_default_3_v3.wav-12571f55eabac96367f9c4a64936a692.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

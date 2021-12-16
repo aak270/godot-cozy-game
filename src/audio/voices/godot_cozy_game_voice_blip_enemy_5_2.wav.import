@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/godot_cozy_game_voice_blip_enemy_5_2.wav-5d0c5d4e7d0ce671ce63c2eb5ac4992e.sample"
+
+[deps]
+
+source_file="res://src/audio/voices/godot_cozy_game_voice_blip_enemy_5_2.wav"
+dest_files=[ "res://.import/godot_cozy_game_voice_blip_enemy_5_2.wav-5d0c5d4e7d0ce671ce63c2eb5ac4992e.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

@@ -44,7 +44,9 @@ config/icon="res://icon.png"
 
 [autoload]
 
-EventHandler="res://src/singletons/EventHandler.tscn"
+EventHandler="*res://src/singletons/EventHandler.tscn"
+AudioController="*res://autoloads/AudioController.tscn"
+MusicController="*res://autoloads/MusicController.tscn"
 
 [display]
 

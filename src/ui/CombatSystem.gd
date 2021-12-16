@@ -45,7 +45,6 @@ func start() -> void:
 	add_child(tween)
 	tween.start()
 	
-	_player.start_combat()
 	_enemy.start_combat()
 	
 	yield(tween, "tween_completed")

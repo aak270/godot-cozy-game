@@ -1,10 +1,5 @@
 extends KinematicBody2D
 
-enum PlayerState{
-	MOVE,
-	COMBAT
-}
-
 export var speed: = 200
 export var accel: = 1500
 export var friction: = 1800
@@ -12,19 +7,24 @@ export var friction: = 1800
 export var max_effort: = 100
 export var combat_position_path: NodePath
 
+export(Array, String, FILE, "*.wav") var voices_path
+
+var voices: = []
+
 var _direction: = Vector2.ZERO
 var _velocity: = Vector2.ZERO
 
 var _combat_position: Node
-var _state = PlayerState.MOVE
 
 onready var effort: = max_effort setget set_effort
+onready var interact: = $Interact
 onready var _remote_transform: = $RemoteTransform2D
 onready var _anime_manager: = $PlayerAnimMenager
 onready var _torso: = $Torso
 onready var _battle: = $Battle
 onready var _anim: = $AnimationPlayer
 onready var _tween: = $Tween
+onready var _game_controller: = $"../GameController"
 
 func set_effort(value: int) -> void:
 	effort = value
@@ -38,12 +38,12 @@ func _ready() -> void:
 	_battle.visible = false
 	_combat_position = get_node(combat_position_path)
 	
-func _process(_delta: float) -> void:
-	if _state == PlayerState.MOVE:
-		_direction = Vector2.ZERO
-		_direction.x = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
-		_direction.y = Input.get_action_strength("ui_down") - Input.get_action_strength("ui_up")
-		_direction = _direction.normalized()
+	if voices_path.size() > 0:
+		var i := 0
+		voices.resize(voices_path.size())
+		for path in voices_path:
+			voices[i] = load(path)
+			i += 1
 
 func _physics_process(delta: float) -> void:	
 	if _direction != Vector2.ZERO:
@@ -52,6 +52,12 @@ func _physics_process(delta: float) -> void:
 		_velocity = _velocity.move_toward(Vector2.ZERO, friction * delta)
 	
 	_velocity = move_and_slide(_velocity)
+
+func move() -> void:
+	_direction = Vector2.ZERO
+	_direction.x = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
+	_direction.y = Input.get_action_strength("ui_down") - Input.get_action_strength("ui_up")
+	_direction = _direction.normalized()
 
 func start_combat() -> void:
 	_battle.visible = true
@@ -71,16 +77,16 @@ func start_combat() -> void:
 	_tween.start()
 	_anime_manager.combat()
 	
-func can_move() -> bool:
-	return _state == PlayerState.MOVE
-
-func prepare_combat() -> void:
+func move_to() -> float:
+	return _direction.x
+	
+func stop_movement() -> void:
 	_velocity = Vector2.ZERO
 	_direction = Vector2.ZERO
-	_state = PlayerState.COMBAT
+
+func prepare_combat() -> void:
+	stop_movement()
 	_remote_transform.update_position = false
-	
-	_battle
 
 func attack() -> void:
 	_tween.interpolate_property(
@@ -108,3 +114,9 @@ func attack() -> void:
 	
 	_tween.start()
 	yield(_tween, "tween_completed")
+
+func get_voice():
+	if voices_path.size() > 0:
+		return voices[int(rand_range(0, voices.size()))]
+	else:
+		return null

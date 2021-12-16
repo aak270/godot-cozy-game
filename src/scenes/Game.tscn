@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://src/textures/BG_Waves.png" type="Texture" id=1]
 [ext_resource path="res://src/textures/BG_Gradient.png" type="Texture" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://src/objects/Rock.gd" type="Script" id=6]
 [ext_resource path="res://src/dialogues/DialoguePlayer.gd" type="Script" id=7]
 [ext_resource path="res://src/characters/NPC.gd" type="Script" id=8]
+[ext_resource path="res://src/GameController.gd" type="Script" id=9]
 [ext_resource path="res://src/ui/CombatSystem.gd" type="Script" id=10]
 [ext_resource path="res://src/characters/Enemy_7/Enemy_7.tscn" type="PackedScene" id=11]
 
@@ -315,6 +316,22 @@ shader_param/color = Color( 0.6, 0.9, 0.9, 0.8 )
 shader_param/hdr = false
 shader_param/seed = 5.0
 
+[sub_resource type="Animation" id=24]
+resource_name = "anim"
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, -5 ) ]
+}
+
 [sub_resource type="ConvexPolygonShape2D" id=5]
 points = PoolVector2Array( 0, 0, 64, 0, 64, 64, 0, 64 )
 
@@ -399,9 +416,8 @@ __meta__ = {
 
 [node name="DialoguePlayer" type="CanvasLayer" parent="."]
 script = ExtResource( 7 )
-playerInteract = NodePath("../Player/Interact")
 
-[node name="ColorRect" type="ColorRect" parent="DialoguePlayer"]
+[node name="DialogBox" type="ColorRect" parent="DialoguePlayer"]
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
@@ -414,21 +430,49 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Name" type="RichTextLabel" parent="DialoguePlayer/ColorRect"]
+[node name="Name" type="RichTextLabel" parent="DialoguePlayer/DialogBox"]
 modulate = Color( 0, 0, 0, 1 )
 margin_left = 8.0
 margin_top = 5.0
 margin_right = 128.0
 margin_bottom = 21.0
 text = "Name"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="Message" type="RichTextLabel" parent="DialoguePlayer/ColorRect"]
+[node name="Message" type="RichTextLabel" parent="DialoguePlayer/DialogBox"]
 modulate = Color( 0, 0, 0, 1 )
 margin_left = 16.0
 margin_top = 24.0
 margin_right = 736.0
 margin_bottom = 72.0
 text = "Message"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Indicator" type="Polygon2D" parent="DialoguePlayer/DialogBox"]
+position = Vector2( 720, 80 )
+color = Color( 0.368627, 0.67451, 1, 1 )
+offset = Vector2( 0, -5 )
+polygon = PoolVector2Array( 0, 0, -16, -20, 16, -20 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="DialoguePlayer/DialogBox/Indicator"]
+autoplay = "anim"
+anims/anim = SubResource( 24 )
+
+[node name="PortraitL" type="Sprite" parent="DialoguePlayer/DialogBox"]
+
+[node name="PortraitR" type="Sprite" parent="DialoguePlayer/DialogBox"]
+position = Vector2( 752, 0 )
+
+[node name="Timer" type="Timer" parent="DialoguePlayer/DialogBox"]
+one_shot = true
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="DialoguePlayer"]
+mix_target = 2
+bus = "UI"
 
 [node name="CombatSystem" type="CanvasLayer" parent="."]
 script = ExtResource( 10 )
@@ -523,7 +567,9 @@ shape = SubResource( 21 )
 
 [node name="Enemy_7" parent="." instance=ExtResource( 11 )]
 position = Vector2( 2528, 288 )
+dialogue_file = "res://src/dialogues/enemy_1_dialogue.json"
 combat_position_path = NodePath("../Camera2D/EnemyPosition")
+voices_path = [ "res://src/audio/voices/godot_cozy_game_voice_blip_enemy_1_1.wav", "res://src/audio/voices/godot_cozy_game_voice_blip_enemy_1_2.wav", "res://src/audio/voices/godot_cozy_game_voice_blip_enemy_1_3.wav" ]
 
 [node name="Enemy_7_2" parent="." instance=ExtResource( 11 )]
 position = Vector2( 688, 232 )
@@ -533,9 +579,13 @@ combat_position_path = NodePath("../Camera2D/EnemyPosition")
 position = Vector2( 384, 256 )
 z_index = 5
 combat_position_path = NodePath("../Camera2D/PlayerPosition")
+voices_path = [ "res://src/audio/voices/godot_cozy_game_voice_blip_mc_default_1_v3.wav", "godot_cozy_game_voice_blip_mc_default_2_v3.wav", "godot_cozy_game_voice_blip_mc_default_3_v3.wav", "godot_cozy_game_voice_blip_mc_default_4_v3.wav", "godot_cozy_game_voice_blip_mc_default_5_v3.wav" ]
 
 [node name="PlayerAnimMenager" parent="Player" index="7"]
 parameters/StateMachine/playback = SubResource( 23 )
+
+[node name="GameController" type="Node" parent="."]
+script = ExtResource( 9 )
 
 [connection signal="pressed" from="CombatSystem/ButtonContainer/Button1" to="CombatSystem" method="_on_Button1_pressed"]
 [connection signal="pressed" from="CombatSystem/ButtonContainer/Button2" to="CombatSystem" method="_on_Button2_pressed"]

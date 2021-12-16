@@ -410,133 +410,6 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-
-[node name="UI" type="Control" parent="CanvasLayer"]
-margin_right = 40.0
-margin_bottom = 40.0
-script = ExtResource( 5 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="EffortBorder" type="ColorRect" parent="CanvasLayer/UI"]
-margin_left = 16.0
-margin_top = 32.0
-margin_right = 232.0
-margin_bottom = 72.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="EffortEmpty" type="ColorRect" parent="CanvasLayer/UI"]
-margin_left = 24.0
-margin_top = 40.0
-margin_right = 224.0
-margin_bottom = 64.0
-color = Color( 0.231373, 0.231373, 0.231373, 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="EffortFull" type="ColorRect" parent="CanvasLayer/UI"]
-margin_left = 24.0
-margin_top = 40.0
-margin_right = 224.0
-margin_bottom = 64.0
-color = Color( 0.227451, 0.713726, 0.305882, 1 )
-
-[node name="Dialogue" type="Control" parent="CanvasLayer"]
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-margin_left = -20.0
-margin_top = -40.0
-margin_right = 20.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer/Dialogue"]
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-margin_left = -376.0
-margin_top = -136.0
-margin_right = 376.0
-margin_bottom = -48.0
-
-[node name="Name" type="RichTextLabel" parent="CanvasLayer/Dialogue/ColorRect"]
-modulate = Color( 0, 0, 0, 1 )
-margin_left = 8.0
-margin_top = 5.0
-margin_right = 128.0
-margin_bottom = 21.0
-text = "Name"
-
-[node name="Message" type="RichTextLabel" parent="CanvasLayer/Dialogue/ColorRect"]
-modulate = Color( 0, 0, 0, 1 )
-margin_left = 16.0
-margin_top = 24.0
-margin_right = 736.0
-margin_bottom = 72.0
-text = "Message"
-
-[node name="CombatUI" type="Control" parent="CanvasLayer"]
-pause_mode = 2
-anchor_right = 1.0
-anchor_bottom = 1.0
-script = ExtResource( 4 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/CombatUI"]
-anchor_top = 1.0
-anchor_bottom = 1.0
-margin_left = 64.0
-margin_top = -88.0
-margin_right = 472.0
-margin_bottom = -48.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Attack1Button" type="Button" parent="CanvasLayer/CombatUI/HBoxContainer"]
-margin_right = 133.0
-margin_bottom = 40.0
-size_flags_horizontal = 3
-text = "Attack1"
-
-[node name="Attack2Button" type="Button" parent="CanvasLayer/CombatUI/HBoxContainer"]
-margin_left = 137.0
-margin_right = 270.0
-margin_bottom = 40.0
-size_flags_horizontal = 3
-text = "Attack2"
-
-[node name="Attack3Button" type="Button" parent="CanvasLayer/CombatUI/HBoxContainer"]
-margin_left = 274.0
-margin_right = 408.0
-margin_bottom = 40.0
-size_flags_horizontal = 3
-text = "Attack3"
-
-[node name="Keys" type="Control" parent="CanvasLayer/CombatUI"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -20.0
-margin_top = -20.0
-margin_right = 20.0
-margin_bottom = 20.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="TileMap" type="TileMap" parent="."]
 modulate = Color( 0, 0, 0, 1 )
 tile_set = SubResource( 6 )
@@ -579,6 +452,7 @@ texture = ExtResource( 2 )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="NPC"]
 shape = SubResource( 8 )
 
+[connection signal="body_entered" from="Enemy" to="Enemy" method="_on_body_entered"]
 [connection signal="pressed" from="CanvasLayer/CombatUI/HBoxContainer/Attack1Button" to="CanvasLayer/CombatUI" method="_on_Attack1Button_pressed"]
 [connection signal="pressed" from="CanvasLayer/CombatUI/HBoxContainer/Attack2Button" to="CanvasLayer/CombatUI" method="_on_Attack2Button_pressed"]
 [connection signal="pressed" from="CanvasLayer/CombatUI/HBoxContainer/Attack3Button" to="CanvasLayer/CombatUI" method="_on_Attack3Button_pressed"]

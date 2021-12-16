@@ -28,11 +28,10 @@ func set_effort(value: int) -> void:
 		effort = 0
 	
 	var size: = (float(effort) / max_effort) * 200
-	EventHandler.emit_signal("effort_changed", size)
+	#EventHandler.emit_signal("effort_changed", size)
 	
 func _ready() -> void:
 	_combat_position = get_node(combat_position_path)
-	EventHandler.connect("combat_started", self, "start_combat")
 	
 func _process(_delta: float) -> void:
 	if _state == PlayerState.MOVE:
@@ -49,13 +48,56 @@ func _physics_process(delta: float) -> void:
 	
 	_velocity = move_and_slide(_velocity)
 
-func start_combat(enemy) -> void:
-	_velocity = Vector2.ZERO
-	_direction = Vector2.ZERO
-	_state = PlayerState.COMBAT
-	_remote_transform.update_position = false
-	global_position = _combat_position.global_position
+func start_combat() -> void:
+	var tween: = Tween.new()
+	tween.interpolate_property(
+		self, 
+		"position", 
+		global_position, 
+		_combat_position.global_position, 
+		0.5, 
+		Tween.TRANS_LINEAR, 
+		Tween.EASE_OUT
+	)
+	
+	add_child(tween)
+	tween.start()
 	_anime_manager.combat()
 	
 func can_move() -> bool:
 	return _state == PlayerState.MOVE
+
+func prepare_combat() -> void:
+	_velocity = Vector2.ZERO
+	_direction = Vector2.ZERO
+	_state = PlayerState.COMBAT
+	_remote_transform.update_position = false
+
+func attack() -> void:
+	var tween: = Tween.new()
+	tween.interpolate_property(
+		self, 
+		"position:x", 
+		global_position.x, 
+		global_position.x + 40, 
+		0.1, 
+		Tween.TRANS_LINEAR, 
+		Tween.EASE_OUT
+	)
+	
+	add_child(tween)
+	tween.start()
+	yield(tween, "tween_completed")
+
+	tween.interpolate_property(
+		self, 
+		"position:x", 
+		global_position.x, 
+		global_position.x - 40, 
+		0.1, 
+		Tween.TRANS_LINEAR, 
+		Tween.EASE_OUT
+	)
+	
+	tween.start()
+	yield(tween, "tween_completed")

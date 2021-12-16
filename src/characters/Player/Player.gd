@@ -16,7 +16,7 @@ var _velocity: = Vector2.ZERO
 
 var _combat_position: Node
 
-onready var effort: = max_effort setget set_effort
+onready var _effort: = max_effort
 onready var interact: = $Interact
 onready var _remote_transform: = $RemoteTransform2D
 onready var _anime_manager: = $PlayerAnimMenager
@@ -25,14 +25,6 @@ onready var _battle: = $Battle
 onready var _anim: = $AnimationPlayer
 onready var _tween: = $Tween
 onready var _game_controller: = $"../GameController"
-
-func set_effort(value: int) -> void:
-	effort = value
-	if effort <= 0:
-		effort = 0
-	
-	var size: = (float(effort) / max_effort) * 200
-	#EventHandler.emit_signal("effort_changed", size)
 	
 func _ready() -> void:
 	_battle.visible = false
@@ -44,6 +36,8 @@ func _ready() -> void:
 		for path in voices_path:
 			voices[i] = load(path)
 			i += 1
+	
+	_game_controller.update_effort(max_effort)
 
 func _physics_process(delta: float) -> void:	
 	if _direction != Vector2.ZERO:
@@ -120,3 +114,10 @@ func get_voice():
 		return voices[int(rand_range(0, voices.size()))]
 	else:
 		return null
+		
+func get_damage(value: int) -> void:
+	_effort -= value
+	if _effort <= 0:
+		_effort = 0
+	
+	_game_controller.update_effort(_effort)

@@ -4,12 +4,12 @@ class_name Enemy
 
 export var combat_position_path: NodePath
 export(Array, String, FILE, "*.wav") var voices_path
+export var damage: = 10
 
 var voices: = []
 
 var _combat_position: Node
 
-onready var _combat_system: = $"../CombatSystem"
 onready var _overworld: = $Overworld
 onready var _batlle: = $Battle
 onready var _anim: = $AnimationPlayer
@@ -31,7 +31,6 @@ func _get_configuration_warning() -> String:
 	return "Please assign Combat Position Path" if not combat_position_path else ""
 	
 func interact() -> void:
-	_combat_system.set_enemy(self)
 	_game_controller.start_dialogue(_dialogues, self)
 
 func start_combat() -> void:
@@ -52,27 +51,8 @@ func start_combat() -> void:
 	_tween.start()
 	
 func attack() -> void:
-	_tween.interpolate_property(
-		self, 
-		"position:x", 
-		global_position.x, 
-		global_position.x, 
-		0.3, 
-		Tween.TRANS_LINEAR, 
-		Tween.EASE_OUT
-	)
-	
-	_tween.start()
-	yield(_tween, "tween_completed")
-	
-	_tween.interpolate_property(
-		self, 
-		"position:x", 
-		global_position.x, 
-		global_position.x - 40, 
-		0.1, 
-		Tween.TRANS_LINEAR, 
-		Tween.EASE_OUT
+	_tween.interpolate_property(self, "position:x", global_position.x, global_position.x - 40, 
+		0.1, Tween.TRANS_LINEAR, Tween.EASE_OUT, 0.2
 	)
 	
 	_tween.start()

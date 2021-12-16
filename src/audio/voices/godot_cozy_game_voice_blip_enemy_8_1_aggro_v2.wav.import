@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/godot_cozy_game_voice_blip_enemy_8_1_aggro_v2.wav-442943f4aee4ad2a43390a044bbb39b3.sample"
+
+[deps]
+
+source_file="res://src/audio/voices/godot_cozy_game_voice_blip_enemy_8_1_aggro_v2.wav"
+dest_files=[ "res://.import/godot_cozy_game_voice_blip_enemy_8_1_aggro_v2.wav-442943f4aee4ad2a43390a044bbb39b3.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

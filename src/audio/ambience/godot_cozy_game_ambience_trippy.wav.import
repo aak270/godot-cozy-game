@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/godot_cozy_game_ambience_trippy.wav-e783046ddb2ec1596ed916517bf11924.sample"
+
+[deps]
+
+source_file="res://src/audio/ambience/godot_cozy_game_ambience_trippy.wav"
+dest_files=[ "res://.import/godot_cozy_game_ambience_trippy.wav-e783046ddb2ec1596ed916517bf11924.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=true
+compress/mode=0

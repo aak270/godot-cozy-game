@@ -6,6 +6,8 @@ enum GameState{
 	COMBAT
 }
 
+signal effort_changed(value)
+
 var state = GameState.MOVE
 var enemy = null
 
@@ -14,7 +16,7 @@ var _dialogue_has_combat = false
 onready var player: = $"../Player"
 
 onready var _combat_system: = $"../CombatSystem"
-onready var _dialogueplayer:  = $"../DialoguePlayer"
+onready var _dialogue_player:  = $"../DialoguePlayer"
 
 func _ready() -> void:
 	randomize()
@@ -22,13 +24,13 @@ func _ready() -> void:
 	MusicController.fade_level_music()
 	AudioController.ambience_level()
 	
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if state == GameState.MOVE:
 		player.move()
 	
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_accept") and state == GameState.DIALOGUE:
-		_dialogueplayer.next_line()
+		_dialogue_player.next_line()
 	
 func start_dialogue(dialogues, is_enemy = null) -> void:
 	player.stop_movement()
@@ -38,11 +40,11 @@ func start_dialogue(dialogues, is_enemy = null) -> void:
 	enemy = is_enemy
 	
 	_dialogue_has_combat = false if is_enemy == null else true
-	_dialogueplayer.play(dialogues)
+	_dialogue_player.play(dialogues)
 	
 func end_dialogue() -> void:
 	state = GameState.MOVE
-	_dialogueplayer.stop()
+	_dialogue_player.stop()
 	
 	if _dialogue_has_combat:
 		start_combat()
@@ -54,3 +56,6 @@ func start_combat() -> void:
 	state = GameState.COMBAT
 	_combat_system.start()
 	player.start_combat()
+	
+func update_effort(value: int) -> void:
+	emit_signal("effort_changed", value)

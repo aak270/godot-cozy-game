@@ -1,4 +1,5 @@
 extends Interactable
+class_name NPC
 
 export(String, FILE, "*.json") var dialogue_file
 

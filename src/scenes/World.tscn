@@ -3,7 +3,6 @@
 [ext_resource path="res://src/characters/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://icon.png" type="Texture" id=2]
 [ext_resource path="res://src/characters/Enemy.gd" type="Script" id=3]
-[ext_resource path="res://src/ui/CombatUI.gd" type="Script" id=4]
 [ext_resource path="res://src/ui/UI.gd" type="Script" id=5]
 [ext_resource path="res://src/objects/Interactable.gd" type="Script" id=7]
 [ext_resource path="res://src/characters/NPC.gd" type="Script" id=8]
@@ -315,6 +314,20 @@ shader_param/color = Color( 0.6, 0.9, 0.9, 0.8 )
 shader_param/hdr = false
 shader_param/seed = 5.0
 
+[sub_resource type="GDScript" id=21]
+script/source = "extends Control
+
+var _player_turn: = false
+var _enemy: Enemy = null
+
+onready var player: = $\"../../Player\"
+onready var attack_1_btn: = $HBoxContainer/Attack1Button
+onready var attack_2_btn: = $HBoxContainer/Attack2Button
+onready var attack_3_btn: = $HBoxContainer/Attack3Button
+
+
+"
+
 [sub_resource type="ConvexPolygonShape2D" id=20]
 points = PoolVector2Array( 0, 0, 64, 0, 64, 64, 0, 64 )
 
@@ -491,7 +504,7 @@ text = "Message"
 pause_mode = 2
 anchor_right = 1.0
 anchor_bottom = 1.0
-script = ExtResource( 4 )
+script = SubResource( 21 )
 __meta__ = {
 "_edit_use_anchors_": false
 }

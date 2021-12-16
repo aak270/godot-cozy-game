@@ -3,6 +3,9 @@ extends NPC
 class_name Enemy
 
 export var combat_position_path: NodePath
+export(Array, String, FILE, "*.wav") var voices_path
+
+var voices: = []
 
 var _combat_position: Node
 
@@ -17,12 +20,19 @@ func _ready() -> void:
 	_anim.play("Ov_Idle")
 	_combat_position = get_node(combat_position_path)
 	
+	if voices_path.size() > 0:
+		var i := 0
+		voices.resize(voices_path.size())
+		for path in voices_path:
+			voices[i] = load(path)
+			i += 1
+	
 func _get_configuration_warning() -> String:
 	return "Please assign Combat Position Path" if not combat_position_path else ""
 	
 func interact() -> void:
 	_combat_system.set_enemy(self)
-	dialogue_player.play(_dialogues, true)
+	_game_controller.start_dialogue(_dialogues, self)
 
 func start_combat() -> void:
 	_batlle.visible = true
@@ -94,3 +104,10 @@ func back() -> void:
 	
 	_tween.start()
 	yield(_tween, "tween_completed")
+
+func get_voice():
+	if voices_path.size() > 0:
+		return voices[int(rand_range(0, voices.size()))]
+	else:
+		return null
+		

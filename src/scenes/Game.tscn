@@ -10,6 +10,8 @@
 [ext_resource path="res://src/characters/NPC.gd" type="Script" id=8]
 [ext_resource path="res://src/characters/Enemy.gd" type="Script" id=9]
 [ext_resource path="res://src/ui/CombatSystem.gd" type="Script" id=10]
+[ext_resource path="res://src/characters/Enemy_Templ.tscn" type="PackedScene" id=11]
+[ext_resource path="res://src/characters/Enemy_7/Enemy_7.tscn" type="PackedScene" id=12]
 
 [sub_resource type="Shader" id=14]
 code = "/* 
@@ -424,6 +426,9 @@ margin_top = 5.0
 margin_right = 128.0
 margin_bottom = 21.0
 text = "Name"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Message" type="RichTextLabel" parent="DialoguePlayer/ColorRect"]
 modulate = Color( 0, 0, 0, 1 )
@@ -432,6 +437,9 @@ margin_top = 24.0
 margin_right = 736.0
 margin_bottom = 72.0
 text = "Message"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="CombatSystem" type="CanvasLayer" parent="."]
 script = ExtResource( 10 )
@@ -500,7 +508,7 @@ position = Vector2( 384, 256 )
 z_index = 10
 combat_position_path = NodePath("../Camera2D/PlayerPosition")
 
-[node name="PlayerAnimMenager" parent="Player" index="6"]
+[node name="PlayerAnimMenager" parent="Player" index="8"]
 parameters/StateMachine/playback = SubResource( 18 )
 
 [node name="Area2D" parent="Player/Interact" index="0"]
@@ -553,5 +561,11 @@ shape = SubResource( 22 )
 [connection signal="pressed" from="CombatSystem/ButtonContainer/Button1" to="CombatSystem" method="_on_Button1_pressed"]
 [connection signal="pressed" from="CombatSystem/ButtonContainer/Button2" to="CombatSystem" method="_on_Button2_pressed"]
 [connection signal="pressed" from="CombatSystem/ButtonContainer/Button3" to="CombatSystem" method="_on_Button3_pressed"]
+
+[node name="Enemy" parent="." instance=ExtResource( 9 )]
+position = Vector2( 1166, 229 )
+
+[node name="Enemy_7" parent="." instance=ExtResource( 10 )]
+position = Vector2( 1164, 489 )
 
 [editable path="Player"]

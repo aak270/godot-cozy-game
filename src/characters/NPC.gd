@@ -15,6 +15,3 @@ func _ready() -> void:
 
 func interact() -> void:
 	_game_controller.start_dialogue(_dialogues)
-
-func on_exit() -> void:
-	_game_controller.end_dialogue()

@@ -4,22 +4,28 @@ const KeyToPress: = preload("res://src/ui/KeyToPress.tscn")
 
 export var time_limit: = 2.0
 
+var player_damage: = 0
+
 var _keys_to_press: = []
 var _keys_list: = ["ui_up", "ui_down", "ui_left", "ui_right"]
+
+var _player_turn: = true
+
 var _prompt_started: = false
 var _key_released: = true
 var _key_left: = 0
+var _last_key: = ""
+
+onready var game_controller: = $"../GameController"
+
+onready var _button_container: = $ButtonContainer
+
+onready var _keys: = $Keys
+onready var _progress_bar: = $ProgressBar
+onready var _tween: = $Tween
 
 onready var _player: = $"../Player"
 onready var _camera: = $"../Camera2D"
-onready var _button_container: = $ButtonContainer
-onready var _button_1: = $ButtonContainer/Button1
-onready var _button_2: = $ButtonContainer/Button2
-onready var _button_3: = $ButtonContainer/Button3
-onready var _keys: = $Keys
-onready var _progress_bar: = $ProgressBar
-onready var _game_controller: = $"../GameController"
-onready var _tween: = $Tween
 
 func _ready() -> void:
 	_button_container.hide()
@@ -30,51 +36,59 @@ func _input(event: InputEvent) -> void:
 		if Input.is_action_just_pressed(_keys_to_press[0]):
 			_key_released = false
 			_keys.get_child(0).queue_free()
+			_last_key = _keys_to_press.pop_front()
 			
 			_key_left -= 1
 			if _key_left == 0:
-				calculate_damage()
+				stop_prompt()
 		elif _key_released:
 			stop_prompt()
 	
-	if _keys_to_press.size() > 0 and Input.is_action_just_released(_keys_to_press[0]):
+	if not _key_released and Input.is_action_just_released(_last_key):
 		_key_released = true
-		_keys_to_press.pop_front()
+
+func set_disable_buttons(is_disable: bool) -> void:
+	for button in _button_container.get_children():
+		button.disabled = is_disable
+		button.release_focus()
+	
+	if not is_disable:
+		_button_container.get_child(0).grab_focus()
 
 func start() -> void:
-	_tween.interpolate_property(
-		_camera, 
-		"zoom", 
-		Vector2(1, 1), 
-		Vector2(0.8, 0.8), 
-		0.5, 
-		Tween.TRANS_LINEAR, 
-		Tween.EASE_OUT
+	_prompt_started = false
+	_tween.interpolate_property(_camera, "zoom", Vector2(1, 1), Vector2(0.8, 0.8), 
+		0.5, Tween.TRANS_LINEAR, Tween.EASE_OUT
 	)
 	
 	_tween.start()
-	
-	_game_controller.enemy.start_combat()
-	
 	yield(_tween, "tween_completed")
+	
 	_button_container.show()
-	_button_1.grab_focus()
+	player_turn()
 
-func set_disable_buttons(value: bool) -> void:
-	_button_1.disabled = value
-	_button_2.disabled = value
-	_button_3.disabled = value
+func end() -> void:
+	set_disable_buttons(true)
 	
-	if value:
-		_button_1.release_focus()
-		_button_2.release_focus()
-		_button_3.release_focus()
-	else:
-		_button_1.grab_focus()
-		
+	_tween.interpolate_property(_camera, "zoom", Vector2(0.8, 0.8), Vector2(1, 1), 
+		0.5, Tween.TRANS_LINEAR, Tween.EASE_OUT
+	)
+	
+	_tween.start()
+	_button_container.hide()
+	_progress_bar.hide()
+
+func player_turn() -> void:
+	set_disable_buttons(false)
+	_player_turn = true
+
 func enemy_turn() -> void:
-	yield(_game_controller.enemy.attack(), "completed")
+	_player_turn = false
+
+	yield(game_controller.enemy.attack(), "completed")
+	start_prompt()
 	
+func start_prompt() -> void:
 	_keys_to_press.resize(4)
 	for i in range(4):
 		_keys_to_press[i] = _keys_list[int(rand_range(0, 4))]
@@ -87,6 +101,7 @@ func enemy_turn() -> void:
 	for key in _keys_to_press:
 		var key_ui: = KeyToPress.instance()
 		_keys.add_child(key_ui)
+		
 		key_ui.rect_position.x = start
 		key_ui.get_child(0).text = key
 		start += 70
@@ -97,39 +112,37 @@ func enemy_turn() -> void:
 	)
 	
 	_tween.start()
-	
-func player_turn() -> void:
-	_progress_bar.hide()
-	_prompt_started = false
-	yield(_game_controller.enemy.back(), "completed")
-	set_disable_buttons(false)
-	
-func calculate_damage() -> void:
-	var damage = _game_controller.enemy.damage * _key_left / 4
-	_game_controller.player.get_damage(int(damage))
-	player_turn()
-	
+
 func stop_prompt() -> void:
+	_prompt_started = false
+	
 	for child in _keys.get_children():
 		child.queue_free()
 	
 	_keys_to_press.clear()
+	_progress_bar.hide()
+	_tween.stop_all()
+	
 	calculate_damage()
-
-func _on_Button1_pressed() -> void:
-	set_disable_buttons(true)
-	yield(_player.attack(), "completed")
-	enemy_turn()
-
-func _on_Button2_pressed() -> void:
-	set_disable_buttons(true)
-	yield(_player.attack(), "completed")
-	enemy_turn()
-
-func _on_Button3_pressed() -> void:
-	set_disable_buttons(true)
-	yield(_player.attack(), "completed")
-	enemy_turn()
+	
+func calculate_damage() -> void:
+	var damage: = 0
+	
+	if _player_turn:
+		damage = player_damage * float(4 - _key_left) / 4
+		game_controller.enemy.reduce_health(int(damage))
+		yield(game_controller.player.attack_end(), "completed")
+		
+		if game_controller.enemy.is_dead():
+			game_controller.end_combat()
+		else:
+			enemy_turn()
+	else:
+		damage = game_controller.enemy.damage * _key_left / 4
+		game_controller.player.reduce_effort(int(damage))
+		
+		yield(game_controller.enemy.attack_end(), "completed")
+		player_turn()
 
 func _on_tween_completed(object: Object, _key: NodePath) -> void:
 	if _prompt_started and object is ProgressBar:

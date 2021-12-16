@@ -83,27 +83,23 @@ func prepare_combat() -> void:
 	_remote_transform.update_position = false
 
 func attack() -> void:
-	_tween.interpolate_property(
-		self, 
-		"position:x", 
-		global_position.x, 
-		global_position.x + 40, 
-		0.1, 
-		Tween.TRANS_LINEAR, 
-		Tween.EASE_OUT
+	_tween.interpolate_property(self, "position:x", global_position.x, global_position.x + 40, 
+		0.1, Tween.TRANS_LINEAR, Tween.EASE_OUT
+	)
+	
+	_tween.start()
+	yield(_tween, "tween_completed")
+	
+	_tween.interpolate_property(self, "position:x", global_position.x, global_position.x, 
+		0.3, Tween.TRANS_LINEAR, Tween.EASE_OUT
 	)
 	
 	_tween.start()
 	yield(_tween, "tween_completed")
 
-	_tween.interpolate_property(
-		self, 
-		"position:x", 
-		global_position.x, 
-		global_position.x - 40, 
-		0.1, 
-		Tween.TRANS_LINEAR, 
-		Tween.EASE_OUT
+func attack_end() -> void:
+	_tween.interpolate_property(self, "position:x", global_position.x, global_position.x - 40, 
+		0.1, Tween.TRANS_LINEAR, Tween.EASE_OUT
 	)
 	
 	_tween.start()
@@ -115,9 +111,15 @@ func get_voice():
 	else:
 		return null
 		
-func get_damage(value: int) -> void:
+func reduce_effort(value: int) -> void:
 	_effort -= value
 	if _effort <= 0:
 		_effort = 0
 	
 	_game_controller.update_effort(_effort)
+	
+func end_combat() -> void:
+	_remote_transform.update_position = true
+	_battle.visible = false
+	_torso.visible = true
+	_anim.stop()

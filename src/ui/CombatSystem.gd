@@ -1,5 +1,7 @@
 extends CanvasLayer
 
+signal change_action(action)
+
 const KeyToPress: = preload("res://src/ui/KeyToPress.tscn")
 
 export var time_limit: = 2.0
@@ -9,6 +11,7 @@ var player_damage: = 0
 var _keys_to_press: = []
 var _keys_list: = ["ui_up", "ui_down", "ui_left", "ui_right"]
 
+var _last_action: CombatAction
 var _player_turn: = true
 
 var _prompt_started: = false
@@ -18,7 +21,8 @@ var _last_key: = ""
 
 onready var game_controller: = $"../GameController"
 
-onready var _button_container: = $ButtonContainer
+onready var combat_ui: = $CombatUI
+onready var _action_controller: = $CombatUI/ActionController
 
 onready var _keys: = $Keys
 onready var _progress_bar: = $ProgressBar
@@ -28,8 +32,12 @@ onready var _player: = $"../Player"
 onready var _camera: = $"../Camera2D"
 
 func _ready() -> void:
-	_button_container.hide()
+	connect("change_action", self, "update_action")
+	
+	combat_ui.hide()
 	_progress_bar.hide()
+	
+	_last_action = $CombatUI/ActionController/VBoxContainer/Action1
 	
 func _input(event: InputEvent) -> void:
 	if _prompt_started and event is InputEventKey and event.pressed:
@@ -46,40 +54,43 @@ func _input(event: InputEvent) -> void:
 	
 	if not _key_released and Input.is_action_just_released(_last_key):
 		_key_released = true
-
-func set_disable_buttons(is_disable: bool) -> void:
-	for button in _button_container.get_children():
-		button.disabled = is_disable
-		button.release_focus()
+		
+func set_active() -> void:
+	combat_ui.show()
+	_last_action.grab_focus()
 	
-	if not is_disable:
-		_button_container.get_child(0).grab_focus()
+func update_action(node) -> void:
+	_tween.interpolate_property(_action_controller, "scroll_vertical", 
+		_action_controller.scroll_vertical, node.rect_position.y, 0.1, 
+		Tween.TRANS_QUAD, Tween.EASE_IN
+	)
+	
+	_tween.start()
 
 func start() -> void:
 	_prompt_started = false
 	_tween.interpolate_property(_camera, "zoom", Vector2(1, 1), Vector2(0.8, 0.8), 
-		0.5, Tween.TRANS_LINEAR, Tween.EASE_OUT
+		0.5, Tween.TRANS_QUAD, Tween.EASE_OUT
 	)
 	
 	_tween.start()
 	yield(_tween, "tween_completed")
 	
-	_button_container.show()
+	set_active()
 	player_turn()
 
 func end() -> void:
-	set_disable_buttons(true)
+	combat_ui.hide()
+	_progress_bar.hide()
 	
 	_tween.interpolate_property(_camera, "zoom", Vector2(0.8, 0.8), Vector2(1, 1), 
-		0.5, Tween.TRANS_LINEAR, Tween.EASE_OUT
+		0.5, Tween.TRANS_QUAD, Tween.EASE_IN
 	)
 	
 	_tween.start()
-	_button_container.hide()
-	_progress_bar.hide()
 
 func player_turn() -> void:
-	set_disable_buttons(false)
+	set_active()
 	_player_turn = true
 
 func enemy_turn() -> void:
@@ -120,17 +131,18 @@ func stop_prompt() -> void:
 		child.queue_free()
 	
 	_keys_to_press.clear()
+	combat_ui.hide()
 	_progress_bar.hide()
 	_tween.stop_all()
 	
 	calculate_damage()
 	
 func calculate_damage() -> void:
-	var damage: = 0
+	var damage: = 0.0
 	
 	if _player_turn:
 		damage = player_damage * float(4 - _key_left) / 4
-		game_controller.enemy.reduce_health(int(damage))
+		game_controller.enemy.reduce_health(damage)
 		yield(game_controller.player.attack_end(), "completed")
 		
 		if game_controller.enemy.is_dead():

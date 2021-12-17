@@ -10,8 +10,9 @@ onready var _panel: = $DialogBox
 onready var _dialogue_name: = $DialogBox/Name
 onready var _dialogue_message: = $DialogBox/Message
 onready var _timer: = $DialogBox/Timer
-onready var _game_controller: = $"../GameController"
+
 onready var _audio: = $AudioStreamPlayer
+onready var _game_controller: = $"../GameController"
 
 func _ready() -> void:
 	_timer.wait_time = text_speed

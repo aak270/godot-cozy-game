@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=2]
+[gd_scene load_steps=43 format=2]
 
 [ext_resource path="res://src/textures/BG_Waves.png" type="Texture" id=1]
 [ext_resource path="res://src/textures/BG_Gradient.png" type="Texture" id=2]
@@ -13,6 +13,8 @@
 [ext_resource path="res://src/characters/Enemy_7/Enemy_7.tscn" type="PackedScene" id=11]
 [ext_resource path="res://src/ui/UI.gd" type="Script" id=12]
 [ext_resource path="res://src/ui/CombatAction.gd" type="Script" id=13]
+[ext_resource path="res://src/ui/Battle_Buttons.png" type="Texture" id=14]
+[ext_resource path="res://src/ui/Battle_Buttons_Unfocused.png" type="Texture" id=15]
 
 [sub_resource type="Shader" id=14]
 code = "/* 
@@ -334,6 +336,69 @@ tracks/0/keys = {
 "values": [ Vector2( 0, 0 ), Vector2( 0, -5 ) ]
 }
 
+[sub_resource type="StyleBoxEmpty" id=26]
+
+[sub_resource type="Theme" id=27]
+VScrollBar/styles/scroll = SubResource( 26 )
+
+[sub_resource type="AtlasTexture" id=39]
+flags = 4
+atlas = ExtResource( 15 )
+region = Rect2( 239, 565, 85, 84 )
+
+[sub_resource type="AtlasTexture" id=40]
+flags = 4
+atlas = ExtResource( 14 )
+region = Rect2( 239, 565, 85, 84 )
+
+[sub_resource type="StyleBoxTexture" id=38]
+texture = ExtResource( 14 )
+region_rect = Rect2( 539, 684, 368, 190 )
+
+[sub_resource type="AtlasTexture" id=30]
+flags = 4
+atlas = ExtResource( 15 )
+region = Rect2( 331, 565, 85, 84 )
+
+[sub_resource type="AtlasTexture" id=31]
+flags = 4
+atlas = ExtResource( 14 )
+region = Rect2( 331, 565, 85, 84 )
+
+[sub_resource type="StyleBoxTexture" id=41]
+texture = ExtResource( 14 )
+region_rect = Rect2( 539, 684, 368, 190 )
+
+[sub_resource type="AtlasTexture" id=32]
+flags = 4
+atlas = ExtResource( 15 )
+region = Rect2( 477, 563, 85, 84 )
+
+[sub_resource type="AtlasTexture" id=33]
+flags = 4
+atlas = ExtResource( 14 )
+region = Rect2( 477, 563, 85, 84 )
+
+[sub_resource type="AtlasTexture" id=34]
+flags = 4
+atlas = ExtResource( 15 )
+region = Rect2( 240, 653, 85, 84 )
+
+[sub_resource type="AtlasTexture" id=35]
+flags = 4
+atlas = ExtResource( 14 )
+region = Rect2( 240, 653, 85, 84 )
+
+[sub_resource type="AtlasTexture" id=36]
+flags = 4
+atlas = ExtResource( 15 )
+region = Rect2( 411, 698, 85, 84 )
+
+[sub_resource type="AtlasTexture" id=37]
+flags = 4
+atlas = ExtResource( 14 )
+region = Rect2( 411, 698, 85, 84 )
+
 [sub_resource type="StyleBoxFlat" id=25]
 bg_color = Color( 1, 0.305882, 0.305882, 1 )
 
@@ -482,40 +547,345 @@ bus = "UI"
 [node name="CombatSystem" type="CanvasLayer" parent="."]
 script = ExtResource( 10 )
 
-[node name="ButtonContainer" type="HBoxContainer" parent="CombatSystem"]
-anchor_top = 1.0
-anchor_bottom = 1.0
-margin_left = 80.0
-margin_top = -80.0
-margin_right = 280.0
-margin_bottom = -40.0
+[node name="CombatUI" type="Control" parent="CombatSystem"]
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_left = 285.0
+margin_top = -49.0
+margin_right = 325.0
+margin_bottom = -9.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Button1" type="Button" parent="CombatSystem/ButtonContainer"]
-margin_right = 64.0
-margin_bottom = 40.0
-text = "Attack 1"
+[node name="Arrow" type="Sprite" parent="CombatSystem/CombatUI"]
+position = Vector2( -46, 0 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 14 )
+region_enabled = true
+region_rect = Rect2( 788, 239, 30, 360 )
+
+[node name="ActionController" type="ScrollContainer" parent="CombatSystem/CombatUI"]
+anchor_left = -1.152
+anchor_right = -1.152
+margin_left = 21.08
+margin_top = -21.0
+margin_right = 63.08
+margin_bottom = 20.0
+rect_clip_content = false
+theme = SubResource( 27 )
+scroll_horizontal_enabled = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CombatSystem/CombatUI/ActionController"]
+margin_right = 42.0
+margin_bottom = 226.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="Action1" type="TextureButton" parent="CombatSystem/CombatUI/ActionController/VBoxContainer"]
+margin_right = 42.0
+margin_bottom = 42.0
+rect_min_size = Vector2( 42, 42 )
+texture_normal = SubResource( 39 )
+texture_focused = SubResource( 40 )
+expand = true
+stretch_mode = 4
+script = ExtResource( 13 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="InfoBox" type="Panel" parent="CombatSystem/CombatUI/ActionController/VBoxContainer/Action1"]
+show_behind_parent = true
+margin_left = -5.0
+margin_top = -5.0
+margin_right = 179.0
+margin_bottom = 90.0
+custom_styles/panel = SubResource( 38 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ActionName" type="Label" parent="CombatSystem/CombatUI/ActionController/VBoxContainer/Action1/InfoBox"]
+margin_left = 54.0
+margin_top = 6.0
+margin_right = 135.0
+margin_bottom = 20.0
+text = "Action name"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Effort" type="Label" parent="CombatSystem/CombatUI/ActionController/VBoxContainer/Action1/InfoBox"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -90.0
+margin_top = 6.0
+margin_right = -9.0
+margin_bottom = 20.0
+text = "Effort"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Description" type="Label" parent="CombatSystem/CombatUI/ActionController/VBoxContainer/Action1/InfoBox"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -129.0
+margin_top = -67.0
+margin_right = -4.0
+margin_bottom = -4.0
+text = "Description"
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Action2" type="TextureButton" parent="CombatSystem/CombatUI/ActionController/VBoxContainer"]
+margin_top = 46.0
+margin_right = 42.0
+margin_bottom = 88.0
+rect_min_size = Vector2( 42, 42 )
+texture_normal = SubResource( 30 )
+texture_focused = SubResource( 31 )
+expand = true
+stretch_mode = 4
 script = ExtResource( 13 )
 
-[node name="Button2" type="Button" parent="CombatSystem/ButtonContainer"]
-margin_left = 68.0
-margin_right = 132.0
-margin_bottom = 40.0
-text = "Attack 2"
-script = ExtResource( 13 )
-effort_needed = 5
-damage = 10
+[node name="InfoBox" type="Panel" parent="CombatSystem/CombatUI/ActionController/VBoxContainer/Action2"]
+show_behind_parent = true
+margin_left = -5.0
+margin_top = -5.0
+margin_right = 179.0
+margin_bottom = 90.0
+custom_styles/panel = SubResource( 41 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="Button3" type="Button" parent="CombatSystem/ButtonContainer"]
-margin_left = 136.0
-margin_right = 200.0
-margin_bottom = 40.0
-text = "Attack 3"
+[node name="ActionName" type="Label" parent="CombatSystem/CombatUI/ActionController/VBoxContainer/Action2/InfoBox"]
+margin_left = 54.0
+margin_top = 6.0
+margin_right = 135.0
+margin_bottom = 20.0
+text = "Action name"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Effort" type="Label" parent="CombatSystem/CombatUI/ActionController/VBoxContainer/Action2/InfoBox"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -90.0
+margin_top = 6.0
+margin_right = -9.0
+margin_bottom = 20.0
+text = "Effort"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Description" type="Label" parent="CombatSystem/CombatUI/ActionController/VBoxContainer/Action2/InfoBox"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -129.0
+margin_top = -67.0
+margin_right = -4.0
+margin_bottom = -4.0
+text = "Description"
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Action3" type="TextureButton" parent="CombatSystem/CombatUI/ActionController/VBoxContainer"]
+margin_top = 92.0
+margin_right = 42.0
+margin_bottom = 134.0
+rect_min_size = Vector2( 42, 42 )
+texture_normal = SubResource( 32 )
+texture_focused = SubResource( 33 )
+expand = true
+stretch_mode = 4
 script = ExtResource( 13 )
-effort_needed = 10
-damage = 15
+
+[node name="InfoBox" type="Panel" parent="CombatSystem/CombatUI/ActionController/VBoxContainer/Action3"]
+show_behind_parent = true
+margin_left = -5.0
+margin_top = -5.0
+margin_right = 179.0
+margin_bottom = 90.0
+custom_styles/panel = SubResource( 41 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ActionName" type="Label" parent="CombatSystem/CombatUI/ActionController/VBoxContainer/Action3/InfoBox"]
+margin_left = 54.0
+margin_top = 6.0
+margin_right = 135.0
+margin_bottom = 20.0
+text = "Action name"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Effort" type="Label" parent="CombatSystem/CombatUI/ActionController/VBoxContainer/Action3/InfoBox"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -90.0
+margin_top = 6.0
+margin_right = -9.0
+margin_bottom = 20.0
+text = "Effort"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Description" type="Label" parent="CombatSystem/CombatUI/ActionController/VBoxContainer/Action3/InfoBox"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -129.0
+margin_top = -67.0
+margin_right = -4.0
+margin_bottom = -4.0
+text = "Description"
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Action4" type="TextureButton" parent="CombatSystem/CombatUI/ActionController/VBoxContainer"]
+margin_top = 138.0
+margin_right = 42.0
+margin_bottom = 180.0
+rect_min_size = Vector2( 42, 42 )
+texture_normal = SubResource( 34 )
+texture_focused = SubResource( 35 )
+expand = true
+stretch_mode = 4
+script = ExtResource( 13 )
+
+[node name="InfoBox" type="Panel" parent="CombatSystem/CombatUI/ActionController/VBoxContainer/Action4"]
+show_behind_parent = true
+margin_left = -5.0
+margin_top = -5.0
+margin_right = 179.0
+margin_bottom = 90.0
+custom_styles/panel = SubResource( 41 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ActionName" type="Label" parent="CombatSystem/CombatUI/ActionController/VBoxContainer/Action4/InfoBox"]
+margin_left = 54.0
+margin_top = 6.0
+margin_right = 135.0
+margin_bottom = 20.0
+text = "Action name"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Effort" type="Label" parent="CombatSystem/CombatUI/ActionController/VBoxContainer/Action4/InfoBox"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -90.0
+margin_top = 6.0
+margin_right = -9.0
+margin_bottom = 20.0
+text = "Effort"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Description" type="Label" parent="CombatSystem/CombatUI/ActionController/VBoxContainer/Action4/InfoBox"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -129.0
+margin_top = -67.0
+margin_right = -4.0
+margin_bottom = -4.0
+text = "Description"
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Action5" type="TextureButton" parent="CombatSystem/CombatUI/ActionController/VBoxContainer"]
+margin_top = 184.0
+margin_right = 42.0
+margin_bottom = 226.0
+rect_min_size = Vector2( 42, 42 )
+texture_normal = SubResource( 36 )
+texture_focused = SubResource( 37 )
+expand = true
+stretch_mode = 4
+script = ExtResource( 13 )
+
+[node name="InfoBox" type="Panel" parent="CombatSystem/CombatUI/ActionController/VBoxContainer/Action5"]
+show_behind_parent = true
+margin_left = -5.0
+margin_top = -5.0
+margin_right = 179.0
+margin_bottom = 90.0
+custom_styles/panel = SubResource( 41 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ActionName" type="Label" parent="CombatSystem/CombatUI/ActionController/VBoxContainer/Action5/InfoBox"]
+margin_left = 54.0
+margin_top = 6.0
+margin_right = 135.0
+margin_bottom = 20.0
+text = "Action name"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Effort" type="Label" parent="CombatSystem/CombatUI/ActionController/VBoxContainer/Action5/InfoBox"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -90.0
+margin_top = 6.0
+margin_right = -9.0
+margin_bottom = 20.0
+text = "Effort"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Description" type="Label" parent="CombatSystem/CombatUI/ActionController/VBoxContainer/Action5/InfoBox"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -129.0
+margin_top = -67.0
+margin_right = -4.0
+margin_bottom = -4.0
+text = "Description"
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Keys" type="Control" parent="CombatSystem"]
 anchor_left = 0.5
@@ -624,17 +994,14 @@ shape = SubResource( 21 )
 [node name="Enemy_7" parent="." instance=ExtResource( 11 )]
 position = Vector2( 2528, 288 )
 dialogue_file = "res://src/dialogues/enemy_1_dialogue.json"
-combat_position_path = NodePath("../Camera2D/EnemyPosition")
 voices_path = [ "res://src/audio/voices/godot_cozy_game_voice_blip_enemy_1_1.wav", "res://src/audio/voices/godot_cozy_game_voice_blip_enemy_1_2.wav", "res://src/audio/voices/godot_cozy_game_voice_blip_enemy_1_3.wav" ]
 
 [node name="Enemy_7_2" parent="." instance=ExtResource( 11 )]
 position = Vector2( 688, 232 )
-combat_position_path = NodePath("../Camera2D/EnemyPosition")
 
 [node name="Player" parent="." instance=ExtResource( 4 )]
 position = Vector2( 384, 256 )
 z_index = 5
-combat_position_path = NodePath("../Camera2D/PlayerPosition")
 voices_path = [ "res://src/audio/voices/godot_cozy_game_voice_blip_mc_default_1_v3.wav", "res://src/audio/voices/godot_cozy_game_voice_blip_mc_default_2_v3.wav", "res://src/audio/voices/godot_cozy_game_voice_blip_mc_default_3_v3.wav", "res://src/audio/voices/godot_cozy_game_voice_blip_mc_default_4_v3.wav", "res://src/audio/voices/godot_cozy_game_voice_blip_mc_default_5_v3.wav" ]
 
 [node name="PlayerAnimMenager" parent="Player" index="7"]
@@ -642,13 +1009,12 @@ parameters/StateMachine/playback = SubResource( 23 )
 
 [node name="GameController" type="Node" parent="."]
 script = ExtResource( 9 )
+combatPositionPlayer = NodePath("../Camera2D/PlayerPosition")
+combatPositionEnemy = NodePath("../Camera2D/EnemyPosition")
 
 [node name="Timer" type="Timer" parent="GameController"]
 one_shot = true
 
-[connection signal="pressed" from="CombatSystem/ButtonContainer/Button1" to="CombatSystem/ButtonContainer/Button1" method="_on_pressed"]
-[connection signal="pressed" from="CombatSystem/ButtonContainer/Button2" to="CombatSystem/ButtonContainer/Button2" method="_on_pressed"]
-[connection signal="pressed" from="CombatSystem/ButtonContainer/Button3" to="CombatSystem/ButtonContainer/Button3" method="_on_pressed"]
 [connection signal="tween_completed" from="CombatSystem/Tween" to="CombatSystem" method="_on_tween_completed"]
 
 [editable path="Player"]

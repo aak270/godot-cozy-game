@@ -5,7 +5,6 @@ export var accel: = 1500
 export var friction: = 1800
 
 export var max_effort: = 100
-export var combat_position_path: NodePath
 
 export(Array, String, FILE, "*.wav") var voices_path
 
@@ -13,8 +12,6 @@ var voices: = []
 
 var _direction: = Vector2.ZERO
 var _velocity: = Vector2.ZERO
-
-var _combat_position: Node
 
 onready var _effort: = max_effort
 onready var interact: = $Interact
@@ -28,7 +25,6 @@ onready var _game_controller: = $"../GameController"
 	
 func _ready() -> void:
 	_battle.visible = false
-	_combat_position = get_node(combat_position_path)
 	
 	if voices_path.size() > 0:
 		var i := 0
@@ -53,19 +49,13 @@ func move() -> void:
 	_direction.y = Input.get_action_strength("ui_down") - Input.get_action_strength("ui_up")
 	_direction = _direction.normalized()
 
-func start_combat() -> void:
+func start_combat(combat_position) -> void:
 	_battle.visible = true
 	_torso.visible = false
 	_anim.play("Battle_Idle")
 	
-	_tween.interpolate_property(
-		self, 
-		"position", 
-		global_position, 
-		_combat_position.global_position, 
-		0.5, 
-		Tween.TRANS_LINEAR, 
-		Tween.EASE_OUT
+	_tween.interpolate_property(self, "position", global_position, combat_position, 
+		0.5, Tween.TRANS_LINEAR, Tween.EASE_OUT
 	)
 	
 	_tween.start()

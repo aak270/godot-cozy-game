@@ -1,15 +1,12 @@
 extends NPC
 class_name Enemy
 
-export var combat_position_path: NodePath
 export(Array, String, FILE, "*.wav") var voices_path
 
 export var health: = 5
 export var damage: = 10
 
 var voices: = []
-
-var _combat_position: Node
 
 onready var _overworld: = $Overworld
 onready var _batlle: = $Battle
@@ -19,7 +16,6 @@ onready var _tween: = $Tween
 func _ready() -> void:
 	_batlle.visible = false
 	_anim.play("Ov_Idle")
-	_combat_position = get_node(combat_position_path)
 	
 	if voices_path.size() > 0:
 		var i := 0
@@ -31,13 +27,13 @@ func _ready() -> void:
 func interact() -> void:
 	_game_controller.start_dialogue(_dialogues, self)
 
-func start_combat() -> void:
+func start_combat(combat_position) -> void:
 	_batlle.visible = true
 	_overworld.visible = false
 	
 	_anim.play("Battle_Idle")
 	_tween.interpolate_property(self, "position", global_position, 
-		_combat_position.global_position, 0.5, Tween.TRANS_LINEAR, Tween.EASE_OUT
+		combat_position, 0.5, Tween.TRANS_LINEAR, Tween.EASE_OUT
 	)
 	
 	_tween.start()

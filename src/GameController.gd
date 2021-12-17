@@ -8,10 +8,16 @@ enum GameState{
 
 signal effort_changed(value)
 
+export var combatPositionPlayer: NodePath
+export var combatPositionEnemy: NodePath
+
 var state = GameState.MOVE
 var enemy = null
 
 var _dialogue_has_combat = false
+
+var _combat_position_player: Position2D
+var _combat_position_enemy: Position2D
 
 onready var player: = $"../Player"
 
@@ -25,6 +31,9 @@ func _ready() -> void:
 	
 	MusicController.fade_level_music()
 	AudioController.ambience_level()
+	
+	_combat_position_player = get_node(combatPositionPlayer)
+	_combat_position_enemy = get_node(combatPositionEnemy)
 	
 func _process(_delta: float) -> void:
 	if state == GameState.MOVE:
@@ -62,8 +71,8 @@ func start_combat() -> void:
 	
 	state = GameState.COMBAT
 	_combat_system.start()
-	player.start_combat()
-	enemy.start_combat()
+	player.start_combat(_combat_position_player.global_position)
+	enemy.start_combat(_combat_position_enemy.global_position)
 	
 	print("start combat")
 	

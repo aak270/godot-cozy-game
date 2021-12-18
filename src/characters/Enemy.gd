@@ -6,6 +6,7 @@ export(Array, String, FILE, "*.wav") var voices_path
 export var max_health: = 5
 export var damage: = 10
 export var vn: PackedScene
+export var attack_anim: PackedScene
 
 var voices: = []
 

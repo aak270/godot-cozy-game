@@ -105,6 +105,8 @@ func get_voice():
 		
 func reduce_effort(value: int) -> void:
 	_effort -= value
+	if _effort >= max_effort:
+		_effort = max_effort
 	if _effort <= 0:
 		_effort = 0
 	

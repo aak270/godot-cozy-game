@@ -2,10 +2,15 @@ extends TextureButton
 class_name CombatAction
 
 export var action_name: = "Punch"
-export var description: = "It is just a normal punch"
+export(String, MULTILINE) var description: = "It is just a normal punch"
 
 export var effort_needed: = 1
 export var damage: = 5
+export var enemy_damage_modifier: = 1.0
+export var no_prompt: = false
+export var effort_gained: = 0
+
+export var animation: PackedScene = null
 
 var _first_pressed: = true
 
@@ -46,15 +51,24 @@ func _on_pressed() -> void:
 	else:
 		hide_info_box()
 		
-		_combat_system.combat_ui.hide()
-		_combat_system.player_damage = damage
-		
 		var _player = _combat_system.game_controller.player
+		_player.reduce_effort(effort_needed - effort_gained)
 		
-		_player.reduce_effort(effort_needed)
-		yield(_player.attack(), "completed")
+		_combat_system.combat_ui.hide()
+		_combat_system.enemy_damage_modifier = enemy_damage_modifier
 		
-		_combat_system.start_prompt()
+		if not no_prompt:
+			_combat_system.player_damage = damage
+		
+			if animation != null:
+				_combat_system.attackAnimation = animation
+				yield(_combat_system.game_controller.wait(0.3), "completed")
+			else:
+				yield(_player.attack(), "completed")
+			
+			_combat_system.start_prompt()
+		else:
+			_combat_system.enemy_turn()
 
 func _on_focus_entered() -> void:
 	_combat_system.emit_signal("change_action", self)

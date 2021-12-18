@@ -12,7 +12,7 @@ _global_script_classes=[ {
 "base": "TextureButton",
 "class": "CombatAction",
 "language": "GDScript",
-"path": "res://src/ui/CombatAction.gd"
+"path": "res://src/combat/CombatAction.gd"
 }, {
 "base": "NPC",
 "class": "Enemy",

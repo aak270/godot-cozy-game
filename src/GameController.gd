@@ -15,10 +15,10 @@ export var combatPositionEnemy: NodePath
 var state = GameState.MOVE
 var enemy = null
 
-var _dialogue_has_combat = false
+var combat_position_player: Position2D
+var combat_position_enemy: Position2D
 
-var _combat_position_player: Position2D
-var _combat_position_enemy: Position2D
+var _dialogue_has_combat = false
 
 onready var player: = $"../Player"
 
@@ -33,8 +33,8 @@ func _ready() -> void:
 	MusicController.fade_level_music()
 	AudioController.ambience_level()
 	
-	_combat_position_player = get_node(combatPositionPlayer)
-	_combat_position_enemy = get_node(combatPositionEnemy)
+	combat_position_player = get_node(combatPositionPlayer)
+	combat_position_enemy = get_node(combatPositionEnemy)
 	
 func _process(_delta: float) -> void:
 	if state == GameState.MOVE:
@@ -72,8 +72,8 @@ func start_combat() -> void:
 	
 	state = GameState.COMBAT
 	_combat_system.start()
-	player.start_combat(_combat_position_player.global_position)
-	enemy.start_combat(_combat_position_enemy.global_position)
+	player.start_combat(combat_position_player.global_position)
+	enemy.start_combat(combat_position_enemy.global_position)
 	
 	print("start combat")
 	
@@ -84,15 +84,18 @@ func end_combat() -> void:
 	enemy.queue_free()
 	enemy = null
 	
-	_timer.wait_time = 0.3
-	_timer.start()
-	yield(_timer, "timeout")
+	yield(wait(0.3), "completed")
 	
 	_combat_system.end()
 	player.end_combat()
 	state = GameState.MOVE
 	
 	print("end combat")
+	
+func wait(seconds: float) -> void:
+	_timer.wait_time = seconds
+	_timer.start()
+	yield(_timer, "timeout")
 	
 func update_effort(value: int) -> void:
 	emit_signal("effort_changed", value)

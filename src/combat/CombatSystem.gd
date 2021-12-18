@@ -7,17 +7,22 @@ const KeyToPress: = preload("res://src/ui/KeyToPress.tscn")
 export var time_limit: = 2.0
 
 var player_damage: = 0
+var enemy_damage_modifier: = 1.0
+var attackAnimation: PackedScene = null
 
 var _keys_to_press: = []
 var _keys_list: = ["ui_up", "ui_down", "ui_left", "ui_right"]
 
 var _last_action: CombatAction
 var _player_turn: = true
+var _attack_anim: AnimatedSprite = null
+var _enemy_attack_anim: AnimatedSprite = null
 
 var _prompt_started: = false
 var _key_released: = true
 var _key_left: = 0
 var _last_key: = ""
+var _key_indicator_start: = 0
 
 onready var game_controller: = $"../GameController"
 
@@ -26,30 +31,41 @@ onready var _action_controller: = $CombatUI/ActionController
 
 onready var _keys: = $Keys
 onready var _progress_bar: = $ProgressBar
+onready var _key_indicator: = $KeyIndicator
 onready var _tween: = $Tween
 
 onready var _enemy_health: = $EnemyHealth
-onready var _enemy_health_progree: = $EnemyHealth/ProgressBar
+onready var _enemy_health_progress: = $EnemyHealth/ProgressBar
 
 onready var _player: = $"../Player"
 onready var _camera: = $"../Camera2D"
 
 func _ready() -> void:
-	connect("change_action", self, "update_action")
-	game_controller.connect("enemy_hp_changed", self, "update_enemy_hp")
+	var err
+	err = connect("change_action", self, "update_action")
+	if err != OK:
+		print(err)
+	
+	err = game_controller.connect("enemy_hp_changed", self, "update_enemy_hp")
+	if err != OK:
+		print(err)
 	
 	combat_ui.hide()
 	_progress_bar.hide()
+	
+	_key_indicator_start = _key_indicator.rect_position.x
+	_key_indicator.hide()
 	_enemy_health.hide()
 	
-	_last_action = $CombatUI/ActionController/VBoxContainer/Action1
+	_last_action = $CombatUI/ActionController/VBoxContainer/.get_child(0)
 	
 func _input(event: InputEvent) -> void:
-	if _prompt_started and event is InputEventKey and event.pressed:
+	if _prompt_started and event is InputEventKey and event.pressed and event.scancode != KEY_ENTER:
 		if Input.is_action_just_pressed(_keys_to_press[0]):
 			_key_released = false
 			_keys.get_child(0).queue_free()
 			_last_key = _keys_to_press.pop_front()
+			_key_indicator.rect_position.x += 70
 			
 			_key_left -= 1
 			if _key_left == 0:
@@ -72,6 +88,7 @@ func start() -> void:
 	
 	_tween.start()
 	yield(_tween, "tween_completed")
+	_enemy_health_progress.value = 100
 	_enemy_health.show()
 	
 	set_active()
@@ -94,11 +111,16 @@ func player_turn() -> void:
 
 func enemy_turn() -> void:
 	_player_turn = false
-
+		
 	yield(game_controller.enemy.attack(), "completed")
 	start_prompt()
 	
 func start_prompt() -> void:
+	if attackAnimation != null:
+		_attack_anim = attackAnimation.instance()
+		game_controller.combat_position_enemy.add_child(_attack_anim)
+		_attack_anim.play("charging")
+	
 	_keys_to_press.resize(4)
 	for i in range(4):
 		_keys_to_press[i] = _keys_list[int(rand_range(0, 4))]
@@ -116,6 +138,9 @@ func start_prompt() -> void:
 		key_ui.get_child(0).text = key
 		start += 70
 	
+	_key_indicator.show()
+	_key_indicator.rect_position.x = _key_indicator_start - 110
+	
 	_progress_bar.show()
 	_tween.interpolate_property(_progress_bar, "value", 100, 0, time_limit,
 		Tween.TRANS_LINEAR, Tween.EASE_OUT
@@ -132,6 +157,7 @@ func stop_prompt() -> void:
 	_keys_to_press.clear()
 	combat_ui.hide()
 	_progress_bar.hide()
+	_key_indicator.hide()
 	_tween.stop_all()
 	
 	calculate_damage()
@@ -140,17 +166,39 @@ func calculate_damage() -> void:
 	var damage: = 0.0
 	
 	if _player_turn:
+		if attackAnimation != null:
+			_attack_anim.play("attack")
+			
+			yield(_attack_anim, "animation_finished")
+			_attack_anim.queue_free()
+			
+			attackAnimation = null
+			_attack_anim = null
+		else:
+			yield(game_controller.player.attack_end(), "completed")
+		
 		damage = player_damage * float(4 - _key_left) / 4
 		game_controller.enemy.reduce_health(damage)
-		yield(game_controller.player.attack_end(), "completed")
 		
 		if game_controller.enemy.is_dead():
 			game_controller.end_combat()
 		else:
 			enemy_turn()
 	else:
+		if game_controller.enemy.attack_anim != null:
+			_enemy_attack_anim = game_controller.enemy.attack_anim.instance()
+			game_controller.combat_position_player.add_child(_enemy_attack_anim)
+			_enemy_attack_anim.frame = 1
+			_enemy_attack_anim.play("attack")
+			
+			yield(_enemy_attack_anim, "animation_finished")
+			_enemy_attack_anim.queue_free()
+			
+			_enemy_attack_anim = null
+		
 		damage = game_controller.enemy.damage * _key_left / 4
-		game_controller.player.reduce_effort(int(damage))
+		game_controller.player.reduce_effort(int(damage * enemy_damage_modifier))
+		enemy_damage_modifier = 1
 		
 		yield(game_controller.enemy.attack_end(), "completed")
 		player_turn()
@@ -164,7 +212,7 @@ func update_action(node) -> void:
 	_tween.start()
 
 func update_enemy_hp(value) -> void:
-	_enemy_health_progree.value = value
+	_enemy_health_progress.value = value
 
 func _on_tween_completed(object: Object, _key: NodePath) -> void:
 	if _prompt_started and object is ProgressBar:

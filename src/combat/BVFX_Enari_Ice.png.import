@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/row-1-column-3.png-10f46a74b9fa1b8a2c8f42b951da53f6.stex"
+path="res://.import/BVFX_Enari_Ice.png-c44552e5c9eeda932e7d5821e3fa2501.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/BVFX_Enari_Thunder/row-1-column-3.png"
-dest_files=[ "res://.import/row-1-column-3.png-10f46a74b9fa1b8a2c8f42b951da53f6.stex" ]
+source_file="res://src/combat/BVFX_Enari_Ice.png"
+dest_files=[ "res://.import/BVFX_Enari_Ice.png-c44552e5c9eeda932e7d5821e3fa2501.stex" ]
 
 [params]
 

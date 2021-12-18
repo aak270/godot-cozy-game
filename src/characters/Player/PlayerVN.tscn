@@ -1,14 +1,15 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://src/characters/Player/VN_Player_Bothered_Ant.png" type="Texture" id=1]
 [ext_resource path="res://src/characters/Player/VN_Player_Sigh_Ant.png" type="Texture" id=2]
 [ext_resource path="res://src/characters/Player/VN_Player_Sigh.png" type="Texture" id=3]
 [ext_resource path="res://src/characters/Player/VN_Player_Bothered.png" type="Texture" id=4]
+[ext_resource path="res://src/characters/Player/PlayerVN.gd" type="Script" id=5]
 
-[node name="VN" type="Sprite"]
-position = Vector2( -130, 74 )
+[node name="PlayerVN" type="Sprite"]
+position = Vector2( 36, -32 )
 scale = Vector2( 0.3, 0.3 )
-z_index = 4
+script = ExtResource( 5 )
 
 [node name="Bothered" type="Sprite" parent="."]
 texture = ExtResource( 4 )

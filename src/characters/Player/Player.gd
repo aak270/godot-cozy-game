@@ -9,12 +9,14 @@ export var max_effort: = 100
 export(Array, String, FILE, "*.wav") var voices_path
 
 var voices: = []
+var look_left: = false
 
 var _direction: = Vector2.ZERO
 var _velocity: = Vector2.ZERO
 
-onready var _effort: = max_effort
 onready var interact: = $Interact
+
+onready var _effort: = max_effort
 onready var _remote_transform: = $RemoteTransform2D
 onready var _anime_manager: = $PlayerAnimMenager
 onready var _torso: = $Torso

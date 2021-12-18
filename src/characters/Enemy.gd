@@ -3,11 +3,13 @@ class_name Enemy
 
 export(Array, String, FILE, "*.wav") var voices_path
 
-export var health: = 5
+export var max_health: = 5
 export var damage: = 10
 export var vn: PackedScene
 
 var voices: = []
+
+var _health: = 1
 
 onready var _overworld: = $Overworld
 onready var _batlle: = $Battle
@@ -15,6 +17,7 @@ onready var _anim: = $AnimationPlayer
 onready var _tween: = $Tween
 
 func _ready() -> void:
+	_health = max_health
 	_batlle.visible = false
 	_anim.play("Ov_Idle")
 	
@@ -69,7 +72,8 @@ func get_voice():
 		return null
 		
 func reduce_health(value: int) -> void:
-	health -= value
+	_health -= value
+	_game_controller.update_enemy_hp(_health * 100 / max_health)
 
 func is_dead() -> bool:
-	return health <= 0
+	return _health <= 0

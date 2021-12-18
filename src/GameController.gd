@@ -7,6 +7,7 @@ enum GameState{
 }
 
 signal effort_changed(value)
+signal enemy_hp_changed(value)
 
 export var combatPositionPlayer: NodePath
 export var combatPositionEnemy: NodePath
@@ -95,3 +96,6 @@ func end_combat() -> void:
 	
 func update_effort(value: int) -> void:
 	emit_signal("effort_changed", value)
+	
+func update_enemy_hp(value: int) -> void:
+	emit_signal("enemy_hp_changed", value)

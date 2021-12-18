@@ -31,7 +31,7 @@ func _ready() -> void:
 	_portrait.hide()
 
 func play(dialogue_list) -> void:
-	if _game_controller.enemy != null:
+	if _game_controller.enemy.vn != null:
 		_enemy_vn = _game_controller.enemy.vn.instance()
 		_portrait.add_child(_enemy_vn)
 		_enemy_vn.hide()
@@ -40,11 +40,6 @@ func play(dialogue_list) -> void:
 	_finished = false
 	
 	_portrait.show()
-	if _dialogues[0]["name"] == "Player":
-		_player_vn.show()
-	elif _enemy_vn != null:
-		_enemy_vn.show()
-	
 	_panel.show()
 	show_dialogue()
 

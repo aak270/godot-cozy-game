@@ -13,9 +13,18 @@ onready var _combat_system: = get_tree().get_root().get_node("Game/CombatSystem"
 onready var _info_box: = $InfoBox
 
 func _ready() -> void:
-	connect("pressed", self, "_on_pressed")
-	connect("focus_entered", self, "_on_focus_entered")
-	connect("focus_exited", self, "_on_focus_exited")
+	var err
+	err = connect("pressed", self, "_on_pressed")
+	if err != OK:
+		print(err)
+		
+	err = connect("focus_entered", self, "_on_focus_entered")
+	if err != OK:
+		print(err)
+		
+	err = connect("focus_exited", self, "_on_focus_exited")
+	if err != OK:
+		print(err)
 	
 	$InfoBox/ActionName.text = action_name
 	$InfoBox/Effort.text = "%s effort" % effort_needed

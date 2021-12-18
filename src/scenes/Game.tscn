@@ -1,4 +1,4 @@
-[gd_scene load_steps=45 format=2]
+[gd_scene load_steps=50 format=2]
 
 [ext_resource path="res://src/textures/BG_Waves.png" type="Texture" id=1]
 [ext_resource path="res://src/textures/BG_Gradient.png" type="Texture" id=2]
@@ -18,6 +18,7 @@
 [ext_resource path="res://src/ui/Text_Bubble.png" type="Texture" id=16]
 [ext_resource path="res://src/ui/Text_Bubble_Name.png" type="Texture" id=17]
 [ext_resource path="res://src/characters/Enemy_7/Enemy_7VN.tscn" type="PackedScene" id=18]
+[ext_resource path="res://src/ui/Battle_Gauges.png" type="Texture" id=19]
 
 [sub_resource type="Shader" id=14]
 code = "/* 
@@ -388,6 +389,16 @@ region = Rect2( 411, 698, 85, 84 )
 
 [sub_resource type="StyleBoxFlat" id=25]
 bg_color = Color( 1, 0.305882, 0.305882, 1 )
+
+[sub_resource type="StyleBoxFlat" id=42]
+bg_color = Color( 0.882353, 0.196078, 0.196078, 1 )
+
+[sub_resource type="StyleBoxFlat" id=43]
+
+[sub_resource type="StyleBoxFlat" id=44]
+bg_color = Color( 0.882353, 0.196078, 0.196078, 1 )
+
+[sub_resource type="StyleBoxFlat" id=45]
 
 [sub_resource type="ConvexPolygonShape2D" id=5]
 points = PoolVector2Array( 0, 0, 64, 0, 64, 64, 0, 64 )
@@ -932,28 +943,47 @@ __meta__ = {
 
 [node name="Tween" type="Tween" parent="CombatSystem"]
 
-[node name="UILayer" type="CanvasLayer" parent="."]
-script = ExtResource( 12 )
+[node name="EnemyHealth" type="Sprite" parent="CombatSystem"]
+position = Vector2( 888, 169 )
+scale = Vector2( 0.3, 0.3 )
+texture = ExtResource( 19 )
+region_enabled = true
+region_rect = Rect2( 312, 368, 366, 149 )
 
-[node name="ColorRect" type="ColorRect" parent="UILayer"]
-margin_left = 48.0
-margin_top = 24.0
-margin_right = 192.0
-margin_bottom = 64.0
+[node name="ProgressBar" type="ProgressBar" parent="CombatSystem/EnemyHealth"]
+show_behind_parent = true
+margin_left = -60.0
+margin_top = -53.0
+margin_right = 167.0
+margin_bottom = 7.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_styles/fg = SubResource( 42 )
+custom_styles/bg = SubResource( 43 )
+value = 100.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="UILayer/ColorRect"]
-modulate = Color( 0, 0, 0, 1 )
-anchor_top = 0.5
-anchor_bottom = 0.5
-margin_left = 16.0
-margin_top = -7.0
-margin_right = 76.0
-margin_bottom = 7.0
-text = "Effort: %s"
-valign = 1
+[node name="UILayer" type="CanvasLayer" parent="."]
+script = ExtResource( 12 )
+
+[node name="Effort" type="Sprite" parent="UILayer"]
+position = Vector2( 139, 56 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 19 )
+region_enabled = true
+region_rect = Rect2( 314, 636, 366, 135 )
+
+[node name="ProgressBar" type="ProgressBar" parent="UILayer/Effort"]
+show_behind_parent = true
+margin_left = -30.0
+margin_top = -54.0
+margin_right = 170.0
+margin_bottom = -8.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_styles/fg = SubResource( 44 )
+custom_styles/bg = SubResource( 45 )
+value = 100.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -1013,6 +1043,7 @@ vn = ExtResource( 18 )
 
 [node name="Enemy_7_2" parent="." instance=ExtResource( 11 )]
 position = Vector2( 688, 232 )
+max_health = 10
 
 [node name="Player" parent="." instance=ExtResource( 4 )]
 position = Vector2( 384, 256 )

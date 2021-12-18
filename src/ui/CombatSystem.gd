@@ -28,14 +28,19 @@ onready var _keys: = $Keys
 onready var _progress_bar: = $ProgressBar
 onready var _tween: = $Tween
 
+onready var _enemy_health: = $EnemyHealth
+onready var _enemy_health_progree: = $EnemyHealth/ProgressBar
+
 onready var _player: = $"../Player"
 onready var _camera: = $"../Camera2D"
 
 func _ready() -> void:
 	connect("change_action", self, "update_action")
+	game_controller.connect("enemy_hp_changed", self, "update_enemy_hp")
 	
 	combat_ui.hide()
 	_progress_bar.hide()
+	_enemy_health.hide()
 	
 	_last_action = $CombatUI/ActionController/VBoxContainer/Action1
 	
@@ -58,14 +63,6 @@ func _input(event: InputEvent) -> void:
 func set_active() -> void:
 	combat_ui.show()
 	_last_action.grab_focus()
-	
-func update_action(node) -> void:
-	_tween.interpolate_property(_action_controller, "scroll_vertical", 
-		_action_controller.scroll_vertical, node.rect_position.y, 0.1, 
-		Tween.TRANS_QUAD, Tween.EASE_IN
-	)
-	
-	_tween.start()
 
 func start() -> void:
 	_prompt_started = false
@@ -75,6 +72,7 @@ func start() -> void:
 	
 	_tween.start()
 	yield(_tween, "tween_completed")
+	_enemy_health.show()
 	
 	set_active()
 	player_turn()
@@ -82,6 +80,7 @@ func start() -> void:
 func end() -> void:
 	combat_ui.hide()
 	_progress_bar.hide()
+	_enemy_health.hide()
 	
 	_tween.interpolate_property(_camera, "zoom", Vector2(0.8, 0.8), Vector2(1, 1), 
 		0.5, Tween.TRANS_QUAD, Tween.EASE_IN
@@ -155,6 +154,17 @@ func calculate_damage() -> void:
 		
 		yield(game_controller.enemy.attack_end(), "completed")
 		player_turn()
+		
+func update_action(node) -> void:
+	_tween.interpolate_property(_action_controller, "scroll_vertical", 
+		_action_controller.scroll_vertical, node.rect_position.y, 0.1, 
+		Tween.TRANS_QUAD, Tween.EASE_IN
+	)
+	
+	_tween.start()
+
+func update_enemy_hp(value) -> void:
+	_enemy_health_progree.value = value
 
 func _on_tween_completed(object: Object, _key: NodePath) -> void:
 	if _prompt_started and object is ProgressBar:

@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://src/characters/Enemy_7/VN_7_Body.png" type="Texture" id=1]
+[ext_resource path="res://src/characters/Enemy_7/VN_7_Knif.png" type="Texture" id=2]
+
+[node name="VN" type="Sprite"]
+position = Vector2( 65, -23 )
+scale = Vector2( 0.3, 0.3 )
+
+[node name="Vn7Knif" type="Sprite" parent="."]
+texture = ExtResource( 2 )
+flip_h = true
+
+[node name="Vn7Body" type="Sprite" parent="."]
+texture = ExtResource( 1 )
+flip_h = true

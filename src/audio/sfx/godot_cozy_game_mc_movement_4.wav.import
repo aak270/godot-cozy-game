@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/godot_cozy_game_mc_movement_4.wav-dda298f53a8650bd88017b2a77a37737.sample"
+
+[deps]
+
+source_file="res://src/audio/sfx/godot_cozy_game_mc_movement_4.wav"
+dest_files=[ "res://.import/godot_cozy_game_mc_movement_4.wav-dda298f53a8650bd88017b2a77a37737.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

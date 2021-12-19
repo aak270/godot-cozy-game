@@ -13,6 +13,7 @@ func disable_buttons() -> void:
 	_quit_btn.disabled = true
 
 func _on_NewGameButton_pressed() -> void:
+	_new_game_btn.modulate = Color(0.33, 0.59, 0.53)
 	disable_buttons()
 	
 	yield(AudioController.ui_confirm(), "completed")
@@ -22,18 +23,23 @@ func _on_NewGameButton_pressed() -> void:
 	get_tree().change_scene("res://src/scenes/Level1.tscn")
 
 func _on_QuitButton_pressed() -> void:
+	_quit_btn.modulate = Color(0.33, 0.59, 0.53)
 	disable_buttons()
 	yield(AudioController.ui_confirm(), "completed")
 	get_tree().quit()
 
-func _on_NewGameButton_mouse_entered() -> void:
+func _on_NewGameButton_focus_entered() -> void:
+	_new_game_btn.modulate = Color(0.69, 1, 0.93)
 	AudioController.ui_hover()
 
-func _on_QuitButton_mouse_entered() -> void:
+func _on_QuitButton_focus_entered() -> void:
+	_quit_btn.modulate = Color(0.69, 1, 0.93)
 	AudioController.ui_hover()
 
 func _on_NewGameButton_focus_exited() -> void:
+	_new_game_btn.modulate = Color(1, 1, 1)
 	AudioController.ui_hover()
 
 func _on_QuitButton_focus_exited() -> void:
+	_quit_btn.modulate = Color(1, 1, 1)
 	AudioController.ui_hover()

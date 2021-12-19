@@ -1,13 +1,10 @@
-extends CanvasLayer
+extends Control
 
-onready var _effort: = $ColorRect/Label
-onready var _game_controller: = $"../GameController"
+onready var effort: = $EffortFull
 
 func _ready() -> void:
-	var err = _game_controller.connect("effort_changed", self, "update_effort")
-	if err != OK:
-		print(err)
+	EventHandler.connect("effort_changed", self, "update_ui")
 	
-func update_effort(value: float) -> void:
-	if _effort != null:
-		_effort.text = "Effort: %s" % value
+func update_ui(value: float) -> void:
+	if effort != null:
+		effort.rect_size.x = value

@@ -5,7 +5,6 @@ var _can_interact: = false
 var _interactable: Interactable = null
 
 onready var _interact_ui: = $"../InteractionUI"
-onready var _player: = get_parent()
 
 func _ready() -> void:
 	_interact_ui.hide()
@@ -26,10 +25,7 @@ func set_interact(value: bool) -> void:
 		_interact_ui.hide()
 
 func _on_area_entered(area: Area2D) -> void:
-	if area is Enemy:
-		_player.prepare_combat()
-		area.interact()
-	elif area is Interactable:
+	if area is Interactable:
 		_interactable = area
 		set_interact(true)
 

@@ -10,13 +10,10 @@ func _ready() -> void:
 	playback.start("idleR")
 
 func _process(_delta):
-	var x = player.move_to()
-	if x < 0:
+	if player.can_move() and Input.is_action_just_pressed("ui_left"):
 		playback.travel("idle")
-		player.look_left = true
-	if x > 0:
+	if player.can_move() and Input.is_action_just_pressed("ui_right"):
 		playback.travel("idleR")
-		player.look_left = false
 
 func combat() -> void:
 	playback.travel("idleR")

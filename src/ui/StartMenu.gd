@@ -1,39 +1,18 @@
 extends VBoxContainer
 
-onready var _new_game_btn: = $NewGameButton
-onready var _quit_btn: = $QuitButton
+onready var new_game_btn: = $NewGameButton
 
 func _ready() -> void:
-	_new_game_btn.grab_focus()
+	new_game_btn.grab_focus()
 	MusicController.init_music()
 	AudioController.init_ambience()
-	
-func disable_buttons() -> void:
-	_new_game_btn.disabled = true
-	_quit_btn.disabled = true
 
 func _on_NewGameButton_pressed() -> void:
-	disable_buttons()
-	
-	yield(AudioController.ui_confirm(), "completed")
+	get_tree().change_scene("res://src/scenes/Game.tscn")
+	AudioController.ui_confirm()
 	MusicController.fade_level_music_from_main_menu()
 	AudioController.ambience_level_from_main_menu()
-	
-	get_tree().change_scene("res://src/scenes/Game.tscn")
 
-func _on_QuitButton_pressed() -> void:
-	disable_buttons()
-	yield(AudioController.ui_confirm(), "completed")
+func _on_QuitButton_button_up() -> void:
+	AudioController.ui_confirm()
 	get_tree().quit()
-
-func _on_NewGameButton_mouse_entered() -> void:
-	AudioController.ui_hover()
-
-func _on_QuitButton_mouse_entered() -> void:
-	AudioController.ui_hover()
-
-func _on_NewGameButton_focus_exited() -> void:
-	AudioController.ui_hover()
-
-func _on_QuitButton_focus_exited() -> void:
-	AudioController.ui_hover()

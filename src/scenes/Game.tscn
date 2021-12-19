@@ -1,15 +1,23 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=45 format=2]
 
 [ext_resource path="res://src/textures/BG_Waves.png" type="Texture" id=1]
 [ext_resource path="res://src/textures/BG_Gradient.png" type="Texture" id=2]
 [ext_resource path="res://src/textures/BG_Buildings1.png" type="Texture" id=3]
-[ext_resource path="res://src/characters/Player.tscn" type="PackedScene" id=4]
+[ext_resource path="res://src/characters/Player/Player.tscn" type="PackedScene" id=4]
 [ext_resource path="res://icon.png" type="Texture" id=5]
-[ext_resource path="res://src/objects/Interactable.gd" type="Script" id=6]
+[ext_resource path="res://src/objects/Rock.gd" type="Script" id=6]
 [ext_resource path="res://src/dialogues/DialoguePlayer.gd" type="Script" id=7]
 [ext_resource path="res://src/characters/NPC.gd" type="Script" id=8]
-[ext_resource path="res://src/characters/Enemy_Templ.tscn" type="PackedScene" id=9]
-[ext_resource path="res://src/characters/Enemy_7/Enemy_7.tscn" type="PackedScene" id=10]
+[ext_resource path="res://src/GameController.gd" type="Script" id=9]
+[ext_resource path="res://src/ui/CombatSystem.gd" type="Script" id=10]
+[ext_resource path="res://src/characters/Enemy_7/Enemy_7.tscn" type="PackedScene" id=11]
+[ext_resource path="res://src/ui/UI.gd" type="Script" id=12]
+[ext_resource path="res://src/ui/CombatAction.gd" type="Script" id=13]
+[ext_resource path="res://src/ui/Battle_Buttons.png" type="Texture" id=14]
+[ext_resource path="res://src/ui/Battle_Buttons_Unfocused.png" type="Texture" id=15]
+[ext_resource path="res://src/ui/Text_Bubble.png" type="Texture" id=16]
+[ext_resource path="res://src/ui/Text_Bubble_Name.png" type="Texture" id=17]
+[ext_resource path="res://src/characters/Enemy_7/Enemy_7VN.tscn" type="PackedScene" id=18]
 
 [sub_resource type="Shader" id=14]
 code = "/* 
@@ -315,6 +323,72 @@ shader_param/color = Color( 0.6, 0.9, 0.9, 0.8 )
 shader_param/hdr = false
 shader_param/seed = 5.0
 
+[sub_resource type="StyleBoxEmpty" id=26]
+
+[sub_resource type="Theme" id=27]
+VScrollBar/styles/scroll = SubResource( 26 )
+
+[sub_resource type="AtlasTexture" id=39]
+flags = 4
+atlas = ExtResource( 15 )
+region = Rect2( 239, 565, 85, 84 )
+
+[sub_resource type="AtlasTexture" id=40]
+flags = 4
+atlas = ExtResource( 14 )
+region = Rect2( 239, 565, 85, 84 )
+
+[sub_resource type="StyleBoxTexture" id=38]
+texture = ExtResource( 14 )
+region_rect = Rect2( 539, 684, 368, 190 )
+
+[sub_resource type="AtlasTexture" id=30]
+flags = 4
+atlas = ExtResource( 15 )
+region = Rect2( 331, 565, 85, 84 )
+
+[sub_resource type="AtlasTexture" id=31]
+flags = 4
+atlas = ExtResource( 14 )
+region = Rect2( 331, 565, 85, 84 )
+
+[sub_resource type="StyleBoxTexture" id=41]
+texture = ExtResource( 14 )
+region_rect = Rect2( 539, 684, 368, 190 )
+
+[sub_resource type="AtlasTexture" id=32]
+flags = 4
+atlas = ExtResource( 15 )
+region = Rect2( 477, 563, 85, 84 )
+
+[sub_resource type="AtlasTexture" id=33]
+flags = 4
+atlas = ExtResource( 14 )
+region = Rect2( 477, 563, 85, 84 )
+
+[sub_resource type="AtlasTexture" id=34]
+flags = 4
+atlas = ExtResource( 15 )
+region = Rect2( 240, 653, 85, 84 )
+
+[sub_resource type="AtlasTexture" id=35]
+flags = 4
+atlas = ExtResource( 14 )
+region = Rect2( 240, 653, 85, 84 )
+
+[sub_resource type="AtlasTexture" id=36]
+flags = 4
+atlas = ExtResource( 15 )
+region = Rect2( 411, 698, 85, 84 )
+
+[sub_resource type="AtlasTexture" id=37]
+flags = 4
+atlas = ExtResource( 14 )
+region = Rect2( 411, 698, 85, 84 )
+
+[sub_resource type="StyleBoxFlat" id=25]
+bg_color = Color( 1, 0.305882, 0.305882, 1 )
+
 [sub_resource type="ConvexPolygonShape2D" id=5]
 points = PoolVector2Array( 0, 0, 64, 0, 64, 64, 0, 64 )
 
@@ -341,13 +415,13 @@ points = PoolVector2Array( 0, 0, 64, 0, 64, 64, 0, 64 )
 } ]
 0/z_index = 0
 
-[sub_resource type="AnimationNodeStateMachinePlayback" id=18]
-
 [sub_resource type="RectangleShape2D" id=20]
 extents = Vector2( 32, 32 )
 
 [sub_resource type="RectangleShape2D" id=21]
 extents = Vector2( 32, 32 )
+
+[sub_resource type="AnimationNodeStateMachinePlayback" id=23]
 
 [node name="Game" type="Node2D"]
 
@@ -399,39 +473,486 @@ __meta__ = {
 
 [node name="DialoguePlayer" type="CanvasLayer" parent="."]
 script = ExtResource( 7 )
-playerInteract = NodePath("../Player/Interact")
 
-[node name="ColorRect" type="ColorRect" parent="DialoguePlayer"]
+[node name="Portrait" type="Control" parent="DialoguePlayer"]
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-margin_left = -376.0
-margin_top = -136.0
-margin_right = 376.0
-margin_bottom = -48.0
+margin_left = 48.0
+margin_top = -214.0
+margin_right = 48.0
+margin_bottom = -214.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Name" type="RichTextLabel" parent="DialoguePlayer/ColorRect"]
+[node name="DialogBox" type="TextureRect" parent="DialoguePlayer"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -256.0
+margin_top = -512.0
+margin_right = 256.0
+texture = ExtResource( 16 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NameBox" type="TextureRect" parent="DialoguePlayer/DialogBox"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -256.0
+margin_top = -512.0
+margin_right = 256.0
+texture = ExtResource( 17 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Name" type="Label" parent="DialoguePlayer/DialogBox/NameBox"]
 modulate = Color( 0, 0, 0, 1 )
-margin_left = 8.0
-margin_top = 5.0
-margin_right = 128.0
-margin_bottom = 21.0
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -203.0
+margin_top = -162.0
+margin_right = -83.0
+margin_bottom = -146.0
 text = "Name"
+align = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Message" type="RichTextLabel" parent="DialoguePlayer/ColorRect"]
+[node name="Message" type="Label" parent="DialoguePlayer/DialogBox"]
 modulate = Color( 0, 0, 0, 1 )
-margin_left = 16.0
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -108.0
+margin_top = -116.0
+margin_right = 147.0
+margin_bottom = -41.0
+text = "Here's the thing. She doesn't have anything to prove, but she is going to anyway. That's just her character. "
+align = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Timer" type="Timer" parent="DialoguePlayer/DialogBox"]
+one_shot = true
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="DialoguePlayer"]
+mix_target = 2
+
+[node name="CombatSystem" type="CanvasLayer" parent="."]
+script = ExtResource( 10 )
+
+[node name="CombatUI" type="Control" parent="CombatSystem"]
+visible = false
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_left = 285.0
+margin_top = -49.0
+margin_right = 325.0
+margin_bottom = -9.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Arrow" type="Sprite" parent="CombatSystem/CombatUI"]
+position = Vector2( -46, 0 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 14 )
+region_enabled = true
+region_rect = Rect2( 788, 239, 30, 360 )
+
+[node name="ActionController" type="ScrollContainer" parent="CombatSystem/CombatUI"]
+anchor_left = -1.152
+anchor_right = -1.152
+margin_left = 21.08
+margin_top = -21.0
+margin_right = 63.08
+margin_bottom = 20.0
+rect_clip_content = false
+theme = SubResource( 27 )
+scroll_horizontal_enabled = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CombatSystem/CombatUI/ActionController"]
+margin_right = 42.0
+margin_bottom = 226.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="Action1" type="TextureButton" parent="CombatSystem/CombatUI/ActionController/VBoxContainer"]
+margin_right = 42.0
+margin_bottom = 42.0
+rect_min_size = Vector2( 42, 42 )
+texture_normal = SubResource( 39 )
+texture_focused = SubResource( 40 )
+expand = true
+stretch_mode = 4
+script = ExtResource( 13 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="InfoBox" type="Panel" parent="CombatSystem/CombatUI/ActionController/VBoxContainer/Action1"]
+show_behind_parent = true
+margin_left = -5.0
+margin_top = -5.0
+margin_right = 179.0
+margin_bottom = 90.0
+custom_styles/panel = SubResource( 38 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ActionName" type="Label" parent="CombatSystem/CombatUI/ActionController/VBoxContainer/Action1/InfoBox"]
+margin_left = 54.0
+margin_top = 6.0
+margin_right = 135.0
+margin_bottom = 20.0
+text = "Action name"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Effort" type="Label" parent="CombatSystem/CombatUI/ActionController/VBoxContainer/Action1/InfoBox"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -90.0
+margin_top = 6.0
+margin_right = -9.0
+margin_bottom = 20.0
+text = "Effort"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Description" type="Label" parent="CombatSystem/CombatUI/ActionController/VBoxContainer/Action1/InfoBox"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -129.0
+margin_top = -67.0
+margin_right = -4.0
+margin_bottom = -4.0
+text = "Description"
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Action2" type="TextureButton" parent="CombatSystem/CombatUI/ActionController/VBoxContainer"]
+margin_top = 46.0
+margin_right = 42.0
+margin_bottom = 88.0
+rect_min_size = Vector2( 42, 42 )
+texture_normal = SubResource( 30 )
+texture_focused = SubResource( 31 )
+expand = true
+stretch_mode = 4
+script = ExtResource( 13 )
+
+[node name="InfoBox" type="Panel" parent="CombatSystem/CombatUI/ActionController/VBoxContainer/Action2"]
+show_behind_parent = true
+margin_left = -5.0
+margin_top = -5.0
+margin_right = 179.0
+margin_bottom = 90.0
+custom_styles/panel = SubResource( 41 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ActionName" type="Label" parent="CombatSystem/CombatUI/ActionController/VBoxContainer/Action2/InfoBox"]
+margin_left = 54.0
+margin_top = 6.0
+margin_right = 135.0
+margin_bottom = 20.0
+text = "Action name"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Effort" type="Label" parent="CombatSystem/CombatUI/ActionController/VBoxContainer/Action2/InfoBox"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -90.0
+margin_top = 6.0
+margin_right = -9.0
+margin_bottom = 20.0
+text = "Effort"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Description" type="Label" parent="CombatSystem/CombatUI/ActionController/VBoxContainer/Action2/InfoBox"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -129.0
+margin_top = -67.0
+margin_right = -4.0
+margin_bottom = -4.0
+text = "Description"
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Action3" type="TextureButton" parent="CombatSystem/CombatUI/ActionController/VBoxContainer"]
+margin_top = 92.0
+margin_right = 42.0
+margin_bottom = 134.0
+rect_min_size = Vector2( 42, 42 )
+texture_normal = SubResource( 32 )
+texture_focused = SubResource( 33 )
+expand = true
+stretch_mode = 4
+script = ExtResource( 13 )
+
+[node name="InfoBox" type="Panel" parent="CombatSystem/CombatUI/ActionController/VBoxContainer/Action3"]
+show_behind_parent = true
+margin_left = -5.0
+margin_top = -5.0
+margin_right = 179.0
+margin_bottom = 90.0
+custom_styles/panel = SubResource( 41 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ActionName" type="Label" parent="CombatSystem/CombatUI/ActionController/VBoxContainer/Action3/InfoBox"]
+margin_left = 54.0
+margin_top = 6.0
+margin_right = 135.0
+margin_bottom = 20.0
+text = "Action name"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Effort" type="Label" parent="CombatSystem/CombatUI/ActionController/VBoxContainer/Action3/InfoBox"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -90.0
+margin_top = 6.0
+margin_right = -9.0
+margin_bottom = 20.0
+text = "Effort"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Description" type="Label" parent="CombatSystem/CombatUI/ActionController/VBoxContainer/Action3/InfoBox"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -129.0
+margin_top = -67.0
+margin_right = -4.0
+margin_bottom = -4.0
+text = "Description"
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Action4" type="TextureButton" parent="CombatSystem/CombatUI/ActionController/VBoxContainer"]
+margin_top = 138.0
+margin_right = 42.0
+margin_bottom = 180.0
+rect_min_size = Vector2( 42, 42 )
+texture_normal = SubResource( 34 )
+texture_focused = SubResource( 35 )
+expand = true
+stretch_mode = 4
+script = ExtResource( 13 )
+
+[node name="InfoBox" type="Panel" parent="CombatSystem/CombatUI/ActionController/VBoxContainer/Action4"]
+show_behind_parent = true
+margin_left = -5.0
+margin_top = -5.0
+margin_right = 179.0
+margin_bottom = 90.0
+custom_styles/panel = SubResource( 41 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ActionName" type="Label" parent="CombatSystem/CombatUI/ActionController/VBoxContainer/Action4/InfoBox"]
+margin_left = 54.0
+margin_top = 6.0
+margin_right = 135.0
+margin_bottom = 20.0
+text = "Action name"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Effort" type="Label" parent="CombatSystem/CombatUI/ActionController/VBoxContainer/Action4/InfoBox"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -90.0
+margin_top = 6.0
+margin_right = -9.0
+margin_bottom = 20.0
+text = "Effort"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Description" type="Label" parent="CombatSystem/CombatUI/ActionController/VBoxContainer/Action4/InfoBox"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -129.0
+margin_top = -67.0
+margin_right = -4.0
+margin_bottom = -4.0
+text = "Description"
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Action5" type="TextureButton" parent="CombatSystem/CombatUI/ActionController/VBoxContainer"]
+margin_top = 184.0
+margin_right = 42.0
+margin_bottom = 226.0
+rect_min_size = Vector2( 42, 42 )
+texture_normal = SubResource( 36 )
+texture_focused = SubResource( 37 )
+expand = true
+stretch_mode = 4
+script = ExtResource( 13 )
+
+[node name="InfoBox" type="Panel" parent="CombatSystem/CombatUI/ActionController/VBoxContainer/Action5"]
+show_behind_parent = true
+margin_left = -5.0
+margin_top = -5.0
+margin_right = 179.0
+margin_bottom = 90.0
+custom_styles/panel = SubResource( 41 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ActionName" type="Label" parent="CombatSystem/CombatUI/ActionController/VBoxContainer/Action5/InfoBox"]
+margin_left = 54.0
+margin_top = 6.0
+margin_right = 135.0
+margin_bottom = 20.0
+text = "Action name"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Effort" type="Label" parent="CombatSystem/CombatUI/ActionController/VBoxContainer/Action5/InfoBox"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -90.0
+margin_top = 6.0
+margin_right = -9.0
+margin_bottom = 20.0
+text = "Effort"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Description" type="Label" parent="CombatSystem/CombatUI/ActionController/VBoxContainer/Action5/InfoBox"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -129.0
+margin_top = -67.0
+margin_right = -4.0
+margin_bottom = -4.0
+text = "Description"
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Keys" type="Control" parent="CombatSystem"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -20.0
+margin_top = -20.0
+margin_right = 20.0
+margin_bottom = 20.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ProgressBar" type="ProgressBar" parent="CombatSystem"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -88.0
+margin_top = 44.0
+margin_right = 88.0
+margin_bottom = 58.0
+custom_styles/fg = SubResource( 25 )
+value = 100.0
+percent_visible = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tween" type="Tween" parent="CombatSystem"]
+
+[node name="UILayer" type="CanvasLayer" parent="."]
+script = ExtResource( 12 )
+
+[node name="ColorRect" type="ColorRect" parent="UILayer"]
+margin_left = 48.0
 margin_top = 24.0
-margin_right = 736.0
-margin_bottom = 72.0
-text = "Message"
+margin_right = 192.0
+margin_bottom = 64.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="UILayer/ColorRect"]
+modulate = Color( 0, 0, 0, 1 )
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_left = 16.0
+margin_top = -7.0
+margin_right = 76.0
+margin_bottom = 7.0
+text = "Effort: %s"
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -440,7 +961,7 @@ __meta__ = {
 modulate = Color( 0, 0, 0, 1 )
 tile_set = SubResource( 19 )
 format = 1
-tile_data = PoolIntArray( -2, 0, 0, -1, 0, 0, -65536, 0, 0, -65535, 0, 0, -65534, 0, 0, -65533, 0, 0, -65532, 0, 0, -65531, 0, 0, -65530, 0, 0, -65529, 0, 0, -65528, 0, 0, -65527, 0, 0, -65526, 0, 0, -65525, 0, 0, -65524, 0, 0, -65523, 0, 0, -65522, 0, 0, -65521, 0, 0, -65520, 0, 0, -65519, 0, 0, -65518, 0, 0, -65517, 0, 0, -65516, 0, 0, -65515, 0, 0, -65514, 0, 0, -65513, 0, 0, -65512, 0, 0, -65511, 0, 0, -65510, 0, 0, -65509, 0, 0, -65508, 0, 0, -65507, 0, 0, -65506, 0, 0, -65505, 0, 0, -65504, 0, 0, -65503, 0, 0, -65502, 0, 0, -65501, 0, 0, -65500, 0, 0, -65499, 0, 0, -65498, 0, 0, -65497, 0, 0, -65496, 0, 0, -65495, 0, 0, -65494, 0, 0, -65493, 0, 0, -65492, 0, 0, -65491, 0, 0, -65490, 0, 0, -65489, 0, 0, -65488, 0, 0, -65487, 0, 0, -65486, 0, 0, -65485, 0, 0, -65484, 0, 0, 65534, 0, 0, 20, 0, 0, 29, 0, 0, 52, 0, 0, 131070, 0, 0, 65556, 0, 0, 65565, 0, 0, 65588, 0, 0, 196606, 0, 0, 131092, 0, 0, 131101, 0, 0, 131124, 0, 0, 262142, 0, 0, 196628, 0, 0, 196660, 0, 0, 327678, 0, 0, 262164, 0, 0, 262196, 0, 0, 393214, 0, 0, 327700, 0, 0, 327719, 0, 0, 327732, 0, 0, 458750, 0, 0, 393255, 0, 0, 393268, 0, 0, 524286, 0, 0, 458761, 0, 0, 458781, 0, 0, 458791, 0, 0, 458804, 0, 0, 589822, 0, 0, 524297, 0, 0, 524317, 0, 0, 524327, 0, 0, 524340, 0, 0, 655358, 0, 0, 589833, 0, 0, 589853, 0, 0, 589863, 0, 0, 589876, 0, 0, 720894, 0, 0, 720895, 0, 0, 655360, 0, 0, 655361, 0, 0, 655362, 0, 0, 655363, 0, 0, 655364, 0, 0, 655365, 0, 0, 655366, 0, 0, 655367, 0, 0, 655368, 0, 0, 655369, 0, 0, 655370, 0, 0, 655371, 0, 0, 655372, 0, 0, 655373, 0, 0, 655374, 0, 0, 655375, 0, 0, 655376, 0, 0, 655377, 0, 0, 655378, 0, 0, 655379, 0, 0, 655380, 0, 0, 655381, 0, 0, 655382, 0, 0, 655383, 0, 0, 655384, 0, 0, 655385, 0, 0, 655386, 0, 0, 655387, 0, 0, 655388, 0, 0, 655389, 0, 0, 655390, 0, 0, 655391, 0, 0, 655392, 0, 0, 655393, 0, 0, 655394, 0, 0, 655395, 0, 0, 655396, 0, 0, 655397, 0, 0, 655398, 0, 0, 655399, 0, 0, 655400, 0, 0, 655401, 0, 0, 655402, 0, 0, 655403, 0, 0, 655404, 0, 0, 655405, 0, 0, 655406, 0, 0, 655407, 0, 0, 655408, 0, 0, 655409, 0, 0, 655410, 0, 0, 655411, 0, 0, 655412, 0, 0 )
+tile_data = PoolIntArray( -2, 0, 0, -1, 0, 0, -65536, 0, 0, -65535, 0, 0, -65534, 0, 0, -65533, 0, 0, -65532, 0, 0, -65531, 0, 0, -65530, 0, 0, -65529, 0, 0, -65528, 0, 0, -65527, 0, 0, -65526, 0, 0, -65525, 0, 0, -65524, 0, 0, -65523, 0, 0, -65522, 0, 0, -65521, 0, 0, -65520, 0, 0, -65519, 0, 0, -65518, 0, 0, -65517, 0, 0, -65516, 0, 0, -65515, 0, 0, -65514, 0, 0, -65513, 0, 0, -65512, 0, 0, -65511, 0, 0, -65510, 0, 0, -65509, 0, 0, -65508, 0, 0, -65507, 0, 0, -65506, 0, 0, -65505, 0, 0, -65504, 0, 0, -65503, 0, 0, -65502, 0, 0, -65501, 0, 0, -65500, 0, 0, -65499, 0, 0, -65498, 0, 0, -65497, 0, 0, -65496, 0, 0, -65495, 0, 0, -65494, 0, 0, -65493, 0, 0, -65492, 0, 0, -65491, 0, 0, -65490, 0, 0, -65489, 0, 0, -65488, 0, 0, -65487, 0, 0, -65486, 0, 0, -65485, 0, 0, -65484, 0, 0, 65534, 0, 0, 20, 0, 0, 29, 0, 0, 52, 0, 0, 131070, 0, 0, 65556, 0, 0, 65565, 0, 0, 65588, 0, 0, 196606, 0, 0, 131092, 0, 0, 131101, 0, 0, 131124, 0, 0, 262142, 0, 0, 196628, 0, 0, 196660, 0, 0, 327678, 0, 0, 262164, 0, 0, 262196, 0, 0, 393214, 0, 0, 327700, 0, 0, 327732, 0, 0, 458750, 0, 0, 393268, 0, 0, 524286, 0, 0, 458761, 0, 0, 458781, 0, 0, 458804, 0, 0, 589822, 0, 0, 524297, 0, 0, 524317, 0, 0, 524340, 0, 0, 655358, 0, 0, 589833, 0, 0, 589853, 0, 0, 589876, 0, 0, 720894, 0, 0, 720895, 0, 0, 655360, 0, 0, 655361, 0, 0, 655362, 0, 0, 655363, 0, 0, 655364, 0, 0, 655365, 0, 0, 655366, 0, 0, 655367, 0, 0, 655368, 0, 0, 655369, 0, 0, 655370, 0, 0, 655371, 0, 0, 655372, 0, 0, 655373, 0, 0, 655374, 0, 0, 655375, 0, 0, 655376, 0, 0, 655377, 0, 0, 655378, 0, 0, 655379, 0, 0, 655380, 0, 0, 655381, 0, 0, 655382, 0, 0, 655383, 0, 0, 655384, 0, 0, 655385, 0, 0, 655386, 0, 0, 655387, 0, 0, 655388, 0, 0, 655389, 0, 0, 655390, 0, 0, 655391, 0, 0, 655392, 0, 0, 655393, 0, 0, 655394, 0, 0, 655395, 0, 0, 655396, 0, 0, 655397, 0, 0, 655398, 0, 0, 655399, 0, 0, 655400, 0, 0, 655401, 0, 0, 655402, 0, 0, 655403, 0, 0, 655404, 0, 0, 655405, 0, 0, 655406, 0, 0, 655407, 0, 0, 655408, 0, 0, 655409, 0, 0, 655410, 0, 0, 655411, 0, 0, 655412, 0, 0 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2( 384, 256 )
@@ -454,25 +975,19 @@ position = Vector2( -300, -24 )
 [node name="EnemyPosition" type="Position2D" parent="Camera2D"]
 position = Vector2( 300, -24 )
 
-[node name="Player" parent="." instance=ExtResource( 4 )]
-position = Vector2( 384, 256 )
-z_index = 10
-combat_position_path = NodePath("../Camera2D/PlayerPosition")
-
-[node name="PlayerAnimMenager" parent="Player" index="8"]
-parameters/StateMachine/playback = SubResource( 18 )
-
-[node name="Chest" type="Area2D" parent="."]
+[node name="Rock" type="Area2D" parent="."]
 position = Vector2( 96, 608 )
 collision_layer = 4
 collision_mask = 0
 script = ExtResource( 6 )
+first_text = "This is a rock."
+second_text = "This is still a rock."
 
-[node name="Sprite" type="Sprite" parent="Chest"]
+[node name="Sprite" type="Sprite" parent="Rock"]
 modulate = Color( 0.447059, 1, 0.517647, 1 )
 texture = ExtResource( 5 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Chest"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Rock"]
 shape = SubResource( 20 )
 
 [node name="NPC" type="Area2D" parent="."]
@@ -489,10 +1004,31 @@ texture = ExtResource( 5 )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="NPC"]
 shape = SubResource( 21 )
 
-[node name="Enemy" parent="." instance=ExtResource( 9 )]
-position = Vector2( 1166, 229 )
+[node name="Enemy_7" parent="." instance=ExtResource( 11 )]
+position = Vector2( 2528, 288 )
+dialogue_file = "res://src/dialogues/enemy_1_dialogue.json"
+voices_path = [ "res://src/audio/voices/godot_cozy_game_voice_blip_enemy_1_1.wav", "res://src/audio/voices/godot_cozy_game_voice_blip_enemy_1_2.wav", "res://src/audio/voices/godot_cozy_game_voice_blip_enemy_1_3.wav" ]
+vn = ExtResource( 18 )
 
-[node name="Enemy_7" parent="." instance=ExtResource( 10 )]
-position = Vector2( 1164, 489 )
+[node name="Enemy_7_2" parent="." instance=ExtResource( 11 )]
+position = Vector2( 688, 232 )
+
+[node name="Player" parent="." instance=ExtResource( 4 )]
+position = Vector2( 384, 256 )
+z_index = 5
+voices_path = [ "res://src/audio/voices/godot_cozy_game_voice_blip_mc_default_1_v3.wav", "res://src/audio/voices/godot_cozy_game_voice_blip_mc_default_2_v3.wav", "res://src/audio/voices/godot_cozy_game_voice_blip_mc_default_3_v3.wav", "res://src/audio/voices/godot_cozy_game_voice_blip_mc_default_4_v3.wav", "res://src/audio/voices/godot_cozy_game_voice_blip_mc_default_5_v3.wav" ]
+
+[node name="PlayerAnimMenager" parent="Player" index="7"]
+parameters/StateMachine/playback = SubResource( 23 )
+
+[node name="GameController" type="Node" parent="."]
+script = ExtResource( 9 )
+combatPositionPlayer = NodePath("../Camera2D/PlayerPosition")
+combatPositionEnemy = NodePath("../Camera2D/EnemyPosition")
+
+[node name="Timer" type="Timer" parent="GameController"]
+one_shot = true
+
+[connection signal="tween_completed" from="CombatSystem/Tween" to="CombatSystem" method="_on_tween_completed"]
 
 [editable path="Player"]

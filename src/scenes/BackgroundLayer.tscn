@@ -1,14 +1,10 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=10 format=2]
 
-[ext_resource path="res://src/characters/Enemy_7/Battle_Kodo_Tentas.png" type="Texture" id=1]
-[ext_resource path="res://src/characters/Enemy_7/Battle_Kodo.png" type="Texture" id=2]
-[ext_resource path="res://src/characters/Player/TailSheet.png" type="Texture" id=4]
-[ext_resource path="res://src/characters/Player/Battle_Player_Sheet.png" type="Texture" id=6]
-[ext_resource path="res://src/textures/BG_Gradient.png" type="Texture" id=9]
-[ext_resource path="res://src/textures/BG_Buildings1.png" type="Texture" id=10]
-[ext_resource path="res://src/textures/BG_Waves.png" type="Texture" id=11]
+[ext_resource path="res://src/textures/BG_Waves.png" type="Texture" id=1]
+[ext_resource path="res://src/textures/BG_Buildings1.png" type="Texture" id=2]
+[ext_resource path="res://src/textures/BG_Gradient.png" type="Texture" id=3]
 
-[sub_resource type="Shader" id=17]
+[sub_resource type="Shader" id=14]
 code = "/* 
 Earthbound battle backgrounds shader with scrolling effect and palette cycling like in the original game.
 @retr0_dev
@@ -49,7 +45,7 @@ void fragment()
 }"
 
 [sub_resource type="ShaderMaterial" id=15]
-shader = SubResource( 17 )
+shader = SubResource( 14 )
 shader_param/screen_height = 640.0
 shader_param/amplitude = 0.045
 shader_param/frequency = 16.0
@@ -62,7 +58,7 @@ shader_param/scrolling_speed = 0.08
 shader_param/enable_palette_cycling = false
 shader_param/palette_speed = 0.1
 
-[sub_resource type="Shader" id=18]
+[sub_resource type="Shader" id=11]
 code = "/*
 Shader from Godot Shaders - the free shader library.
 godotshaders.com/shader/god-rays
@@ -171,8 +167,8 @@ void fragment()
 	COLOR = vec4(shine, rays * color.a);
 }"
 
-[sub_resource type="ShaderMaterial" id=12]
-shader = SubResource( 18 )
+[sub_resource type="ShaderMaterial" id=16]
+shader = SubResource( 11 )
 shader_param/angle = 0.8
 shader_param/position = 0.2
 shader_param/spread = 0.5
@@ -187,7 +183,7 @@ shader_param/color = Color( 0.6, 0.9, 0.65, 0.8 )
 shader_param/hdr = false
 shader_param/seed = 5.0
 
-[sub_resource type="Shader" id=19]
+[sub_resource type="Shader" id=13]
 code = "/*
 Shader from Godot Shaders - the free shader library.
 godotshaders.com/shader/god-rays
@@ -296,8 +292,8 @@ void fragment()
 	COLOR = vec4(shine, rays * color.a);
 }"
 
-[sub_resource type="ShaderMaterial" id=10]
-shader = SubResource( 19 )
+[sub_resource type="ShaderMaterial" id=17]
+shader = SubResource( 13 )
 shader_param/angle = -0.3
 shader_param/position = -0.2
 shader_param/spread = 0.5
@@ -312,57 +308,27 @@ shader_param/color = Color( 0.6, 0.9, 0.9, 0.8 )
 shader_param/hdr = false
 shader_param/seed = 5.0
 
-[sub_resource type="CapsuleShape2D" id=20]
-radius = 9.5
-height = 59.0
-
-[sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 32.75, 40.5 )
-
-[sub_resource type="SpriteFrames" id=21]
-animations = [ {
-"frames": [  ],
-"loop": true,
-"name": "default",
-"speed": 5.0
-} ]
-
-[node name="World" type="Node2D"]
-position = Vector2( 1, 0 )
-
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2( 511, 312 )
-current = true
-process_mode = 0
-smoothing_enabled = true
-
-[node name="PlayerPosition" type="Position2D" parent="Camera2D"]
-position = Vector2( -300, -24 )
-
-[node name="EnemyPosition" type="Position2D" parent="Camera2D"]
-position = Vector2( 300, -24 )
-
-[node name="BackgroundLayer" type="CanvasLayer" parent="."]
+[node name="BackgroundLayer" type="CanvasLayer"]
 layer = -10
 
-[node name="Background" type="Node2D" parent="BackgroundLayer"]
+[node name="Background" type="Node2D" parent="."]
 position = Vector2( 29, 40 )
 scale = Vector2( 27.7343, 11.4687 )
 z_index = -10
 
-[node name="Gradient" type="Sprite" parent="BackgroundLayer/Background"]
+[node name="Gradient" type="Sprite" parent="Background"]
 position = Vector2( 16.6941, 23.9783 )
 scale = Vector2( 0.0103668, 0.0242127 )
-texture = ExtResource( 9 )
+texture = ExtResource( 3 )
 
-[node name="Waves" type="Sprite" parent="BackgroundLayer/Background"]
+[node name="Waves" type="Sprite" parent="Background"]
 material = SubResource( 15 )
 position = Vector2( 16.7302, 23.7166 )
 scale = Vector2( 0.0116321, 0.0233361 )
-texture = ExtResource( 11 )
+texture = ExtResource( 1 )
 
-[node name="GodRays2" type="ColorRect" parent="BackgroundLayer/Background"]
-material = SubResource( 12 )
+[node name="GodRays2" type="ColorRect" parent="Background"]
+material = SubResource( 16 )
 margin_left = -2.19945
 margin_top = -3.48774
 margin_right = 37.8006
@@ -372,13 +338,13 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Buildings1" type="Sprite" parent="BackgroundLayer/Background"]
+[node name="Buildings1" type="Sprite" parent="Background"]
 position = Vector2( 16.8744, 26.594 )
 scale = Vector2( 0.0100449, 0.0202109 )
-texture = ExtResource( 10 )
+texture = ExtResource( 2 )
 
-[node name="GodRays" type="ColorRect" parent="BackgroundLayer/Background"]
-material = SubResource( 10 )
+[node name="GodRays" type="ColorRect" parent="Background"]
+material = SubResource( 17 )
 margin_left = -4.1465
 margin_top = -4.27248
 margin_right = 35.8535
@@ -387,173 +353,3 @@ rect_scale = Vector2( 1.53119, 1.41559 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[node name="Player" type="KinematicBody2D" parent="."]
-position = Vector2( 207, 296 )
-z_index = 1
-collision_layer = 2
-
-[node name="Battle" type="Sprite" parent="Player"]
-scale = Vector2( 0.3, 0.3 )
-
-[node name="Body" type="Sprite" parent="Player/Battle"]
-position = Vector2( 0, -50 )
-texture = ExtResource( 6 )
-region_enabled = true
-region_rect = Rect2( 199.838, 180.707, 131.944, 232.155 )
-
-[node name="Head" type="Sprite" parent="Player/Battle/Body"]
-position = Vector2( 0, -146.667 )
-z_index = 3
-texture = ExtResource( 6 )
-region_enabled = true
-region_rect = Rect2( 14.6838, -3.42079, 164.211, 169.474 )
-
-[node name="Ant" type="Sprite" parent="Player/Battle/Body/Head"]
-position = Vector2( 40, 13.3333 )
-rotation = 0.13698
-z_index = -1
-texture = ExtResource( 6 )
-offset = Vector2( 13.3333, -63.3333 )
-region_enabled = true
-region_rect = Rect2( 189, 19.45, 47.5, 167.2 )
-
-[node name="Face" type="Sprite" parent="Player/Battle/Body/Head"]
-position = Vector2( 26.6667, 23.3334 )
-z_index = 1
-texture = ExtResource( 6 )
-region_enabled = true
-region_rect = Rect2( 293.5, 52.7, 88.35, 100.7 )
-
-[node name="Arm_1_R" type="Sprite" parent="Player/Battle"]
-position = Vector2( -30, -60 )
-z_index = 1
-texture = ExtResource( 6 )
-region_enabled = true
-region_rect = Rect2( 53.6332, 185.001, 70.5263, 129.474 )
-
-[node name="Arm_2_R" type="Sprite" parent="Player/Battle/Arm_1_R"]
-position = Vector2( 6.66667, 23.3333 )
-z_index = 2
-texture = ExtResource( 6 )
-region_enabled = true
-region_rect = Rect2( -5.31265, 191.32, 26.3158, 33.6842 )
-
-[node name="Arm_3_R" type="Sprite" parent="Player/Battle/Arm_1_R"]
-position = Vector2( -26.6667, 50 )
-z_index = 1
-texture = ExtResource( 6 )
-offset = Vector2( 33.3333, -3.33332 )
-region_enabled = true
-region_rect = Rect2( 75.74, 319.741, 80, 57.8947 )
-
-[node name="Arm_4_R" type="Sprite" parent="Player/Battle/Arm_1_R/Arm_3_R"]
-position = Vector2( 60, 2.86102e-06 )
-z_index = -1
-texture = ExtResource( 6 )
-region_enabled = true
-region_rect = Rect2( 90.6293, 383.151, 44.7477, 24.5797 )
-
-[node name="Pocket" type="Sprite" parent="Player/Battle"]
-position = Vector2( 16.6667, -13.3333 )
-z_index = 5
-texture = ExtResource( 6 )
-region_enabled = true
-region_rect = Rect2( 336.003, 288.969, 72.0222, 62.0499 )
-
-[node name="Arm_1_L" type="Sprite" parent="Player/Battle"]
-position = Vector2( 36.6667, -60 )
-z_index = -3
-texture = ExtResource( 6 )
-flip_h = true
-region_enabled = true
-region_rect = Rect2( 53.6332, 185.001, 70.5263, 129.474 )
-
-[node name="Arm_2_L" type="Sprite" parent="Player/Battle/Arm_1_L"]
-position = Vector2( 3.33331, 30 )
-rotation = 1.75327
-z_index = 5
-texture = ExtResource( 6 )
-flip_h = true
-region_enabled = true
-region_rect = Rect2( -5.31265, 191.32, 26.3158, 33.6842 )
-
-[node name="Arm_3_L" type="Sprite" parent="Player/Battle/Arm_1_L"]
-position = Vector2( 26.6667, 53.3333 )
-z_index = 4
-texture = ExtResource( 6 )
-offset = Vector2( -33.2845, -5.08646 )
-flip_h = true
-region_enabled = true
-region_rect = Rect2( 75.74, 319.741, 80, 57.8947 )
-
-[node name="Arm_4_L" type="Sprite" parent="Player/Battle/Arm_1_L/Arm_3_L"]
-position = Vector2( -60, -3.33331 )
-z_index = -1
-texture = ExtResource( 6 )
-flip_h = true
-region_enabled = true
-region_rect = Rect2( 90.6293, 383.151, 44.7477, 24.5797 )
-
-[node name="Tail" type="Sprite" parent="Player/Battle"]
-position = Vector2( 6.66667, 303.333 )
-z_index = -3
-texture = ExtResource( 4 )
-hframes = 16
-frame = 1
-region_enabled = true
-region_rect = Rect2( 0, 0, 7648, 649 )
-
-[node name="CollisionBody" type="CollisionShape2D" parent="Player"]
-position = Vector2( 1, 0 )
-z_index = 1
-shape = SubResource( 20 )
-__meta__ = {
-"_edit_group_": true
-}
-
-[node name="RemoteTransform2D" type="RemoteTransform2D" parent="Player"]
-remote_path = NodePath("../../Camera2D")
-update_position = false
-
-[node name="Enemy_7" type="Area2D" parent="."]
-position = Vector2( 815, 296 )
-collision_layer = 8
-collision_mask = 0
-
-[node name="Battle" type="Sprite" parent="Enemy_7"]
-position = Vector2( 2, -11 )
-scale = Vector2( 0.4, 0.4 )
-
-[node name="Head" type="Sprite" parent="Enemy_7/Battle"]
-texture = ExtResource( 2 )
-region_enabled = true
-region_rect = Rect2( 105.71, -7.39137, 193.829, 247.75 )
-
-[node name="Face" type="Sprite" parent="Enemy_7/Battle/Head"]
-position = Vector2( -35, 17.5 )
-z_index = 3
-texture = ExtResource( 2 )
-region_enabled = true
-region_rect = Rect2( 0, 0, 100, 120.138 )
-
-[node name="Knife" type="Sprite" parent="Enemy_7/Battle"]
-position = Vector2( -52.5, 60 )
-rotation = 0.636097
-z_index = -2
-texture = ExtResource( 2 )
-offset = Vector2( -75, -7.50001 )
-region_enabled = true
-region_rect = Rect2( -26.3658, 235.894, 268.421, 167.368 )
-
-[node name="Tentacles" type="Sprite" parent="Enemy_7/Battle"]
-position = Vector2( -5, 130 )
-texture = ExtResource( 1 )
-hframes = 5
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy_7"]
-position = Vector2( -2.25, 5.5 )
-shape = SubResource( 1 )
-
-[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
-frames = SubResource( 21 )

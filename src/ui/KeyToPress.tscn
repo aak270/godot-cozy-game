@@ -1,6 +1,6 @@
 [gd_scene format=2]
 
-[node name="ColorRect" type="ColorRect"]
+[node name="KeyToPress" type="ColorRect"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5

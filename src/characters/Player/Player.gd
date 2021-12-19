@@ -109,6 +109,7 @@ func reduce_effort(value: int) -> void:
 		_effort = max_effort
 	if _effort <= 0:
 		_effort = 0
+		get_tree().change_scene("res://src/scenes/StartScreen.tscn")
 	
 	_game_controller.update_effort(_effort)
 	

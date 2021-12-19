@@ -1,6 +1,8 @@
-[gd_scene format=2]
+[gd_scene load_steps=2 format=2]
 
-[node name="KeyToPress" type="ColorRect"]
+[ext_resource path="res://src/ui/Arrows.png" type="Texture" id=1]
+
+[node name="KeyToPress" type="Control"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -9,19 +11,18 @@ margin_left = -30.0
 margin_top = -30.0
 margin_right = 30.0
 margin_bottom = 30.0
-color = Color( 0, 0, 0, 1 )
+rect_scale = Vector2( 0.5, 0.5 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="."]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -23.5
-margin_top = -7.0
-margin_right = 23.5
-margin_bottom = 7.0
-text = "ui_right"
-align = 1
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 149, 27, 80, 104 )
+
+[node name="HighLight" type="Sprite" parent="."]
+visible = false
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 23, 22, 107, 122 )

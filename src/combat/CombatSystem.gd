@@ -10,6 +10,7 @@ var player_damage: = 0
 var enemy_damage_modifier: = 1.0
 var attackAnimation: PackedScene = null
 
+var _keys_node: = []
 var _keys_to_press: = []
 var _keys_list: = ["ui_up", "ui_down", "ui_left", "ui_right"]
 
@@ -20,9 +21,9 @@ var _enemy_attack_anim: AnimatedSprite = null
 
 var _prompt_started: = false
 var _key_released: = true
-var _key_left: = 0
+var _correct_key: = 0
 var _last_key: = ""
-var _key_indicator_start: = 0
+var _current_key: = 0
 
 onready var game_controller: = $"../GameController"
 
@@ -31,7 +32,6 @@ onready var _action_controller: = $CombatUI/ActionController
 
 onready var _keys: = $Keys
 onready var _progress_bar: = $ProgressBar
-onready var _key_indicator: = $KeyIndicator
 onready var _tween: = $Tween
 
 onready var _enemy_health: = $EnemyHealth
@@ -52,26 +52,40 @@ func _ready() -> void:
 	
 	combat_ui.hide()
 	_progress_bar.hide()
-	
-	_key_indicator_start = _key_indicator.rect_position.x
-	_key_indicator.hide()
 	_enemy_health.hide()
 	
 	_last_action = $CombatUI/ActionController/VBoxContainer/.get_child(0)
 	
 func _input(event: InputEvent) -> void:
 	if _prompt_started and event is InputEventKey and event.pressed and event.scancode != KEY_ENTER:
-		if Input.is_action_just_pressed(_keys_to_press[0]):
+		if Input.is_action_just_pressed(_keys_to_press[_current_key]):
+			_correct_key += 1
 			_key_released = false
-			_keys.get_child(0).queue_free()
-			_last_key = _keys_to_press.pop_front()
-			_key_indicator.rect_position.x += 70
+			_keys_node[_current_key].modulate = Color(0, 1, 0)
 			
-			_key_left -= 1
-			if _key_left == 0:
+			_keys_node[_current_key].get_child(0).visible = true
+			_keys_node[_current_key].get_child(1).visible = false
+			
+			_last_key = _keys_to_press[_current_key]
+			_current_key += 1
+			if _current_key >= _keys_node.size():
 				stop_prompt()
+			else:
+				_keys_node[_current_key].get_child(0).visible = false
+				_keys_node[_current_key].get_child(1).visible = true
 		elif _key_released:
-			stop_prompt()
+			_keys_node[_current_key].modulate = Color(1, 0, 0)
+			
+			_keys_node[_current_key].get_child(0).visible = true
+			_keys_node[_current_key].get_child(1).visible = false
+			
+			_last_key = _keys_to_press[_current_key]
+			_current_key += 1
+			if _current_key >= _keys_node.size():
+				stop_prompt()
+			else:
+				_keys_node[_current_key].get_child(0).visible = false
+				_keys_node[_current_key].get_child(1).visible = true
 	
 	if not _key_released and Input.is_action_just_released(_last_key):
 		_key_released = true
@@ -127,21 +141,33 @@ func start_prompt() -> void:
 	
 	_prompt_started = true
 	_key_released = true
-	_key_left = 4
+	_correct_key = 0
+	_current_key = 0
 	
-	var start = -60 * 2
+	var start = -35 * 2
 	for key in _keys_to_press:
 		var key_ui: = KeyToPress.instance()
+		match key:
+			"ui_up":
+				key_ui.rect_rotation = 0
+			"ui_right":
+				key_ui.rect_rotation = 90
+			"ui_down":
+				key_ui.rect_rotation = 180
+			"ui_left":
+				key_ui.rect_rotation = 270
+		
 		_keys.add_child(key_ui)
+		_keys_node.append(key_ui)
 		
 		key_ui.rect_position.x = start
-		key_ui.get_child(0).text = key
-		start += 70
+		start += 60
 	
-	_key_indicator.show()
-	_key_indicator.rect_position.x = _key_indicator_start - 110
+	_keys.get_child(_current_key).get_child(0).visible = false
+	_keys.get_child(_current_key).get_child(1).visible = true
 	
 	_progress_bar.show()
+	_progress_bar.value = 100
 	_tween.interpolate_property(_progress_bar, "value", 100, 0, time_limit,
 		Tween.TRANS_LINEAR, Tween.EASE_OUT
 	)
@@ -150,15 +176,16 @@ func start_prompt() -> void:
 
 func stop_prompt() -> void:
 	_prompt_started = false
+	_tween.remove(_progress_bar, "value")
 	
+	yield(game_controller.wait(0.5), "completed")
 	for child in _keys.get_children():
 		child.queue_free()
 	
+	_keys_node.clear()
 	_keys_to_press.clear()
 	combat_ui.hide()
 	_progress_bar.hide()
-	_key_indicator.hide()
-	_tween.stop_all()
 	
 	calculate_damage()
 	
@@ -177,8 +204,8 @@ func calculate_damage() -> void:
 		else:
 			yield(game_controller.player.attack_end(), "completed")
 		
-		damage = player_damage * float(4 - _key_left) / 4
-		game_controller.enemy.reduce_health(damage)
+		damage = player_damage * _correct_key / 4.0
+		game_controller.enemy.reduce_health(int(damage))
 		
 		if game_controller.enemy.is_dead():
 			game_controller.end_combat()
@@ -196,7 +223,7 @@ func calculate_damage() -> void:
 			
 			_enemy_attack_anim = null
 		
-		damage = game_controller.enemy.damage * _key_left / 4
+		damage = game_controller.enemy.damage * (4 - _correct_key) / 4
 		game_controller.player.reduce_effort(int(damage * enemy_damage_modifier))
 		enemy_damage_modifier = 1
 		

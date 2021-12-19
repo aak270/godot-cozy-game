@@ -1,12 +1,10 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=18 format=2]
 
-[ext_resource path="res://src/characters/Player.tscn" type="PackedScene" id=1]
-[ext_resource path="res://icon.png" type="Texture" id=2]
-[ext_resource path="res://src/characters/Enemy.gd" type="Script" id=3]
-[ext_resource path="res://src/ui/CombatUI.gd" type="Script" id=4]
-[ext_resource path="res://src/ui/UI.gd" type="Script" id=5]
-[ext_resource path="res://src/objects/Interactable.gd" type="Script" id=7]
-[ext_resource path="res://src/characters/NPC.gd" type="Script" id=8]
+[ext_resource path="res://src/characters/Enemy_7/Battle_Kodo_Tentas.png" type="Texture" id=1]
+[ext_resource path="res://src/characters/Enemy_7/Battle_Kodo.png" type="Texture" id=2]
+[ext_resource path="res://src/ui/CombatAction.gd" type="Script" id=3]
+[ext_resource path="res://src/characters/Player/TailSheet.png" type="Texture" id=4]
+[ext_resource path="res://src/characters/Player/Battle_Player_Sheet.png" type="Texture" id=6]
 [ext_resource path="res://src/textures/BG_Gradient.png" type="Texture" id=9]
 [ext_resource path="res://src/textures/BG_Buildings1.png" type="Texture" id=10]
 [ext_resource path="res://src/textures/BG_Waves.png" type="Texture" id=11]
@@ -315,48 +313,21 @@ shader_param/color = Color( 0.6, 0.9, 0.9, 0.8 )
 shader_param/hdr = false
 shader_param/seed = 5.0
 
-[sub_resource type="ConvexPolygonShape2D" id=20]
-points = PoolVector2Array( 0, 0, 64, 0, 64, 64, 0, 64 )
+[sub_resource type="CapsuleShape2D" id=20]
+radius = 9.5
+height = 59.0
 
-[sub_resource type="TileSet" id=6]
-0/name = "icon.png 0"
-0/texture = ExtResource( 2 )
-0/tex_offset = Vector2( 0, 0 )
-0/modulate = Color( 1, 1, 1, 1 )
-0/region = Rect2( 0, 0, 64, 64 )
-0/tile_mode = 0
-0/occluder_offset = Vector2( 0, 0 )
-0/navigation_offset = Vector2( 0, 0 )
-0/shape_offset = Vector2( 0, 0 )
-0/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-0/shape = SubResource( 20 )
-0/shape_one_way = false
-0/shape_one_way_margin = 1.0
-0/shapes = [ {
-"autotile_coord": Vector2( 0, 0 ),
-"one_way": false,
-"one_way_margin": 1.0,
-"shape": SubResource( 20 ),
-"shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
-} ]
-0/z_index = 0
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 32.75, 40.5 )
 
-[sub_resource type="AnimationNodeStateMachinePlayback" id=16]
-
-[sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 24, 24 )
-
-[sub_resource type="RectangleShape2D" id=7]
-extents = Vector2( 32, 32 )
-
-[sub_resource type="RectangleShape2D" id=8]
-extents = Vector2( 32, 32 )
+[sub_resource type="StyleBoxFlat" id=30]
+bg_color = Color( 1, 0.305882, 0.305882, 1 )
 
 [node name="World" type="Node2D"]
 position = Vector2( 1, 0 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2( 492, 315 )
+position = Vector2( 511, 312 )
 current = true
 process_mode = 0
 smoothing_enabled = true
@@ -413,121 +384,212 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="Player" type="KinematicBody2D" parent="."]
+position = Vector2( 207, 296 )
+z_index = 1
+collision_layer = 2
 
-[node name="UI" type="Control" parent="CanvasLayer"]
-margin_right = 40.0
-margin_bottom = 40.0
-script = ExtResource( 5 )
+[node name="Battle" type="Sprite" parent="Player"]
+scale = Vector2( 0.3, 0.3 )
+
+[node name="Body" type="Sprite" parent="Player/Battle"]
+position = Vector2( 0, -50 )
+texture = ExtResource( 6 )
+region_enabled = true
+region_rect = Rect2( 199.838, 180.707, 131.944, 232.155 )
+
+[node name="Head" type="Sprite" parent="Player/Battle/Body"]
+position = Vector2( 0, -146.667 )
+z_index = 3
+texture = ExtResource( 6 )
+region_enabled = true
+region_rect = Rect2( 14.6838, -3.42079, 164.211, 169.474 )
+
+[node name="Ant" type="Sprite" parent="Player/Battle/Body/Head"]
+position = Vector2( 40, 13.3333 )
+rotation = 0.13698
+z_index = -1
+texture = ExtResource( 6 )
+offset = Vector2( 13.3333, -63.3333 )
+region_enabled = true
+region_rect = Rect2( 189, 19.45, 47.5, 167.2 )
+
+[node name="Face" type="Sprite" parent="Player/Battle/Body/Head"]
+position = Vector2( 26.6667, 23.3334 )
+z_index = 1
+texture = ExtResource( 6 )
+region_enabled = true
+region_rect = Rect2( 293.5, 52.7, 88.35, 100.7 )
+
+[node name="Arm_1_R" type="Sprite" parent="Player/Battle"]
+position = Vector2( -30, -60 )
+z_index = 1
+texture = ExtResource( 6 )
+region_enabled = true
+region_rect = Rect2( 53.6332, 185.001, 70.5263, 129.474 )
+
+[node name="Arm_2_R" type="Sprite" parent="Player/Battle/Arm_1_R"]
+position = Vector2( 6.66667, 23.3333 )
+z_index = 2
+texture = ExtResource( 6 )
+region_enabled = true
+region_rect = Rect2( -5.31265, 191.32, 26.3158, 33.6842 )
+
+[node name="Arm_3_R" type="Sprite" parent="Player/Battle/Arm_1_R"]
+position = Vector2( -26.6667, 50 )
+z_index = 1
+texture = ExtResource( 6 )
+offset = Vector2( 33.3333, -3.33332 )
+region_enabled = true
+region_rect = Rect2( 75.74, 319.741, 80, 57.8947 )
+
+[node name="Arm_4_R" type="Sprite" parent="Player/Battle/Arm_1_R/Arm_3_R"]
+position = Vector2( 60, 2.86102e-06 )
+z_index = -1
+texture = ExtResource( 6 )
+region_enabled = true
+region_rect = Rect2( 90.6293, 383.151, 44.7477, 24.5797 )
+
+[node name="Pocket" type="Sprite" parent="Player/Battle"]
+position = Vector2( 16.6667, -13.3333 )
+z_index = 5
+texture = ExtResource( 6 )
+region_enabled = true
+region_rect = Rect2( 336.003, 288.969, 72.0222, 62.0499 )
+
+[node name="Arm_1_L" type="Sprite" parent="Player/Battle"]
+position = Vector2( 36.6667, -60 )
+z_index = -3
+texture = ExtResource( 6 )
+flip_h = true
+region_enabled = true
+region_rect = Rect2( 53.6332, 185.001, 70.5263, 129.474 )
+
+[node name="Arm_2_L" type="Sprite" parent="Player/Battle/Arm_1_L"]
+position = Vector2( 3.33331, 30 )
+rotation = 1.75327
+z_index = 5
+texture = ExtResource( 6 )
+flip_h = true
+region_enabled = true
+region_rect = Rect2( -5.31265, 191.32, 26.3158, 33.6842 )
+
+[node name="Arm_3_L" type="Sprite" parent="Player/Battle/Arm_1_L"]
+position = Vector2( 26.6667, 53.3333 )
+z_index = 4
+texture = ExtResource( 6 )
+offset = Vector2( -33.2845, -5.08646 )
+flip_h = true
+region_enabled = true
+region_rect = Rect2( 75.74, 319.741, 80, 57.8947 )
+
+[node name="Arm_4_L" type="Sprite" parent="Player/Battle/Arm_1_L/Arm_3_L"]
+position = Vector2( -60, -3.33331 )
+z_index = -1
+texture = ExtResource( 6 )
+flip_h = true
+region_enabled = true
+region_rect = Rect2( 90.6293, 383.151, 44.7477, 24.5797 )
+
+[node name="Tail" type="Sprite" parent="Player/Battle"]
+position = Vector2( 6.66667, 303.333 )
+z_index = -3
+texture = ExtResource( 4 )
+hframes = 16
+frame = 1
+region_enabled = true
+region_rect = Rect2( 0, 0, 7648, 649 )
+
+[node name="CollisionBody" type="CollisionShape2D" parent="Player"]
+position = Vector2( 1, 0 )
+z_index = 1
+shape = SubResource( 20 )
 __meta__ = {
-"_edit_use_anchors_": false
+"_edit_group_": true
 }
 
-[node name="EffortBorder" type="ColorRect" parent="CanvasLayer/UI"]
-margin_left = 16.0
-margin_top = 32.0
-margin_right = 232.0
-margin_bottom = 72.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="Player"]
+remote_path = NodePath("../../Camera2D")
+update_position = false
 
-[node name="EffortEmpty" type="ColorRect" parent="CanvasLayer/UI"]
-margin_left = 24.0
-margin_top = 40.0
-margin_right = 224.0
-margin_bottom = 64.0
-color = Color( 0.231373, 0.231373, 0.231373, 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="Enemy_7" type="Area2D" parent="."]
+position = Vector2( 815, 296 )
+collision_layer = 8
+collision_mask = 0
 
-[node name="EffortFull" type="ColorRect" parent="CanvasLayer/UI"]
-margin_left = 24.0
-margin_top = 40.0
-margin_right = 224.0
-margin_bottom = 64.0
-color = Color( 0.227451, 0.713726, 0.305882, 1 )
+[node name="Battle" type="Sprite" parent="Enemy_7"]
+position = Vector2( 2, -11 )
+scale = Vector2( 0.4, 0.4 )
 
-[node name="Dialogue" type="Control" parent="CanvasLayer"]
-anchor_left = 0.5
+[node name="Head" type="Sprite" parent="Enemy_7/Battle"]
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 105.71, -7.39137, 193.829, 247.75 )
+
+[node name="Face" type="Sprite" parent="Enemy_7/Battle/Head"]
+position = Vector2( -35, 17.5 )
+z_index = 3
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 100, 120.138 )
+
+[node name="Knife" type="Sprite" parent="Enemy_7/Battle"]
+position = Vector2( -52.5, 60 )
+rotation = 0.636097
+z_index = -2
+texture = ExtResource( 2 )
+offset = Vector2( -75, -7.50001 )
+region_enabled = true
+region_rect = Rect2( -26.3658, 235.894, 268.421, 167.368 )
+
+[node name="Tentacles" type="Sprite" parent="Enemy_7/Battle"]
+position = Vector2( -5, 130 )
+texture = ExtResource( 1 )
+hframes = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy_7"]
+position = Vector2( -2.25, 5.5 )
+shape = SubResource( 1 )
+
+[node name="CombatSystem" type="CanvasLayer" parent="."]
+
+[node name="ButtonContainer" type="HBoxContainer" parent="CombatSystem"]
+visible = false
 anchor_top = 1.0
-anchor_right = 0.5
 anchor_bottom = 1.0
-margin_left = -20.0
-margin_top = -40.0
-margin_right = 20.0
+margin_left = 80.0
+margin_top = -80.0
+margin_right = 280.0
+margin_bottom = -40.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer/Dialogue"]
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-margin_left = -376.0
-margin_top = -136.0
-margin_right = 376.0
-margin_bottom = -48.0
-
-[node name="Name" type="RichTextLabel" parent="CanvasLayer/Dialogue/ColorRect"]
-modulate = Color( 0, 0, 0, 1 )
-margin_left = 8.0
-margin_top = 5.0
-margin_right = 128.0
-margin_bottom = 21.0
-text = "Name"
-
-[node name="Message" type="RichTextLabel" parent="CanvasLayer/Dialogue/ColorRect"]
-modulate = Color( 0, 0, 0, 1 )
-margin_left = 16.0
-margin_top = 24.0
-margin_right = 736.0
-margin_bottom = 72.0
-text = "Message"
-
-[node name="CombatUI" type="Control" parent="CanvasLayer"]
-pause_mode = 2
-anchor_right = 1.0
-anchor_bottom = 1.0
-script = ExtResource( 4 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/CombatUI"]
-anchor_top = 1.0
-anchor_bottom = 1.0
-margin_left = 64.0
-margin_top = -88.0
-margin_right = 472.0
-margin_bottom = -48.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Attack1Button" type="Button" parent="CanvasLayer/CombatUI/HBoxContainer"]
-margin_right = 133.0
+[node name="Button1" type="Button" parent="CombatSystem/ButtonContainer"]
+margin_right = 64.0
 margin_bottom = 40.0
-size_flags_horizontal = 3
-text = "Attack1"
+text = "Attack 1"
+script = ExtResource( 3 )
 
-[node name="Attack2Button" type="Button" parent="CanvasLayer/CombatUI/HBoxContainer"]
-margin_left = 137.0
-margin_right = 270.0
+[node name="Button2" type="Button" parent="CombatSystem/ButtonContainer"]
+margin_left = 68.0
+margin_right = 132.0
 margin_bottom = 40.0
-size_flags_horizontal = 3
-text = "Attack2"
+text = "Attack 2"
+script = ExtResource( 3 )
+effort_needed = 5
+damage = 10
 
-[node name="Attack3Button" type="Button" parent="CanvasLayer/CombatUI/HBoxContainer"]
-margin_left = 274.0
-margin_right = 408.0
+[node name="Button3" type="Button" parent="CombatSystem/ButtonContainer"]
+margin_left = 136.0
+margin_right = 200.0
 margin_bottom = 40.0
-size_flags_horizontal = 3
-text = "Attack3"
+text = "Attack 3"
+script = ExtResource( 3 )
+effort_needed = 10
+damage = 15
 
-[node name="Keys" type="Control" parent="CanvasLayer/CombatUI"]
+[node name="Keys" type="Control" parent="CombatSystem"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -540,66 +602,25 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="TileMap" type="TileMap" parent="."]
-modulate = Color( 0, 0, 0, 1 )
-tile_set = SubResource( 6 )
-format = 1
-tile_data = PoolIntArray( 0, 0, 0, 1, 0, 0, 2, 0, 0, 3, 0, 0, 4, 0, 0, 5, 0, 0, 6, 0, 0, 7, 0, 0, 8, 0, 0, 9, 0, 0, 10, 0, 0, 11, 0, 0, 12, 0, 0, 13, 0, 0, 14, 0, 0, 15, 0, 0, 16, 0, 0, 17, 0, 0, 18, 0, 0, 19, 0, 0, 20, 0, 0, 21, 0, 0, 22, 0, 0, 23, 0, 0, 24, 0, 0, 25, 0, 0, 26, 0, 0, 27, 0, 0, 65536, 0, 0, 65563, 0, 0, 131072, 0, 0, 131099, 0, 0, 196608, 0, 0, 196611, 0, 0, 196612, 0, 0, 196613, 0, 0, 196635, 0, 0, 262144, 0, 0, 262171, 0, 0, 327680, 0, 0, 327707, 0, 0, 393216, 0, 0, 393220, 0, 0, 393223, 0, 0, 393243, 0, 0, 458752, 0, 0, 458756, 0, 0, 458759, 0, 0, 458762, 0, 0, 458763, 0, 0, 458764, 0, 0, 458779, 0, 0, 524288, 0, 0, 524315, 0, 0, 589824, 0, 0, 589825, 0, 0, 589826, 0, 0, 589827, 0, 0, 589828, 0, 0, 589829, 0, 0, 589830, 0, 0, 589831, 0, 0, 589832, 0, 0, 589833, 0, 0, 589834, 0, 0, 589835, 0, 0, 589836, 0, 0, 589837, 0, 0, 589838, 0, 0, 589839, 0, 0, 589840, 0, 0, 589841, 0, 0, 589842, 0, 0, 589843, 0, 0, 589844, 0, 0, 589845, 0, 0, 589846, 0, 0, 589847, 0, 0, 589848, 0, 0, 589849, 0, 0, 589850, 0, 0, 589851, 0, 0 )
+[node name="ProgressBar" type="ProgressBar" parent="CombatSystem"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -88.0
+margin_top = 44.0
+margin_right = 88.0
+margin_bottom = 58.0
+custom_styles/fg = SubResource( 30 )
+value = 100.0
+percent_visible = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="Player" parent="." instance=ExtResource( 1 )]
-position = Vector2( 492, 315 )
-combat_position_path = NodePath("../Camera2D/PlayerPosition")
+[node name="Tween" type="Tween" parent="CombatSystem"]
 
-[node name="PlayerAnimMenager" parent="Player" index="6"]
-parameters/StateMachine/playback = SubResource( 16 )
-
-[node name="Enemy" type="Area2D" parent="."]
-modulate = Color( 0.901961, 0.294118, 0.294118, 1 )
-position = Vector2( 816, 280 )
-collision_layer = 0
-collision_mask = 2
-script = ExtResource( 3 )
-combat_position_path = NodePath("../Camera2D/EnemyPosition")
-
-[node name="Sprite" type="Sprite" parent="Enemy"]
-texture = ExtResource( 2 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy"]
-shape = SubResource( 2 )
-
-[node name="Object" type="Area2D" parent="."]
-position = Vector2( 680, 144 )
-collision_layer = 0
-collision_mask = 2
-script = ExtResource( 7 )
-
-[node name="Sprite" type="Sprite" parent="Object"]
-modulate = Color( 0.447059, 1, 0.517647, 1 )
-texture = ExtResource( 2 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Object"]
-shape = SubResource( 7 )
-
-[node name="NPC" type="Area2D" parent="."]
-position = Vector2( 704, 384 )
-collision_layer = 0
-collision_mask = 2
-script = ExtResource( 8 )
-
-[node name="Sprite" type="Sprite" parent="NPC"]
-modulate = Color( 0.945098, 0.968627, 0.223529, 1 )
-texture = ExtResource( 2 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="NPC"]
-shape = SubResource( 8 )
-
-[connection signal="pressed" from="CanvasLayer/CombatUI/HBoxContainer/Attack1Button" to="CanvasLayer/CombatUI" method="_on_Attack1Button_pressed"]
-[connection signal="pressed" from="CanvasLayer/CombatUI/HBoxContainer/Attack2Button" to="CanvasLayer/CombatUI" method="_on_Attack2Button_pressed"]
-[connection signal="pressed" from="CanvasLayer/CombatUI/HBoxContainer/Attack3Button" to="CanvasLayer/CombatUI" method="_on_Attack3Button_pressed"]
-[connection signal="body_entered" from="Enemy" to="Enemy" method="_on_body_entered"]
-[connection signal="body_entered" from="Object" to="Object" method="_on_body_entered"]
-[connection signal="body_exited" from="Object" to="Object" method="_on_body_exited"]
-[connection signal="body_entered" from="NPC" to="NPC" method="_on_body_entered"]
-[connection signal="body_exited" from="NPC" to="NPC" method="_on_body_exited"]
-
-[editable path="Player"]
+[connection signal="pressed" from="CombatSystem/ButtonContainer/Button1" to="CombatSystem/ButtonContainer/Button1" method="_on_pressed"]
+[connection signal="pressed" from="CombatSystem/ButtonContainer/Button2" to="CombatSystem/ButtonContainer/Button2" method="_on_pressed"]
+[connection signal="pressed" from="CombatSystem/ButtonContainer/Button3" to="CombatSystem/ButtonContainer/Button3" method="_on_pressed"]
+[connection signal="tween_completed" from="CombatSystem/Tween" to="CombatSystem" method="_on_tween_completed"]

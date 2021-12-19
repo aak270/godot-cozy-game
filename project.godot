@@ -9,7 +9,12 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "Area2D",
+"base": "TextureButton",
+"class": "CombatAction",
+"language": "GDScript",
+"path": "res://src/ui/CombatAction.gd"
+}, {
+"base": "NPC",
 "class": "Enemy",
 "language": "GDScript",
 "path": "res://src/characters/Enemy.gd"
@@ -19,14 +24,21 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://src/objects/Interactable.gd"
 }, {
+"base": "Interactable",
+"class": "NPC",
+"language": "GDScript",
+"path": "res://src/characters/NPC.gd"
+}, {
 "base": "Node2D",
 "class": "PlayerInteract",
 "language": "GDScript",
-"path": "res://src/characters/PlayerInteract.gd"
+"path": "res://src/characters/Player/PlayerInteract.gd"
 } ]
 _global_script_class_icons={
+"CombatAction": "",
 "Enemy": "",
 "Interactable": "",
+"NPC": "",
 "PlayerInteract": ""
 }
 
@@ -38,13 +50,14 @@ config/icon="res://icon.png"
 
 [autoload]
 
-EventHandler="*res://src/singletons/EventHandler.tscn"
 AudioController="*res://autoloads/AudioController.tscn"
 MusicController="*res://autoloads/MusicController.tscn"
 
 [display]
 
 window/size/always_on_top=true
+window/stretch/mode="2d"
+window/stretch/aspect="keep"
 
 [input]
 
@@ -82,6 +95,7 @@ ui_down={
 2d_physics/layer_1="World"
 2d_physics/layer_2="Player"
 2d_physics/layer_3="Interactable"
+2d_physics/layer_4="Enemy"
 
 [physics]
 

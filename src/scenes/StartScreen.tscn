@@ -73,5 +73,9 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[connection signal="focus_exited" from="Menu/NewGameButton" to="Menu" method="_on_NewGameButton_focus_exited"]
+[connection signal="mouse_entered" from="Menu/NewGameButton" to="Menu" method="_on_NewGameButton_mouse_entered"]
 [connection signal="pressed" from="Menu/NewGameButton" to="Menu" method="_on_NewGameButton_pressed"]
-[connection signal="button_up" from="Menu/QuitButton" to="Menu" method="_on_QuitButton_button_up"]
+[connection signal="focus_exited" from="Menu/QuitButton" to="Menu" method="_on_QuitButton_focus_exited"]
+[connection signal="mouse_entered" from="Menu/QuitButton" to="Menu" method="_on_QuitButton_mouse_entered"]
+[connection signal="pressed" from="Menu/QuitButton" to="Menu" method="_on_QuitButton_pressed"]

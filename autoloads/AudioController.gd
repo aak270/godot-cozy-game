@@ -35,6 +35,7 @@ func ambience_battle():
 
 func ui_confirm():
 	$UIConfirm.play()
+	yield($UIConfirm, "finished")
 
 func ui_back():
 	$UIBack.play()

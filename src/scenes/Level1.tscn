@@ -31,7 +31,7 @@
 [ext_resource path="res://src/characters/Pogo/Pogo.tscn" type="PackedScene" id=29]
 [ext_resource path="res://src/characters/Pogo/PogoVN.tscn" type="PackedScene" id=30]
 [ext_resource path="res://src/objects/AutoDialogue.gd" type="Script" id=31]
-[ext_resource path="res://src/scenes/EndDialogue.gd" type="Script" id=32]
+[ext_resource path="res://src/dialogues/EndDialogue.gd" type="Script" id=32]
 
 [sub_resource type="StyleBoxEmpty" id=46]
 
@@ -3194,6 +3194,7 @@ position = Vector2( 384, 256 )
 z_index = 5
 max_effort = 50
 voices_path = [ "res://src/audio/voices/godot_cozy_game_voice_blip_mc_default_1_v3.wav", "res://src/audio/voices/godot_cozy_game_voice_blip_mc_default_2_v3.wav", "res://src/audio/voices/godot_cozy_game_voice_blip_mc_default_3_v3.wav", "res://src/audio/voices/godot_cozy_game_voice_blip_mc_default_4_v3.wav", "res://src/audio/voices/godot_cozy_game_voice_blip_mc_default_5_v3.wav" ]
+sfx_path = [ "res://src/audio/sfx/godot_cozy_game_mc_movement_1.wav", "res://src/audio/sfx/godot_cozy_game_mc_movement_2.wav", "res://src/audio/sfx/godot_cozy_game_mc_movement_3.wav", "res://src/audio/sfx/godot_cozy_game_mc_movement_4.wav", "res://src/audio/sfx/godot_cozy_game_mc_movement_5.wav" ]
 
 [node name="AnimationPlayer" parent="Player" index="6"]
 anims/Battle_Idle = SubResource( 15 )
@@ -3204,6 +3205,8 @@ anims/idleR = SubResource( 18 )
 [node name="PlayerAnimMenager" parent="Player" index="7"]
 parameters/StateMachine/playback = SubResource( 19 )
 
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Player"]
+
 [node name="Enemies" type="Node2D" parent="."]
 
 [node name="7" parent="Enemies" instance=ExtResource( 14 )]
@@ -3212,6 +3215,7 @@ rotation = 3.14159
 scale = Vector2( 1, -1 )
 dialogue_file = "res://src/dialogues/encounter_1_dialogue.json"
 voices_path = [ "res://src/audio/voices/godot_cozy_game_voice_blip_enemy_1_1.wav", "res://src/audio/voices/godot_cozy_game_voice_blip_enemy_1_2.wav", "res://src/audio/voices/godot_cozy_game_voice_blip_enemy_1_3.wav" ]
+max_health = 10
 vn = ExtResource( 12 )
 attack_anim = ExtResource( 13 )
 
@@ -3221,6 +3225,7 @@ shape = SubResource( 71 )
 
 [node name="4" parent="Enemies" instance=ExtResource( 29 )]
 position = Vector2( -1221, 15 )
+max_health = 20
 vn = ExtResource( 30 )
 
 [node name="Overworld" parent="Enemies/4" index="0"]
@@ -3241,6 +3246,8 @@ collision_mask = 0
 script = ExtResource( 8 )
 dialogue_file = "res://src/dialogues/encounter_3_dialogue.json"
 voices_path = [ "res://src/audio/voices/godot_cozy_game_voice_blip_enemy_1_1.wav", "res://src/audio/voices/godot_cozy_game_voice_blip_enemy_1_2.wav", "res://src/audio/voices/godot_cozy_game_voice_blip_enemy_1_3.wav" ]
+max_health = 30
+damage = 15
 vn = ExtResource( 12 )
 attack_anim = ExtResource( 13 )
 

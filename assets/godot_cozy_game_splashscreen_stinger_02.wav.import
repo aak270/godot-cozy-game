@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/godot_cozy_game_splashscreen_stinger_02.wav-ec143ee0b9ae40e5f8db954293a98bfc.sample"
+
+[deps]
+
+source_file="res://assets/godot_cozy_game_splashscreen_stinger_02.wav"
+dest_files=[ "res://.import/godot_cozy_game_splashscreen_stinger_02.wav-ec143ee0b9ae40e5f8db954293a98bfc.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

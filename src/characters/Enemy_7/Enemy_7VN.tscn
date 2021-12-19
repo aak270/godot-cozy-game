@@ -4,11 +4,13 @@
 [ext_resource path="res://src/characters/Enemy_7/VN_7_Knif.png" type="Texture" id=2]
 
 [node name="VN" type="Sprite"]
-position = Vector2( -74, -20 )
+position = Vector2( 65, -23 )
 scale = Vector2( 0.3, 0.3 )
 
 [node name="Vn7Knif" type="Sprite" parent="."]
 texture = ExtResource( 2 )
+flip_h = true
 
 [node name="Vn7Body" type="Sprite" parent="."]
 texture = ExtResource( 1 )
+flip_h = true

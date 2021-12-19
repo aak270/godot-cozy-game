@@ -3210,8 +3210,6 @@ parameters/StateMachine/playback = SubResource( 19 )
 position = Vector2( -174, 423 )
 rotation = 3.14159
 scale = Vector2( 1, -1 )
-monitoring = false
-monitorable = false
 dialogue_file = "res://src/dialogues/encounter_1_dialogue.json"
 voices_path = [ "res://src/audio/voices/godot_cozy_game_voice_blip_enemy_1_1.wav", "res://src/audio/voices/godot_cozy_game_voice_blip_enemy_1_2.wav", "res://src/audio/voices/godot_cozy_game_voice_blip_enemy_1_3.wav" ]
 vn = ExtResource( 12 )
@@ -3223,8 +3221,6 @@ shape = SubResource( 71 )
 
 [node name="4" parent="Enemies" instance=ExtResource( 29 )]
 position = Vector2( -1221, 15 )
-monitoring = false
-monitorable = false
 vn = ExtResource( 30 )
 
 [node name="Overworld" parent="Enemies/4" index="0"]
@@ -3242,8 +3238,6 @@ rotation = -3.14159
 scale = Vector2( 1, -1 )
 collision_layer = 8
 collision_mask = 0
-monitoring = false
-monitorable = false
 script = ExtResource( 8 )
 dialogue_file = "res://src/dialogues/encounter_3_dialogue.json"
 voices_path = [ "res://src/audio/voices/godot_cozy_game_voice_blip_enemy_1_1.wav", "res://src/audio/voices/godot_cozy_game_voice_blip_enemy_1_2.wav", "res://src/audio/voices/godot_cozy_game_voice_blip_enemy_1_3.wav" ]

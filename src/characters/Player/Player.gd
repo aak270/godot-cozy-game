@@ -7,9 +7,10 @@ export var friction: = 1800
 export var max_effort: = 100
 
 export(Array, String, FILE, "*.wav") var voices_path
+export(Array, String, FILE, "*.wav") var sfx_path
 
 var voices: = []
-var look_left: = false
+var sfx: = []
 
 var _direction: = Vector2.ZERO
 var _velocity: = Vector2.ZERO
@@ -23,6 +24,7 @@ onready var _torso: = $Torso
 onready var _battle: = $Battle
 onready var _anim: = $AnimationPlayer
 onready var _tween: = $Tween
+onready var _audio: = $AudioStreamPlayer
 onready var _game_controller: = $"../GameController"
 	
 func _ready() -> void:
@@ -34,11 +36,23 @@ func _ready() -> void:
 		for path in voices_path:
 			voices[i] = load(path)
 			i += 1
+			
+	if sfx_path.size() > 0:
+		var i := 0
+		sfx.resize(sfx_path.size())
+		for path in sfx_path:
+			sfx[i] = load(path)
+			i += 1
 	
 	_game_controller.update_effort(max_effort)
 
 func _physics_process(delta: float) -> void:	
 	if _direction != Vector2.ZERO:
+		var stream = get_sfx();
+		if stream != null and !_audio.is_playing():
+			_audio.stream = stream
+			_audio.play()
+		
 		_velocity = _velocity.move_toward(_direction * speed, accel * delta)
 	else:
 		_velocity = _velocity.move_toward(Vector2.ZERO, friction * delta)
@@ -69,6 +83,7 @@ func move_to() -> float:
 	return _direction.x
 	
 func stop_movement() -> void:
+	_audio.stop()
 	_velocity = Vector2.ZERO
 	_direction = Vector2.ZERO
 
@@ -98,6 +113,12 @@ func attack_end() -> void:
 func get_voice():
 	if voices_path.size() > 0:
 		return voices[int(rand_range(0, voices.size()))]
+	else:
+		return null
+		
+func get_sfx():
+	if sfx_path.size() > 0:
+		return sfx[int(rand_range(0, sfx_path.size()))]
 	else:
 		return null
 		

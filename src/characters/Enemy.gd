@@ -44,7 +44,7 @@ func start_combat(combat_position) -> void:
 	_tween.start()
 	
 func attack() -> void:
-	_tween.interpolate_property(self, "position:x", global_position.x, global_position.x - 40, 
+	_tween.interpolate_property(self, "position:x", global_position.x, global_position.x + 40, 
 		0.1, Tween.TRANS_LINEAR, Tween.EASE_OUT, 0.3
 	)
 	
@@ -52,7 +52,7 @@ func attack() -> void:
 	yield(_tween, "tween_completed")
 	
 func attack_end() -> void:
-	_tween.interpolate_property(self, "position:x", global_position.x, global_position.x + 40, 
+	_tween.interpolate_property(self, "position:x", global_position.x, global_position.x - 40, 
 		0.1, Tween.TRANS_LINEAR, Tween.EASE_OUT
 	)
 	

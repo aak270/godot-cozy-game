@@ -1,6 +1,6 @@
 extends CanvasLayer
 
-onready var _effort: = $ColorRect/Label
+onready var _effort: = $Effort/ProgressBar
 onready var _game_controller: = $"../GameController"
 
 func _ready() -> void:
@@ -10,4 +10,4 @@ func _ready() -> void:
 	
 func update_effort(value: float) -> void:
 	if _effort != null:
-		_effort.text = "Effort: %s" % value
+		_effort.value = value

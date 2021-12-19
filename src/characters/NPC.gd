@@ -5,7 +5,7 @@ export(String, FILE, "*.json") var dialogue_file
 
 var _dialogues: = []
 
-onready var _game_controller: = $"../GameController"
+onready var _game_controller: = get_tree().get_root().get_node("Level1/GameController")
 
 func _ready() -> void:
 	var file = File.new()

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Battle_Kodo.png-cf6735917d70dcf042cdbe854432596c.stex"
+path="res://.import/Arrows.png-818f1c5e4e7787e712e0b68a2fa809a1.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://src/characters/Enemy_7/Battle_Kodo.png"
-dest_files=[ "res://.import/Battle_Kodo.png-cf6735917d70dcf042cdbe854432596c.stex" ]
+source_file="res://src/ui/Arrows.png"
+dest_files=[ "res://.import/Arrows.png-818f1c5e4e7787e712e0b68a2fa809a1.stex" ]
 
 [params]
 

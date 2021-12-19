@@ -12,10 +12,10 @@ func _ready() -> void:
 func _process(_delta):
 	var x = player.move_to()
 	if x < 0:
-		playback.travel("idle")
+		playback.travel("idleR")
 		player.look_left = true
 	if x > 0:
-		playback.travel("idleR")
+		playback.travel("idle")
 		player.look_left = false
 
 func combat() -> void:

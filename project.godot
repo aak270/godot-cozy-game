@@ -9,10 +9,15 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Interactable",
+"class": "AutoDial",
+"language": "GDScript",
+"path": "res://src/objects/AutoDialogue.gd"
+}, {
 "base": "TextureButton",
 "class": "CombatAction",
 "language": "GDScript",
-"path": "res://src/ui/CombatAction.gd"
+"path": "res://src/combat/CombatAction.gd"
 }, {
 "base": "NPC",
 "class": "Enemy",
@@ -35,6 +40,7 @@ _global_script_classes=[ {
 "path": "res://src/characters/Player/PlayerInteract.gd"
 } ]
 _global_script_class_icons={
+"AutoDial": "",
 "CombatAction": "",
 "Enemy": "",
 "Interactable": "",

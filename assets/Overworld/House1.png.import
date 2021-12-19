@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/VN_7_Body.png-c8e9c74c944f90fabffe00e7c387f7de.stex"
+path="res://.import/House1.png-1f13ce6a06ffd86a0bf40db4ff1558fd.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://src/characters/Enemy_7/VN_7_Body.png"
-dest_files=[ "res://.import/VN_7_Body.png-c8e9c74c944f90fabffe00e7c387f7de.stex" ]
+source_file="res://assets/Overworld/House1.png"
+dest_files=[ "res://.import/House1.png-1f13ce6a06ffd86a0bf40db4ff1558fd.stex" ]
 
 [params]
 

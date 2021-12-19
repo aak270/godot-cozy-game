@@ -1065,6 +1065,18 @@ tracks/55/keys = {
 "update": 0,
 "values": [ 1 ]
 }
+tracks/56/type = "value"
+tracks/56/path = NodePath("Torso/Antenna:z_index")
+tracks/56/interp = 1
+tracks/56/loop_wrap = true
+tracks/56/imported = false
+tracks/56/enabled = true
+tracks/56/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ -4 ]
+}
 
 [sub_resource type="Animation" id=3]
 resource_name = "idle"
@@ -1370,6 +1382,18 @@ tracks/24/keys = {
 "update": 0,
 "values": [ 1.0 ]
 }
+tracks/25/type = "value"
+tracks/25/path = NodePath("Torso/Antenna:z_index")
+tracks/25/interp = 1
+tracks/25/loop_wrap = true
+tracks/25/imported = false
+tracks/25/enabled = true
+tracks/25/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 1 ]
+}
 
 [sub_resource type="Animation" id=4]
 resource_name = "idleR"
@@ -1433,7 +1457,7 @@ tracks/4/keys = {
 "times": PoolRealArray( 0, 1.5, 3 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 1,
-"values": [ Vector2( -123.333, -33.3333 ), Vector2( -123.333, -33.3333 ), Vector2( -123.333, -33.3333 ) ]
+"values": [ Vector2( 6.66666, -80 ), Vector2( 6.66666, -80 ), Vector2( 6.66666, -80 ) ]
 }
 tracks/5/type = "value"
 tracks/5/path = NodePath("Torso/Antenna:rotation_degrees")
@@ -1445,7 +1469,7 @@ tracks/5/keys = {
 "times": PoolRealArray( 0, 1.5, 3 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
-"values": [ 0.0, 0.0, 0.0 ]
+"values": [ 54.8433, 54.8433, 54.8433 ]
 }
 tracks/6/type = "value"
 tracks/6/path = NodePath("Torso/Tail2:position")
@@ -1675,6 +1699,18 @@ tracks/24/keys = {
 "update": 0,
 "values": [ 1.0 ]
 }
+tracks/25/type = "value"
+tracks/25/path = NodePath("Torso/Antenna:z_index")
+tracks/25/interp = 1
+tracks/25/loop_wrap = true
+tracks/25/imported = false
+tracks/25/enabled = true
+tracks/25/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ -4 ]
+}
 
 [sub_resource type="AnimationNodeAnimation" id=13]
 animation = "idleR"
@@ -1734,6 +1770,7 @@ node_connections = [ "output", 0, "TimeScale", "TimeScale", 0, "StateMachine" ]
 extents = Vector2( 26, 54 )
 
 [node name="Player" type="KinematicBody2D"]
+scale = Vector2( -1, 1 )
 z_index = 1
 collision_layer = 2
 script = ExtResource( 7 )
@@ -1782,7 +1819,7 @@ region_rect = Rect2( 219, 248, 58, 83 )
 
 [node name="ArmL" type="Sprite" parent="Torso"]
 position = Vector2( 17, 67 )
-z_index = -3
+z_index = 3
 texture = ExtResource( 9 )
 offset = Vector2( 15, 28 )
 region_enabled = true
@@ -1790,7 +1827,7 @@ region_rect = Rect2( 293, 250, 52, 98 )
 
 [node name="ArmR" type="Sprite" parent="Torso"]
 position = Vector2( -17, 67 )
-z_index = 3
+z_index = -3
 texture = ExtResource( 9 )
 offset = Vector2( -15, 27 )
 flip_h = true
@@ -1803,7 +1840,7 @@ z_index = -1
 texture = ExtResource( 9 )
 offset = Vector2( 33, 36 )
 region_enabled = true
-region_rect = Rect2( 227.632, -1.63089, 142.105, 166.316 )
+region_rect = Rect2( 480, 21, 145, 123 )
 
 [node name="Face" type="Sprite" parent="Torso"]
 position = Vector2( 3, -12 )
@@ -1815,6 +1852,7 @@ region_rect = Rect2( 488, 242, 161, 138 )
 [node name="Antenna" type="Sprite" parent="Torso"]
 modulate = Color( 0.752941, 0.443137, 0.988235, 1 )
 position = Vector2( 66, -45 )
+z_index = 1
 texture = ExtResource( 9 )
 offset = Vector2( 27, -68 )
 region_enabled = true
@@ -1822,6 +1860,7 @@ region_rect = Rect2( 379, 258, 89, 163 )
 
 [node name="Battle" type="Sprite" parent="."]
 visible = false
+position = Vector2( 0, -1.18842 )
 scale = Vector2( 0.3, 0.3 )
 
 [node name="Body" type="Sprite" parent="Battle"]
@@ -1839,7 +1878,7 @@ region_rect = Rect2( 14.6838, -3.42079, 164.211, 169.474 )
 
 [node name="Ant" type="Sprite" parent="Battle/Body/Head"]
 position = Vector2( 40, 13.3333 )
-rotation = 0.13698
+rotation = 0.195637
 z_index = -1
 texture = ExtResource( 6 )
 offset = Vector2( 13.3333, -63.3333 )
@@ -1854,7 +1893,7 @@ region_enabled = true
 region_rect = Rect2( 293.5, 52.7, 88.35, 100.7 )
 
 [node name="Arm_1_R" type="Sprite" parent="Battle"]
-position = Vector2( -30, -60 )
+position = Vector2( -30, -61.9807 )
 z_index = 1
 texture = ExtResource( 6 )
 region_enabled = true
@@ -1869,6 +1908,7 @@ region_rect = Rect2( -5.31265, 191.32, 26.3158, 33.6842 )
 
 [node name="Arm_3_R" type="Sprite" parent="Battle/Arm_1_R"]
 position = Vector2( -26.6667, 50 )
+rotation = 0.0346523
 z_index = 1
 texture = ExtResource( 6 )
 offset = Vector2( 33.3333, -3.33332 )
@@ -1890,7 +1930,7 @@ region_enabled = true
 region_rect = Rect2( 336.003, 288.969, 72.0222, 62.0499 )
 
 [node name="Arm_1_L" type="Sprite" parent="Battle"]
-position = Vector2( 36.6667, -60 )
+position = Vector2( 36.6667, -61.9807 )
 z_index = -3
 texture = ExtResource( 6 )
 flip_h = true
@@ -1908,6 +1948,7 @@ region_rect = Rect2( -5.31265, 191.32, 26.3158, 33.6842 )
 
 [node name="Arm_3_L" type="Sprite" parent="Battle/Arm_1_L"]
 position = Vector2( 26.6667, 53.3333 )
+rotation = -0.047282
 z_index = 4
 texture = ExtResource( 6 )
 offset = Vector2( -33.2845, -5.08646 )
@@ -1928,7 +1969,7 @@ position = Vector2( 6.66667, 303.333 )
 z_index = -3
 texture = ExtResource( 5 )
 hframes = 16
-frame = 1
+frame = 5
 region_enabled = true
 region_rect = Rect2( 0, 0, 7648, 649 )
 

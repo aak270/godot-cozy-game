@@ -23,8 +23,7 @@ func set_interact(value: bool) -> void:
 		_interact_ui.hide()
 
 func _on_area_entered(area: Area2D) -> void:
-	if area is Enemy:
-		_player.prepare_combat()
+	if area is Enemy or area is AutoDial:
 		area.interact()
 	elif area is Interactable:
 		_interactable = area

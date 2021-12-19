@@ -1,4 +1,4 @@
-extends VBoxContainer
+extends Control
 
 onready var _new_game_btn: = $NewGameButton
 onready var _quit_btn: = $QuitButton
@@ -19,7 +19,7 @@ func _on_NewGameButton_pressed() -> void:
 	MusicController.fade_level_music_from_main_menu()
 	AudioController.ambience_level_from_main_menu()
 	
-	get_tree().change_scene("res://src/scenes/Game.tscn")
+	get_tree().change_scene("res://src/scenes/Level1.tscn")
 
 func _on_QuitButton_pressed() -> void:
 	disable_buttons()

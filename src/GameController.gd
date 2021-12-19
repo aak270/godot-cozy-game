@@ -19,6 +19,7 @@ var combat_position_player: Position2D
 var combat_position_enemy: Position2D
 
 var _dialogue_has_combat = false
+var _is_end = false
 
 onready var player: = $"../Player"
 
@@ -44,16 +45,24 @@ func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_accept") and state == GameState.DIALOGUE:
 		_dialogue_player.next_line()
 	
-func start_dialogue(dialogues, is_enemy = null) -> void:
+func start_dialogue(dialogues, is_enemy = null, is_end = false) -> void:
 	player.stop_movement()
 	player.interact.set_interact(false)
 	
 	state = GameState.DIALOGUE
-	enemy = is_enemy
+	enemy = null
+	_dialogue_has_combat = false
 	
-	_dialogue_has_combat = false if is_enemy == null else true
+	if is_enemy != null and not is_end:
+		enemy = is_enemy
+		_dialogue_has_combat = true
+		yield(player.set_location(Vector2(enemy.global_position.x + 50, enemy.global_position.y)), "completed")
+
+	_is_end = is_end
+	if _is_end:
+		yield(player.set_location(is_enemy.global_position), "completed")
+
 	_dialogue_player.play(dialogues)
-	
 	print("start dialogue")
 	
 func end_dialogue() -> void:
@@ -64,6 +73,8 @@ func end_dialogue() -> void:
 		_dialogue_has_combat = false
 		start_combat()
 	
+	if _is_end:
+		get_tree().change_scene("res://src/scenes/StartScreen.tscn")
 	print("end dialogue")
 
 func start_combat() -> void:
@@ -97,8 +108,9 @@ func wait(seconds: float) -> void:
 	_timer.start()
 	yield(_timer, "timeout")
 	
-func update_effort(value: int) -> void:
-	emit_signal("effort_changed", value)
+func update_effort(value: float) -> void:
+	var effort = value / 50 * 100
+	emit_signal("effort_changed", int(effort))
 	
 func update_enemy_hp(value: int) -> void:
 	emit_signal("enemy_hp_changed", value)

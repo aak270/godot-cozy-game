@@ -1,11 +1,28 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://icon.png" type="Texture" id=1]
 [ext_resource path="res://src/ui/StartMenu.gd" type="Script" id=2]
+[ext_resource path="res://src/ui/Menu.png" type="Texture" id=3]
+
+[sub_resource type="AtlasTexture" id=1]
+flags = 4
+atlas = ExtResource( 3 )
+region = Rect2( 143, 255, 326, 125 )
+
+[sub_resource type="AtlasTexture" id=2]
+flags = 4
+atlas = ExtResource( 3 )
+region = Rect2( 175, 572, 238, 119 )
+
+[sub_resource type="AtlasTexture" id=3]
+flags = 4
+atlas = ExtResource( 3 )
+region = Rect2( 132, 753, 102, 110 )
 
 [node name="StartScreen" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -38,44 +55,53 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Menu" type="VBoxContainer" parent="."]
+[node name="NewGameButton" type="TextureButton" parent="."]
 anchor_left = 0.5
-anchor_top = 1.0
+anchor_top = 0.5
 anchor_right = 0.5
-anchor_bottom = 1.0
-margin_left = -128.0
-margin_top = -216.0
-margin_right = 128.0
-margin_bottom = -132.0
-script = ExtResource( 2 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="NewGameButton" type="Button" parent="Menu"]
-margin_right = 256.0
-margin_bottom = 40.0
+anchor_bottom = 0.5
+margin_left = -163.0
+margin_top = -108.0
+margin_right = 163.0
+margin_bottom = 17.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-text = "New Game"
-__meta__ = {
-"_edit_use_anchors_": false
-}
+texture_normal = SubResource( 1 )
+stretch_mode = 4
 
-[node name="QuitButton" type="Button" parent="Menu"]
-margin_top = 44.0
-margin_right = 256.0
-margin_bottom = 84.0
+[node name="CreditsButton" type="TextureButton" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -119.0
+margin_top = 36.0
+margin_right = 119.0
+margin_bottom = 155.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-text = "Quit"
+texture_normal = SubResource( 2 )
+stretch_mode = 4
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[connection signal="focus_exited" from="Menu/NewGameButton" to="Menu" method="_on_NewGameButton_focus_exited"]
-[connection signal="mouse_entered" from="Menu/NewGameButton" to="Menu" method="_on_NewGameButton_mouse_entered"]
-[connection signal="pressed" from="Menu/NewGameButton" to="Menu" method="_on_NewGameButton_pressed"]
-[connection signal="focus_exited" from="Menu/QuitButton" to="Menu" method="_on_QuitButton_focus_exited"]
-[connection signal="mouse_entered" from="Menu/QuitButton" to="Menu" method="_on_QuitButton_mouse_entered"]
-[connection signal="pressed" from="Menu/QuitButton" to="Menu" method="_on_QuitButton_pressed"]
+[node name="QuitButton" type="TextureButton" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -51.0
+margin_top = 164.0
+margin_right = 51.0
+margin_bottom = 274.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture_normal = SubResource( 3 )
+
+[connection signal="focus_exited" from="NewGameButton" to="." method="_on_NewGameButton_focus_exited"]
+[connection signal="mouse_entered" from="NewGameButton" to="." method="_on_NewGameButton_mouse_entered"]
+[connection signal="pressed" from="NewGameButton" to="." method="_on_NewGameButton_pressed"]
+[connection signal="focus_exited" from="QuitButton" to="." method="_on_QuitButton_focus_exited"]
+[connection signal="mouse_entered" from="QuitButton" to="." method="_on_QuitButton_mouse_entered"]
+[connection signal="pressed" from="QuitButton" to="." method="_on_QuitButton_pressed"]

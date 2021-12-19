@@ -1,7 +1,7 @@
 [gd_scene load_steps=61 format=2]
 
-[ext_resource path="res://src/characters/Enemy_7/Battle_Kodo_Tentas.png" type="Texture" id=1]
-[ext_resource path="res://src/characters/Enemy_7/Battle_Kodo.png" type="Texture" id=2]
+[ext_resource path="res://src/characters/Kodo/Battle_Kodo_Tentas.png" type="Texture" id=1]
+[ext_resource path="res://src/characters/Kodo/Battle_Kodo.png" type="Texture" id=2]
 [ext_resource path="res://src/combat/BVFX_Enari_Ice.png" type="Texture" id=3]
 [ext_resource path="res://src/characters/Player/TailSheet.png" type="Texture" id=4]
 [ext_resource path="res://src/combat/IceAttack.tscn" type="PackedScene" id=5]
@@ -15,6 +15,7 @@
 [ext_resource path="res://src/ui/Battle_Gauges.png" type="Texture" id=13]
 [ext_resource path="res://src/ui/Battle_Buttons_Unfocused.png" type="Texture" id=14]
 [ext_resource path="res://src/ui/Battle_Buttons.png" type="Texture" id=15]
+
 
 [sub_resource type="Shader" id=17]
 code = "/* 

@@ -1,12 +1,13 @@
 [gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://src/characters/Enemy.gd" type="Script" id=1]
-[ext_resource path="res://src/characters/Enemy_7/Overworld_Kodo.png" type="Texture" id=2]
-[ext_resource path="res://src/characters/Enemy_7/Battle_Kodo_Tentas.png" type="Texture" id=4]
-[ext_resource path="res://src/characters/Enemy_7/Battle_Kodo.png" type="Texture" id=6]
+[ext_resource path="res://src/characters/Kodo/Battle_Kodo.png" type="Texture" id=2]
+[ext_resource path="res://src/characters/Kodo/Overworld_Kodo.png" type="Texture" id=3]
+[ext_resource path="res://src/characters/Kodo/Battle_Kodo_Tentas.png" type="Texture" id=4]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 32.75, 40.5 )
+resource_local_to_scene = true
+extents = Vector2( 32.75, 472 )
 
 [sub_resource type="Animation" id=4]
 resource_name = "Battle_Idle"
@@ -417,6 +418,7 @@ tracks/16/keys = {
 }
 
 [node name="Enemy_7" type="Area2D"]
+scale = Vector2( -1, 1 )
 collision_layer = 8
 collision_mask = 0
 script = ExtResource( 1 )
@@ -425,14 +427,14 @@ script = ExtResource( 1 )
 
 [node name="Hed" type="Sprite" parent="Overworld"]
 scale = Vector2( 0.4, 0.4 )
-texture = ExtResource( 2 )
+texture = ExtResource( 3 )
 region_enabled = true
 region_rect = Rect2( -7.85492, 0, 158.624, 163.452 )
 
 [node name="Tenta" type="Sprite" parent="Overworld"]
 position = Vector2( -14, 41 )
 scale = Vector2( 0.4, 0.4 )
-texture = ExtResource( 2 )
+texture = ExtResource( 3 )
 region_enabled = true
 region_rect = Rect2( 162.156, 35.1531, 214.885, 157.457 )
 
@@ -442,21 +444,21 @@ position = Vector2( 2, -11 )
 scale = Vector2( 0.4, 0.4 )
 
 [node name="Head" type="Sprite" parent="Battle"]
-texture = ExtResource( 6 )
+texture = ExtResource( 2 )
 region_enabled = true
 region_rect = Rect2( 105.71, -7.39137, 193.829, 247.75 )
 
 [node name="Face" type="Sprite" parent="Battle/Head"]
 position = Vector2( -35, 17.5 )
 z_index = 3
-texture = ExtResource( 6 )
+texture = ExtResource( 2 )
 region_enabled = true
 region_rect = Rect2( 0, 0, 100, 120.138 )
 
 [node name="Knife" type="Sprite" parent="Battle"]
 position = Vector2( -122.5, 82.5 )
 z_index = -2
-texture = ExtResource( 6 )
+texture = ExtResource( 2 )
 offset = Vector2( -75, -7.50001 )
 region_enabled = true
 region_rect = Rect2( -26.3658, 235.894, 268.421, 167.368 )

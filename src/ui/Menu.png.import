@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/VN_7_Body.png-c8e9c74c944f90fabffe00e7c387f7de.stex"
+path="res://.import/Menu.png-c24e9cac7f9c6e2b274d59b9132ec69a.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://src/characters/Enemy_7/VN_7_Body.png"
-dest_files=[ "res://.import/VN_7_Body.png-c8e9c74c944f90fabffe00e7c387f7de.stex" ]
+source_file="res://src/ui/Menu.png"
+dest_files=[ "res://.import/Menu.png-c24e9cac7f9c6e2b274d59b9132ec69a.stex" ]
 
 [params]
 

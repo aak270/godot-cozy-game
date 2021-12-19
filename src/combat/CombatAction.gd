@@ -14,7 +14,7 @@ export var animation: PackedScene = null
 
 var _first_pressed: = true
 
-onready var _combat_system: = get_tree().get_root().get_node("Game/CombatSystem")
+onready var _combat_system: = get_tree().get_root().get_node("Level1/CombatSystem")
 onready var _info_box: = $InfoBox
 
 func _ready() -> void:
@@ -44,7 +44,7 @@ func hide_info_box() -> void:
 
 func _on_pressed() -> void:
 	if _first_pressed:
-		rect_position.x = 60
+		rect_position.x = -60
 		_first_pressed = false
 		
 		_info_box.show()

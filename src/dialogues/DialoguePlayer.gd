@@ -73,7 +73,7 @@ func show_dialogue() -> void:
 		_dialogue_name.text = _dialogues[_current_index]["name"]
 		_dialogue_message.text = _dialogues[_current_index]["text"]
 		
-		if _dialogue_name.text == "Player":
+		if _dialogue_name.text == "Enari":
 			_player_vn.show()
 			if _enemy_vn != null:
 				_enemy_vn.hide()
@@ -84,7 +84,7 @@ func show_dialogue() -> void:
 		
 		_dialogue_message.visible_characters = 0
 		while _dialogue_message.visible_characters < len(_dialogue_message.text):
-			if _dialogue_name.text == "Player":
+			if _dialogue_name.text == "Enari":
 				play_audio(_game_controller.player.get_voice())
 			elif _game_controller.enemy != null:
 				play_audio(_game_controller.enemy.get_voice())

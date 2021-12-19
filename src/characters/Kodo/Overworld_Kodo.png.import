@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Battle_Kodo.png-cf6735917d70dcf042cdbe854432596c.stex"
+path="res://.import/Overworld_Kodo.png-36318c2509859fa0f7edfef5f04f160d.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://src/characters/Enemy_7/Battle_Kodo.png"
-dest_files=[ "res://.import/Battle_Kodo.png-cf6735917d70dcf042cdbe854432596c.stex" ]
+source_file="res://src/characters/Kodo/Overworld_Kodo.png"
+dest_files=[ "res://.import/Overworld_Kodo.png-36318c2509859fa0f7edfef5f04f160d.stex" ]
 
 [params]
 

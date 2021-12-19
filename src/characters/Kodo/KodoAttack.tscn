@@ -1,6 +1,6 @@
 [gd_scene load_steps=16 format=2]
 
-[ext_resource path="res://src/characters/Enemy_7/BVFX_Kodo_1.png" type="Texture" id=1]
+[ext_resource path="res://src/characters/Kodo/BVFX_Kodo_1.png" type="Texture" id=1]
 
 [sub_resource type="AtlasTexture" id=41]
 flags = 4

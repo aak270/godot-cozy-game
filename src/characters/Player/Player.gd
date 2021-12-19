@@ -52,6 +52,8 @@ func move() -> void:
 	_direction = _direction.normalized()
 
 func start_combat(combat_position) -> void:
+	_remote_transform.update_position = false
+	
 	_battle.visible = true
 	_torso.visible = false
 	_anim.play("Battle_Idle")
@@ -69,10 +71,6 @@ func move_to() -> float:
 func stop_movement() -> void:
 	_velocity = Vector2.ZERO
 	_direction = Vector2.ZERO
-
-func prepare_combat() -> void:
-	stop_movement()
-	_remote_transform.update_position = false
 
 func attack() -> void:
 	_tween.interpolate_property(self, "position:x", global_position.x, global_position.x + 40, 
@@ -118,3 +116,12 @@ func end_combat() -> void:
 	_battle.visible = false
 	_torso.visible = true
 	_anim.stop()
+	
+func set_location(location: Vector2) -> void:
+	var distance = (location - global_position).length()
+	_tween.interpolate_property(self, "position", global_position, location, 
+		distance / 400, Tween.TRANS_QUAD, Tween.EASE_OUT
+	)
+	
+	_tween.start()
+	yield(_tween, "tween_completed")

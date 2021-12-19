@@ -1,5 +1,5 @@
 extends Interactable
-class_name NPC
+class_name AutoDial
 
 export(String, FILE, "*.json") var dialogue_file
 
@@ -15,3 +15,6 @@ func _ready() -> void:
 
 func interact() -> void:
 	_game_controller.start_dialogue(_dialogues)
+	
+func on_exit() -> void:
+	queue_free()

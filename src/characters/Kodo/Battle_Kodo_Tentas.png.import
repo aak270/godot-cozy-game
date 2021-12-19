@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/BVFX_Kodo_1.png-a110955e9fcaa6cb9914ce3a744db3b6.stex"
+path="res://.import/Battle_Kodo_Tentas.png-6153cf4e0781c1cbf24ac3ef37b9d62e.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://src/characters/Enemy_7/BVFX_Kodo_1.png"
-dest_files=[ "res://.import/BVFX_Kodo_1.png-a110955e9fcaa6cb9914ce3a744db3b6.stex" ]
+source_file="res://src/characters/Kodo/Battle_Kodo_Tentas.png"
+dest_files=[ "res://.import/Battle_Kodo_Tentas.png-6153cf4e0781c1cbf24ac3ef37b9d62e.stex" ]
 
 [params]
 

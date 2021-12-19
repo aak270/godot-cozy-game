@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/VN_7_Knif.png-08210a343c8c5f567c851eaf8e536db2.stex"
+path="res://.import/Battle_Kodo.png-ad7807621f6ee69d4ffe37add18c0ea5.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://src/characters/Enemy_7/VN_7_Knif.png"
-dest_files=[ "res://.import/VN_7_Knif.png-08210a343c8c5f567c851eaf8e536db2.stex" ]
+source_file="res://src/characters/Kodo/Battle_Kodo.png"
+dest_files=[ "res://.import/Battle_Kodo.png-ad7807621f6ee69d4ffe37add18c0ea5.stex" ]
 
 [params]
 

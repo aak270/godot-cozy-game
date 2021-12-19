@@ -12,11 +12,14 @@ func _ready() -> void:
 func _input(_event: InputEvent) -> void:
 	if _can_interact and Input.is_action_just_pressed("ui_accept"):
 		_interactable.interact()
-		
+		AudioController.ui_confirm()
+
 func set_interact(value: bool) -> void:
 	if value:
 		_can_interact = true
 		_interact_ui.show()
+		AudioController.ui_hover()
+
 	else:
 		_can_interact = false
 		_interact_ui.hide()

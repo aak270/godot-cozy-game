@@ -9,25 +9,61 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "Area2D",
+"base": "TextureButton",
+"class": "CombatAction",
+"language": "GDScript",
+"path": "res://src/ui/CombatAction.gd"
+}, {
+"base": "HBoxContainer",
+"class": "ContributorClass",
+"language": "GDScript",
+"path": "res://addons/github-integration/scripts/ContributorClass.gd"
+}, {
+"base": "NPC",
 "class": "Enemy",
 "language": "GDScript",
 "path": "res://src/characters/Enemy.gd"
+}, {
+"base": "PanelContainer",
+"class": "GistItem",
+"language": "GDScript",
+"path": "res://addons/github-integration/scripts/GistItem.gd"
 }, {
 "base": "Area2D",
 "class": "Interactable",
 "language": "GDScript",
 "path": "res://src/objects/Interactable.gd"
 }, {
+"base": "HBoxContainer",
+"class": "InvitationItem",
+"language": "GDScript",
+"path": "res://addons/github-integration/scripts/InvitationItem.gd"
+}, {
+"base": "Interactable",
+"class": "NPC",
+"language": "GDScript",
+"path": "res://src/characters/NPC.gd"
+}, {
 "base": "Node2D",
 "class": "PlayerInteract",
 "language": "GDScript",
-"path": "res://src/characters/PlayerInteract.gd"
+"path": "res://src/characters/Player/PlayerInteract.gd"
+}, {
+"base": "PanelContainer",
+"class": "RepositoryItem",
+"language": "GDScript",
+"path": "res://addons/github-integration/scripts/RepositoryItem.gd"
 } ]
 _global_script_class_icons={
+"CombatAction": "",
+"ContributorClass": "",
 "Enemy": "",
+"GistItem": "",
 "Interactable": "",
-"PlayerInteract": ""
+"InvitationItem": "",
+"NPC": "",
+"PlayerInteract": "",
+"RepositoryItem": ""
 }
 
 [application]
@@ -38,13 +74,22 @@ config/icon="res://icon.png"
 
 [autoload]
 
-EventHandler="*res://src/singletons/EventHandler.tscn"
-AudioController="*res://autoloads/AudioController.tscn"
+PluginSettings="*res://addons/github-integration/scripts/PluginSettings.gd"
+IconLoaderGithub="*res://addons/github-integration/scripts/IconLoaderGithub.gd"
+UserData="*res://addons/github-integration/scripts/user_data.gd"
+RestHandler="*res://addons/github-integration/scenes/RestHandler.tscn"
 MusicController="*res://autoloads/MusicController.tscn"
+AudioController="*res://autoloads/AudioController.tscn"
 
 [display]
 
 window/size/always_on_top=true
+window/stretch/mode="2d"
+window/stretch/aspect="keep"
+
+[editor_plugins]
+
+enabled=PoolStringArray( "res://addons/github-integration/plugin.cfg" )
 
 [input]
 
@@ -82,6 +127,7 @@ ui_down={
 2d_physics/layer_1="World"
 2d_physics/layer_2="Player"
 2d_physics/layer_3="Interactable"
+2d_physics/layer_4="Enemy"
 
 [physics]
 
